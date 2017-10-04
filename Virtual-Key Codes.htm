@@ -1,0 +1,1141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" xml:lang="en" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>NeHe Productions: MSDN Virtual-Key Codes</title>
+
+    <link rel="stylesheet" type="text/css" href="Virtual-Key%20Codes_files/public_base.css">
+    <link type="text/css" rel="stylesheet" href="Virtual-Key%20Codes_files/shThemeMidnight.css">
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="http://nehe.gamedev.net/atom/">
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://nehe.gamedev.net/rss/">
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold">
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More...">
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D">
+
+    
+    
+
+    
+
+
+
+
+    
+    
+    
+        <script async="" src="Virtual-Key%20Codes_files/cbgapi_002.txt"></script><script async="" src="Virtual-Key%20Codes_files/cbgapi.txt"></script><script gapi_processed="true" src="Virtual-Key%20Codes_files/plusone.js" async="" type="text/javascript"></script><script src="Virtual-Key%20Codes_files/all.js" id="facebook-jssdk"></script><script src="Virtual-Key%20Codes_files/gpt.txt" type="text/javascript" async=""></script><script type="text/javascript">
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type="text/javascript">
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+  <script async="" src="Virtual-Key%20Codes_files/pubads_impl_139.txt"></script><style type="text/css">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}.fb_link img{border:none}@keyframes fb_transform{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.fb_animate{animation:fb_transform .3s forwards}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}.fb_reset .fb_dialog_legacy{overflow:visible}.fb_dialog_advanced{padding:10px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px}.fb_dialog_content{background:#fff;color:#333}.fb_dialog_close_icon{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{top:5px;left:5px;right:auto}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent}.fb_dialog_close_icon:active{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent}.fb_dialog_loader{background-color:#f6f7f9;border:1px solid #606060;font-size:24px;padding:20px}.fb_dialog_top_left,.fb_dialog_top_right,.fb_dialog_bottom_left,.fb_dialog_bottom_right{height:10px;width:10px;overflow:hidden;position:absolute}.fb_dialog_top_left{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 0;left:-10px;top:-10px}.fb_dialog_top_right{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 -10px;right:-10px;top:-10px}.fb_dialog_bottom_left{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 -20px;bottom:-10px;left:-10px}.fb_dialog_bottom_right{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 -30px;right:-10px;bottom:-10px}.fb_dialog_vert_left,.fb_dialog_vert_right,.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{position:absolute;background:#525252;filter:alpha(opacity=70);opacity:.7}.fb_dialog_vert_left,.fb_dialog_vert_right{width:10px;height:100%}.fb_dialog_vert_left{margin-left:-10px}.fb_dialog_vert_right{right:0;margin-right:-10px}.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{width:100%;height:10px}.fb_dialog_horiz_top{margin-top:-10px}.fb_dialog_horiz_bottom{bottom:0;margin-bottom:-10px}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #365899;color:#fff;font-size:14px;font-weight:bold;margin:0}.fb_dialog_content .dialog_title>span{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{-webkit-transform:none;height:100%;margin:0;overflow:visible;position:absolute;top:-10000px;left:0;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ya/r/3rhSv5V8j3o.gif) white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{width:auto;height:auto;min-height:initial;min-width:initial;background:none}.fb_dialog.fb_dialog_mobile.loading.centered #fb_dialog_loader_spinner{width:100%}.fb_dialog.fb_dialog_mobile.loading.centered .fb_dialog_content{background:none}.loading.centered #fb_dialog_loader_close{color:#fff;display:block;padding-top:20px;clear:both;font-size:18px}#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .45);position:absolute;bottom:0;left:0;right:0;top:0;width:100%;min-height:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_content .dialog_header{-webkit-box-shadow:white 0 1px 1px -1px inset;background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#738ABA), to(#2C4987));border-bottom:1px solid;border-color:#1d4088;color:#fff;font:14px Helvetica, sans-serif;font-weight:bold;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{-webkit-font-smoothing:subpixel-antialiased;height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4966A6), color-stop(.5, #355492), to(#2A4887));border:1px solid #29487d;-webkit-background-clip:padding-box;-webkit-border-radius:3px;-webkit-box-shadow:rgba(0, 0, 0, .117188) 0 1px 1px inset, rgba(255, 255, 255, .167969) 0 1px 0;display:inline-block;margin-top:3px;max-width:85px;line-height:18px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{border:none;background:none;color:#fff;font:12px Helvetica, sans-serif;font-weight:bold;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #555;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f6f7f9;border:1px solid #555;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_button{text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}#fb_dialog_loader_spinner{animation:rotateSpinner 1.2s linear infinite;background-color:transparent;background-image:url(https://static.xx.fbcdn.net/rsrc.php/v3/yD/r/t-wz8gw1xG1.png);background-repeat:no-repeat;background-position:50% 50%;height:24px;width:24px}@keyframes rotateSpinner{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_fluid_desktop,.fb_iframe_widget_fluid_desktop span,.fb_iframe_widget_fluid_desktop iframe{max-width:100%}.fb_iframe_widget_fluid_desktop iframe{min-width:220px;position:relative}.fb_iframe_widget_lift{z-index:1}.fb_hide_iframes iframe{position:relative;left:-10000px}.fb_iframe_widget_loader{position:relative;display:inline-block}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}.fb_iframe_widget_loader iframe{min-height:32px;z-index:2;zoom:1}.fb_iframe_widget_loader .FB_Loader{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/y9/r/jKEcVPZFk-2.gif) no-repeat;height:32px;width:32px;margin-left:-16px;position:absolute;left:50%;z-index:4}</style></head>
+
+  <body>
+    
+<div class=" fb_reset" id="fb-root"><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div><iframe src="http://staticxx.facebook.com/connect/xd_arbiter/r/XBwzv5Yrm_1.js?version=42#channel=f71e4093281064&amp;origin=http%3A%2F%2Fnehe.gamedev.net" style="border: medium none;" tabindex="-1" title="Facebook Cross Domain Communication Frame" aria-hidden="true" id="fb_xdm_frame_http" scrolling="no" allowfullscreen="true" allowtransparency="true" name="fb_xdm_frame_http" frameborder="0"></iframe><iframe src="Virtual-Key%20Codes_files/XBwzv5Yrm_1_002.htm" style="border: medium none;" tabindex="-1" title="Facebook Cross Domain Communication Frame" aria-hidden="true" id="fb_xdm_frame_https" scrolling="no" allowfullscreen="true" allowtransparency="true" name="fb_xdm_frame_https" frameborder="0"></iframe></div></div><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div></div></div></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table id="layout_table" border="0" cellpadding="0" cellspacing="0">
+    <tbody><tr><td>
+        <div id="header">
+                <a href="http://nehe.gamedev.net/"><img class="logo" src="Virtual-Key%20Codes_files/nehe.png" alt="Nehe" border="0"></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="http://nehe.gamedev.net/">HOME</a>
+    <a href="http://twitter.com/#%21/nehegl">TWITTER</a>  
+    <a href="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">MSDN Virtual-Key Codes</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div id="___plusone_0" style="text-indent: 0px; margin: 0px; padding: 0px; background: transparent none repeat scroll 0% 0%; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 32px; height: 20px;"><iframe title="G+" data-gapiattached="true" src="Virtual-Key%20Codes_files/fastbutton.htm" name="I0_1501182369207" id="I0_1501182369207" vspace="0" tabindex="0" style="position: static; top: 0px; width: 32px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" scrolling="no" marginwidth="0" marginheight="0" hspace="0" ng-non-bindable="" frameborder="0" width="100%"></iframe></div>
+<div fb-iframe-plugin-query="app_id=&amp;color_scheme=dark&amp;container_width=0&amp;font=arial&amp;href=http%3A%2F%2Fnehe.gamedev.net%2Farticle%2Fmsdn_virtualkey_codes%2F15009%2F&amp;layout=button_count&amp;locale=en_GB&amp;sdk=joey&amp;send=false&amp;show_faces=false&amp;width=60" fb-xfbml-state="rendered" class="fb-like fb_iframe_widget" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"><span style="vertical-align: bottom; width: 62px; height: 20px;"><iframe class="" src="Virtual-Key%20Codes_files/like.htm" style="border: medium none; visibility: visible; width: 62px; height: 20px;" title="fb:like Facebook Social Plugin" scrolling="no" allowfullscreen="true" allowtransparency="true" name="f2f4f3f22d37c58" frameborder="0" height="1000px" width="60px"></iframe></span></div>
+</div>
+<div style="clear:both;"></div>
+<center><span style="font-size: xx-small;"><br>HTML: Jeff Molofee</span></center>
+<table style="width: 100%;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td class="news"><span class="head">Symbolic Constant Name</span></td>
+<td class="news" nowrap="nowrap"><span class="head">Hexadecimal Value</span></td>
+<td class="news"><span class="head">Mouse Or Keyboard Equivalent</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_LBUTTON</strong></span></td>
+<td class="back"><span class="text">01</span></td>
+<td class="back"><span class="text">Left mouse button</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_RBUTTON</strong></span></td>
+<td class="back"><span class="text">02</span></td>
+<td class="back"><span class="text">Right mouse button</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_CANCEL</strong></span></td>
+<td class="back"><span class="text">03</span></td>
+<td class="back"><span class="text">Control-break processing</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_MBUTTON</strong></span></td>
+<td class="back"><span class="text">04</span></td>
+<td class="back"><span class="text">Middle mouse button (three-button mouse)</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_XBUTTON1</strong></span></td>
+<td class="back"><span class="text">05</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> X1 mouse button</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_XBUTTON2</strong></span></td>
+<td class="back"><span class="text">06</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> X2 mouse button</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"></span></td>
+<td class="back"><span class="text">07</span></td>
+<td class="back"><span class="text">Undefined</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_BACK</strong></span></td>
+<td class="back"><span class="text">08</span></td>
+<td class="back"><span class="text">BACKSPACE key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_TAB</strong></span></td>
+<td class="back"><span class="text">09</span></td>
+<td class="back"><span class="text">TAB key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"></span></td>
+<td class="back"><span class="text">0A0B</span></td>
+<td class="back"><span class="text">Reserved</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_CLEAR</strong></span></td>
+<td class="back"><span class="text">0C</span></td>
+<td class="back"><span class="text">CLEAR key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_RETURN</strong></span></td>
+<td class="back"><span class="text">0D</span></td>
+<td class="back"><span class="text">ENTER key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"></span></td>
+<td class="back"><span class="text">0E0F</span></td>
+<td class="back"><span class="text">Undefined</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_SHIFT</strong></span></td>
+<td class="back"><span class="text">10</span></td>
+<td class="back"><span class="text">SHIFT key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_CONTROL</strong></span></td>
+<td class="back"><span class="text">11</span></td>
+<td class="back"><span class="text">CTRL key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_MENU</strong></span></td>
+<td class="back"><span class="text">12</span></td>
+<td class="back"><span class="text">ALT key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_PAUSE</strong></span></td>
+<td class="back"><span class="text">13</span></td>
+<td class="back"><span class="text">PAUSE key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_CAPITAL</strong></span></td>
+<td class="back"><span class="text">14</span></td>
+<td class="back"><span class="text">CAPS LOCK key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_KANA</strong></span></td>
+<td class="back"><span class="text">15</span></td>
+<td class="back"><span class="text">IME Kana mode</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_HANGUEL</strong></span></td>
+<td class="back"><span class="text">15</span></td>
+<td class="back"><span class="text">IME Hanguel mode (maintained for compatibility; use <strong>VK_HANGUL</strong>)</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_HANGUL</strong></span></td>
+<td class="back"><span class="text">15</span></td>
+<td class="back"><span class="text">IME Hangul mode</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"></span></td>
+<td class="back"><span class="text">16</span></td>
+<td class="back"><span class="text">Undefined</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_JUNJA</strong></span></td>
+<td class="back"><span class="text">17</span></td>
+<td class="back"><span class="text">IME Junja mode</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_FINAL</strong></span></td>
+<td class="back"><span class="text">18</span></td>
+<td class="back"><span class="text">IME final mode</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_HANJA</strong></span></td>
+<td class="back"><span class="text">19</span></td>
+<td class="back"><span class="text">IME Hanja mode</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_KANJI</strong></span></td>
+<td class="back"><span class="text">19</span></td>
+<td class="back"><span class="text">IME Kanji mode</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"></span></td>
+<td class="back"><span class="text">1A</span></td>
+<td class="back"><span class="text">Undefined</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_ESCAPE</strong></span></td>
+<td class="back"><span class="text">1B</span></td>
+<td class="back"><span class="text">ESC key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_CONVERT</strong></span></td>
+<td class="back"><span class="text">1C</span></td>
+<td class="back"><span class="text">IME convert</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_NONCONVERT</strong></span></td>
+<td class="back"><span class="text">1D</span></td>
+<td class="back"><span class="text">IME nonconvert</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_ACCEPT</strong></span></td>
+<td class="back"><span class="text">1E</span></td>
+<td class="back"><span class="text">IME accept</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_MODECHANGE</strong></span></td>
+<td class="back"><span class="text">1F</span></td>
+<td class="back"><span class="text">IME mode change request</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_SPACE</strong></span></td>
+<td class="back"><span class="text">20</span></td>
+<td class="back"><span class="text">SPACEBAR</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_PRIOR</strong></span></td>
+<td class="back"><span class="text">21</span></td>
+<td class="back"><span class="text">PAGE UP key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_NEXT</strong></span></td>
+<td class="back"><span class="text">22</span></td>
+<td class="back"><span class="text">PAGE DOWN key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_END</strong></span></td>
+<td class="back"><span class="text">23</span></td>
+<td class="back"><span class="text">END key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_HOME</strong></span></td>
+<td class="back"><span class="text">24</span></td>
+<td class="back"><span class="text">HOME key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_LEFT</strong></span></td>
+<td class="back"><span class="text">25</span></td>
+<td class="back"><span class="text">LEFT ARROW key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_UP</strong></span></td>
+<td class="back"><span class="text">26</span></td>
+<td class="back"><span class="text">UP ARROW key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_RIGHT</strong></span></td>
+<td class="back"><span class="text">27</span></td>
+<td class="back"><span class="text">RIGHT ARROW key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_DOWN</strong></span></td>
+<td class="back"><span class="text">28</span></td>
+<td class="back"><span class="text">DOWN ARROW key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_SELECT</strong></span></td>
+<td class="back"><span class="text">29</span></td>
+<td class="back"><span class="text">SELECT key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_PRINT</strong></span></td>
+<td class="back"><span class="text">2A</span></td>
+<td class="back"><span class="text">PRINT key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_EXECUTE</strong></span></td>
+<td class="back"><span class="text">2B</span></td>
+<td class="back"><span class="text">EXECUTE key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_SNAPSHOT</strong></span></td>
+<td class="back"><span class="text">2C</span></td>
+<td class="back"><span class="text">PRINT SCREEN key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_INSERT</strong></span></td>
+<td class="back"><span class="text">2D</span></td>
+<td class="back"><span class="text">INS key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_DELETE</strong></span></td>
+<td class="back"><span class="text">2E</span></td>
+<td class="back"><span class="text">DEL key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_HELP</strong></span></td>
+<td class="back"><span class="text">2F</span></td>
+<td class="back"><span class="text">HELP key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'0'</strong></span></td>
+<td class="back"><span class="text">30</span></td>
+<td class="back"><span class="text">0 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'1'</strong></span></td>
+<td class="back"><span class="text">31</span></td>
+<td class="back"><span class="text">1 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'2'</strong></span></td>
+<td class="back"><span class="text">32</span></td>
+<td class="back"><span class="text">2 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'3'</strong></span></td>
+<td class="back"><span class="text">33</span></td>
+<td class="back"><span class="text">3 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'4'</strong></span></td>
+<td class="back"><span class="text">34</span></td>
+<td class="back"><span class="text">4 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'5'</strong></span></td>
+<td class="back"><span class="text">35</span></td>
+<td class="back"><span class="text">5 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'6'</strong></span></td>
+<td class="back"><span class="text">36</span></td>
+<td class="back"><span class="text">6 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'7'</strong></span></td>
+<td class="back"><span class="text">37</span></td>
+<td class="back"><span class="text">7 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'8'</strong></span></td>
+<td class="back"><span class="text">38</span></td>
+<td class="back"><span class="text">8 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'9'</strong></span></td>
+<td class="back"><span class="text">39</span></td>
+<td class="back"><span class="text">9 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"></span></td>
+<td class="back"><span class="text">3A40</span></td>
+<td class="back"><span class="text">Undefined</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'A'</strong></span></td>
+<td class="back"><span class="text">41</span></td>
+<td class="back"><span class="text">A key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'B'</strong></span></td>
+<td class="back"><span class="text">42</span></td>
+<td class="back"><span class="text">B key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'C'</strong></span></td>
+<td class="back"><span class="text">43</span></td>
+<td class="back"><span class="text">C key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'D'</strong></span></td>
+<td class="back"><span class="text">44</span></td>
+<td class="back"><span class="text">D key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'E'</strong></span></td>
+<td class="back"><span class="text">45</span></td>
+<td class="back"><span class="text">E key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'F'</strong></span></td>
+<td class="back"><span class="text">46</span></td>
+<td class="back"><span class="text">F key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'G'</strong></span></td>
+<td class="back"><span class="text">47</span></td>
+<td class="back"><span class="text">G key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'H'</strong></span></td>
+<td class="back"><span class="text">48</span></td>
+<td class="back"><span class="text">H key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'I'</strong></span></td>
+<td class="back"><span class="text">49</span></td>
+<td class="back"><span class="text">I key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'J'</strong></span></td>
+<td class="back"><span class="text">4A</span></td>
+<td class="back"><span class="text">J key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'K'</strong></span></td>
+<td class="back"><span class="text">4B</span></td>
+<td class="back"><span class="text">K key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'L'</strong></span></td>
+<td class="back"><span class="text">4C</span></td>
+<td class="back"><span class="text">L key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'M'</strong></span></td>
+<td class="back"><span class="text">4D</span></td>
+<td class="back"><span class="text">M key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'N'</strong></span></td>
+<td class="back"><span class="text">4E</span></td>
+<td class="back"><span class="text">N key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'O'</strong></span></td>
+<td class="back"><span class="text">4F</span></td>
+<td class="back"><span class="text">O key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'P'</strong></span></td>
+<td class="back"><span class="text">50</span></td>
+<td class="back"><span class="text">P key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'Q'</strong></span></td>
+<td class="back"><span class="text">51</span></td>
+<td class="back"><span class="text">Q key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'R'</strong></span></td>
+<td class="back"><span class="text">52</span></td>
+<td class="back"><span class="text">R key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'S'</strong></span></td>
+<td class="back"><span class="text">53</span></td>
+<td class="back"><span class="text">S key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'T'</strong></span></td>
+<td class="back"><span class="text">54</span></td>
+<td class="back"><span class="text">T key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'U'</strong></span></td>
+<td class="back"><span class="text">55</span></td>
+<td class="back"><span class="text">U key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'V'</strong></span></td>
+<td class="back"><span class="text">56</span></td>
+<td class="back"><span class="text">V key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'W'</strong></span></td>
+<td class="back"><span class="text">57</span></td>
+<td class="back"><span class="text">W key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'X'</strong></span></td>
+<td class="back"><span class="text">58</span></td>
+<td class="back"><span class="text">X key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'Y'</strong></span></td>
+<td class="back"><span class="text">59</span></td>
+<td class="back"><span class="text">Y key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>'Z'</strong></span></td>
+<td class="back"><span class="text">5A</span></td>
+<td class="back"><span class="text">Z key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_LWIN</strong></span></td>
+<td class="back"><span class="text">5B</span></td>
+<td class="back"><span class="text">Left Windows key (Microsoft Natural Keyboard)</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_RWIN</strong></span></td>
+<td class="back"><span class="text">5C</span></td>
+<td class="back"><span class="text">Right Windows key (Microsoft Natural Keyboard)</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_APPS</strong></span></td>
+<td class="back"><span class="text">5D</span></td>
+<td class="back"><span class="text">Applications key (Microsoft Natural Keyboard)</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"></span></td>
+<td class="back"><span class="text">5E</span></td>
+<td class="back"><span class="text">Reserved</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_SLEEP</strong></span></td>
+<td class="back"><span class="text">5F</span></td>
+<td class="back"><span class="text">Computer Sleep key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_NUMPAD0</strong></span></td>
+<td class="back"><span class="text">60</span></td>
+<td class="back"><span class="text">Numeric keypad 0 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_NUMPAD1</strong></span></td>
+<td class="back"><span class="text">61</span></td>
+<td class="back"><span class="text">Numeric keypad 1 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_NUMPAD2</strong></span></td>
+<td class="back"><span class="text">62</span></td>
+<td class="back"><span class="text">Numeric keypad 2 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_NUMPAD3</strong></span></td>
+<td class="back"><span class="text">63</span></td>
+<td class="back"><span class="text">Numeric keypad 3 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_NUMPAD4</strong></span></td>
+<td class="back"><span class="text">64</span></td>
+<td class="back"><span class="text">Numeric keypad 4 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_NUMPAD5</strong></span></td>
+<td class="back"><span class="text">65</span></td>
+<td class="back"><span class="text">Numeric keypad 5 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_NUMPAD6</strong></span></td>
+<td class="back"><span class="text">66</span></td>
+<td class="back"><span class="text">Numeric keypad 6 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_NUMPAD7</strong></span></td>
+<td class="back"><span class="text">67</span></td>
+<td class="back"><span class="text">Numeric keypad 7 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_NUMPAD8</strong></span></td>
+<td class="back"><span class="text">68</span></td>
+<td class="back"><span class="text">Numeric keypad 8 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_NUMPAD9</strong></span></td>
+<td class="back"><span class="text">69</span></td>
+<td class="back"><span class="text">Numeric keypad 9 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_MULTIPLY</strong></span></td>
+<td class="back"><span class="text">6A</span></td>
+<td class="back"><span class="text">Multiply key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_ADD</strong></span></td>
+<td class="back"><span class="text">6B</span></td>
+<td class="back"><span class="text">Add key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_SEPARATOR</strong></span></td>
+<td class="back"><span class="text">6C</span></td>
+<td class="back"><span class="text">Separator key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_SUBTRACT</strong></span></td>
+<td class="back"><span class="text">6D</span></td>
+<td class="back"><span class="text">Subtract key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_DECIMAL</strong></span></td>
+<td class="back"><span class="text">6E</span></td>
+<td class="back"><span class="text">Decimal key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_DIVIDE</strong></span></td>
+<td class="back"><span class="text">6F</span></td>
+<td class="back"><span class="text">Divide key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F1</strong></span></td>
+<td class="back"><span class="text">70</span></td>
+<td class="back"><span class="text">F1 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F2</strong></span></td>
+<td class="back"><span class="text">71</span></td>
+<td class="back"><span class="text">F2 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F3</strong></span></td>
+<td class="back"><span class="text">72</span></td>
+<td class="back"><span class="text">F3 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F4</strong></span></td>
+<td class="back"><span class="text">73</span></td>
+<td class="back"><span class="text">F4 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F5</strong></span></td>
+<td class="back"><span class="text">74</span></td>
+<td class="back"><span class="text">F5 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F6</strong></span></td>
+<td class="back"><span class="text">75</span></td>
+<td class="back"><span class="text">F6 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F7</strong></span></td>
+<td class="back"><span class="text">76</span></td>
+<td class="back"><span class="text">F7 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F8</strong></span></td>
+<td class="back"><span class="text">77</span></td>
+<td class="back"><span class="text">F8 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F9</strong></span></td>
+<td class="back"><span class="text">78</span></td>
+<td class="back"><span class="text">F9 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F10</strong></span></td>
+<td class="back"><span class="text">79</span></td>
+<td class="back"><span class="text">F10 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F11</strong></span></td>
+<td class="back"><span class="text">7A</span></td>
+<td class="back"><span class="text">F11 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F12</strong></span></td>
+<td class="back"><span class="text">7B</span></td>
+<td class="back"><span class="text">F12 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F13</strong></span></td>
+<td class="back"><span class="text">7C</span></td>
+<td class="back"><span class="text">F13 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F14</strong></span></td>
+<td class="back"><span class="text">7D</span></td>
+<td class="back"><span class="text">F14 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F15</strong></span></td>
+<td class="back"><span class="text">7E</span></td>
+<td class="back"><span class="text">F15 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F16</strong></span></td>
+<td class="back"><span class="text">7F</span></td>
+<td class="back"><span class="text">F16 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F17</strong></span></td>
+<td class="back"><span class="text">80H</span></td>
+<td class="back"><span class="text">F17 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F18</strong></span></td>
+<td class="back"><span class="text">81H</span></td>
+<td class="back"><span class="text">F18 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F19</strong></span></td>
+<td class="back"><span class="text">82H</span></td>
+<td class="back"><span class="text">F19 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F20</strong></span></td>
+<td class="back"><span class="text">83H</span></td>
+<td class="back"><span class="text">F20 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F21</strong></span></td>
+<td class="back"><span class="text">84H</span></td>
+<td class="back"><span class="text">F21 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F22</strong></span></td>
+<td class="back"><span class="text">85H</span></td>
+<td class="back"><span class="text">F22 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F23</strong></span></td>
+<td class="back"><span class="text">86H</span></td>
+<td class="back"><span class="text">F23 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_F24</strong></span></td>
+<td class="back"><span class="text">87H</span></td>
+<td class="back"><span class="text">F24 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"></span></td>
+<td class="back"><span class="text">888F</span></td>
+<td class="back"><span class="text">Unassigned</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_NUMLOCK</strong></span></td>
+<td class="back"><span class="text">90</span></td>
+<td class="back"><span class="text">NUM LOCK key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_SCROLL</strong></span></td>
+<td class="back"><span class="text">91</span></td>
+<td class="back"><span class="text">SCROLL LOCK key</span></td>
+</tr>
+<tr>
+<td class="back">&nbsp;</td>
+<td class="back"><span class="text">9296</span></td>
+<td class="back"><span class="text">OEM specific</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"></span></td>
+<td class="back"><span class="text">979F</span></td>
+<td class="back"><span class="text">Unassigned</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_LSHIFT</strong></span></td>
+<td class="back"><span class="text">A0</span></td>
+<td class="back"><span class="text">Left SHIFT key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_RSHIFT</strong></span></td>
+<td class="back"><span class="text">A1</span></td>
+<td class="back"><span class="text">Right SHIFT key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_LCONTROL</strong></span></td>
+<td class="back"><span class="text">A2</span></td>
+<td class="back"><span class="text">Left CONTROL key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_RCONTROL</strong></span></td>
+<td class="back"><span class="text">A3</span></td>
+<td class="back"><span class="text">Right CONTROL key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_LMENU</strong></span></td>
+<td class="back"><span class="text">A4</span></td>
+<td class="back"><span class="text">Left MENU key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_RMENU</strong></span></td>
+<td class="back"><span class="text">A5</span></td>
+<td class="back"><span class="text">Right MENU key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_BROWSER_BACK</strong></span></td>
+<td class="back"><span class="text">A6</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Browser Back key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_BROWSER_FORWARD</strong></span></td>
+<td class="back"><span class="text">A7</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Browser Forward key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_BROWSER_REFRESH</strong></span></td>
+<td class="back"><span class="text">A8</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Browser Refresh key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_BROWSER_STOP</strong></span></td>
+<td class="back"><span class="text">A9</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Browser Stop key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_BROWSER_SEARCH</strong></span></td>
+<td class="back"><span class="text">AA</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Browser Search key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_BROWSER_FAVORITES</strong></span></td>
+<td class="back"><span class="text">AB</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Browser Favorites key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_BROWSER_HOME</strong></span></td>
+<td class="back"><span class="text">AC</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Browser Launch and Home key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_VOLUME_MUTE</strong></span></td>
+<td class="back"><span class="text">AD</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Volume Mute key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_VOLUME_DOWN</strong></span></td>
+<td class="back"><span class="text">AE</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Volume Down key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_VOLUME_UP</strong></span></td>
+<td class="back"><span class="text">AF</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Volume Up key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_MEDIA_NEXT_TRACK</strong></span></td>
+<td class="back"><span class="text">B0</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Next Track key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_MEDIA_PREV_TRACK</strong></span></td>
+<td class="back"><span class="text">B1</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Previous Track key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_MEDIA_STOP</strong></span></td>
+<td class="back"><span class="text">B2</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Stop Media key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_MEDIA_PLAY_PAUSE</strong></span></td>
+<td class="back"><span class="text">B3</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Play/Pause Media key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_LAUNCH_MAIL</strong></span></td>
+<td class="back"><span class="text">B4</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Launch Mail key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_LAUNCH_MEDIA_SELECT</strong></span></td>
+<td class="back"><span class="text">B5</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Select Media key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_LAUNCH_APP1</strong></span></td>
+<td class="back"><span class="text">B6</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Launch Application 1 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_LAUNCH_APP2</strong></span></td>
+<td class="back"><span class="text">B7</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> Launch Application 2 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"></span></td>
+<td class="back"><span class="text">B8-B9</span></td>
+<td class="back"><span class="text">Reserved</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_OEM_1</strong></span></td>
+<td class="back"><span class="text">BA</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> for the US standard keyboard, the ';:' key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_OEM_PLUS</strong></span></td>
+<td class="back"><span class="text">BB</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> for any country/region, the '+' key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_OEM_COMMA</strong></span></td>
+<td class="back"><span class="text">BC</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> for any country/region, the ',' key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_OEM_MINUS</strong></span></td>
+<td class="back"><span class="text">BD</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> for any country/region, the '-' key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_OEM_PERIOD</strong></span></td>
+<td class="back"><span class="text">BE</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> for any country/region, the '.' key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_OEM_2</strong></span></td>
+<td class="back"><span class="text">BF</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> for the US standard keyboard, the '/?' key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_OEM_3</strong></span></td>
+<td class="back"><span class="text">C0</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> for the US standard keyboard, the '`~' key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"></span></td>
+<td class="back"><span class="text">C1D7</span></td>
+<td class="back"><span class="text">Reserved</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"></span></td>
+<td class="back"><span class="text">D8DA</span></td>
+<td class="back"><span class="text">Unassigned</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_OEM_4</strong></span></td>
+<td class="back"><span class="text">DB</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> for the US standard keyboard, the '[{' key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_OEM_5</strong></span></td>
+<td class="back"><span class="text">DC</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> for the US standard keyboard, the '\|' key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_OEM_6</strong></span></td>
+<td class="back"><span class="text">DD</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> for the US standard keyboard, the ']}' key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_OEM_7</strong></span></td>
+<td class="back"><span class="text">DE</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> for the US standard keyboard, the 'single-quote/double-quote' key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_OEM_8</strong></span></td>
+<td class="back"><span class="text">DF</span></td>
+<td class="back">&nbsp;</td>
+</tr>
+<tr>
+<td class="back"><span class="text"></span></td>
+<td class="back"><span class="text">E0</span></td>
+<td class="back"><span class="text">Reserved</span></td>
+</tr>
+<tr>
+<td class="back">&nbsp;</td>
+<td class="back"><span class="text">E1</span></td>
+<td class="back"><span class="text">OEM specific</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_OEM_102</strong></span></td>
+<td class="back"><span class="text">E2</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> either the '&lt;&gt;' key or the '\|' key on the RT 102-key keyboard</span></td>
+</tr>
+<tr>
+<td class="back">&nbsp;</td>
+<td class="back"><span class="text">E3E4</span></td>
+<td class="back"><span class="text">OEM specific</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_PROCESSKEY</strong></span></td>
+<td class="back"><span class="text">E5</span></td>
+<td class="back"><span class="text"><strong>Windows 95, Windows NT 4.0, and Windows&nbsp;2000:</strong> IME PROCESS key</span></td>
+</tr>
+<tr>
+<td class="back">&nbsp;</td>
+<td class="back"><span class="text">E6</span></td>
+<td class="back"><span class="text">OEM specific</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_PACKET</strong></span></td>
+<td class="back"><span class="text">E7</span></td>
+<td class="back"><span class="text"><strong>Windows&nbsp;2000:</strong> 
+Used to pass Unicode characters as if they were keystrokes. The 
+VK_PACKET key is the low word of a 32-bit Virtual Key value used for 
+non-keyboard input methods. The Unicode character is the high word.</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"></span></td>
+<td class="back"><span class="text">E8</span></td>
+<td class="back"><span class="text">Unassigned</span></td>
+</tr>
+<tr>
+<td class="back">&nbsp;</td>
+<td class="back"><span class="text">E9F5</span></td>
+<td class="back"><span class="text">OEM specific</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_ATTN</strong></span></td>
+<td class="back"><span class="text">F6</span></td>
+<td class="back"><span class="text">Attn key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_CRSEL</strong></span></td>
+<td class="back"><span class="text">F7</span></td>
+<td class="back"><span class="text">CrSel key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_EXSEL</strong></span></td>
+<td class="back"><span class="text">F8</span></td>
+<td class="back"><span class="text">ExSel key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_EREOF</strong></span></td>
+<td class="back"><span class="text">F9</span></td>
+<td class="back"><span class="text">Erase EOF key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_PLAY</strong></span></td>
+<td class="back"><span class="text">FA</span></td>
+<td class="back"><span class="text">Play key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_ZOOM</strong></span></td>
+<td class="back"><span class="text">FB</span></td>
+<td class="back"><span class="text">Zoom key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_NONAME</strong></span></td>
+<td class="back"><span class="text">FC</span></td>
+<td class="back"><span class="text">Reserved for future use</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_PA1</strong></span></td>
+<td class="back"><span class="text">FD</span></td>
+<td class="back"><span class="text">PA1 key</span></td>
+</tr>
+<tr>
+<td class="back"><span class="text"><strong>VK_OEM_CLEAR</strong></span></td>
+<td class="back"><span class="text">FE</span></td>
+<td class="back"><span class="text">Clear key</span></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+
+
+</div>
+
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+                <!-- Leaderboard_NeHe -->
+                <div id="div-gpt-ad-1327940144417-0" style="width:728px; height:90px;">
+                <script type="text/javascript">
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+                                       
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+            
+        </td>
+    </tr></tbody></table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2014 Gamedev . All rights reserved.<br>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br>
+		</p>        
+		<br>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="Virtual-Key%20Codes_files/shCore.js"></script>
+        <script type="text/javascript" src="Virtual-Key%20Codes_files/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="Virtual-Key%20Codes_files/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>
+
+    
+<!-- GoogleAnalytics code -->
+<script src="Virtual-Key%20Codes_files/urchin.txt" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+</script> 
+  
+
+<iframe aria-hidden="true" tabindex="-1" style="width: 1px; height: 1px; position: absolute; top: -100px;" src="Virtual-Key%20Codes_files/postmessageRelay.htm" id="oauth2relay557743338" name="oauth2relay557743338"></iframe></body></html>
