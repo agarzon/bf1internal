@@ -482,6 +482,9 @@ struct BulletDataSaved
 	float time;
 	float gravity;
 	bool instantHit;
+	int BulletsPerShot;
+	int BulletsPerShell;
+	float RateOfFire;
 };
 
 extern std::map<QWORD, SwayDataSaved> SwayData;
@@ -587,6 +590,30 @@ public:
 		return prediction->Velocity;
 	}
 
+	int GetBulletsPerShot()
+	{
+		return Mem::ReadPtr<int>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x108 }, false);
+	}
+	void SetBulletsPerShot(int _vel)
+	{   //Damage Multiplier (Bullet per shot) not recommended to go above 5 unless using a shotgun. If you have high ping none of these will register on the server, for me it worked up to 250 ping
+		Mem::WritePtr<int>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x108 }, _vel, false);
+	}
+	int GetBulletsPerShell()
+	{
+		return Mem::ReadPtr<int>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x010C }, false);
+	}
+	void SetBulletsPerShell(int _vel)
+	{
+		Mem::WritePtr<int>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x010C }, _vel, false);
+	}
+	float GetRateOfFire()
+	{
+		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x224 }, false);
+	}
+	void SetRateOfFire(float _vel)
+	{
+		Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0x224 }, _vel, false);
+	}
 	float GetBulletVelocity()
 	{
 		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 + 0x20 }, false);
@@ -687,7 +714,11 @@ public:
 			BulletData[Weapon].gravity = GetBulletGravity();
 			BulletData[Weapon].time = GetTimeToLive();
 			BulletData[Weapon].velocity = GetBulletVelocity();
+			BulletData[Weapon].BulletsPerShot = GetBulletsPerShot();
+			BulletData[Weapon].BulletsPerShell = GetBulletsPerShell();
+			BulletData[Weapon].RateOfFire = GetRateOfFire();
 			BulletData[Weapon].enabled = true;
+
 		}
 
 		if (_state)
@@ -696,6 +727,9 @@ public:
 			SetTimeToLive(1.f);
 			SetBulletVelocity(9999.f);
 			SetInstantHit(1);
+			SetBulletsPerShot(5); //Damage Multiplier (Bullet per shot) not recommended to go above 5 unless using a shotgun. If you have high ping none of these will register on the server, for me it worked up to 250 ping
+			SetBulletsPerShell(20);
+			SetRateOfFire(2000);
 		}
 		else
 		{
@@ -705,6 +739,9 @@ public:
 			SetBulletGravity(BulletData[Weapon].gravity);
 			SetTimeToLive(BulletData[Weapon].time);
 			SetBulletVelocity(BulletData[Weapon].velocity);
+			SetBulletsPerShot(BulletData[Weapon].BulletsPerShot);
+			SetBulletsPerShell(BulletData[Weapon].BulletsPerShell);
+			SetRateOfFire(BulletData[Weapon].RateOfFire);
 			SetInstantHit(0);
 		}
 	}

@@ -198,7 +198,7 @@ void DX11Renderer::DX11RenderScene()
 									if (Features::NoSway) {
 										ImGui::SliderInt("random of:", &Features::NoSwayRandomize, 1, 10);
 									}
-									ImGui::Checkbox("Instant Hit", &Features::InstantHit);
+									ImGui::Checkbox("Instant Hit, Bullets per shot, Rate of fire (not safe)", &Features::InstantHit);
 									ImGui::Checkbox("Spectators Warning", &Features::SpectWarn);
 									ImGui::Checkbox("Medic revive bugfix (use only if needed)", &Features::MedicBugfix);
 									ImGui::Checkbox("Provide Automatically Clean Screenshot", &Features::giveAutoCleanSS);
@@ -217,6 +217,9 @@ void DX11Renderer::DX11RenderScene()
 								ImGui::TextColored(ImColor(0, 255, 0), "Weapon Slot: %i", LPSoldier->GetActiveSlot());  //weapon ID; 0 main gun. 1 pistoll; 2 injection (if medic)							
 								ImGui::TextColored(ImColor(0, 255, 0), "Bullet volocity: %.1f", LPSoldier->GetBulletVelocity());  //bullet volocity e.g. 800 for most main guns
 																																  //ImGui::TextColored(ImColor(0, 255, 0), "Bullet gravity: %.1f", LPSoldier->GetBulletGravity());
+								ImGui::TextColored(ImColor(0, 255, 0), "Bullets Per Shot: %i", LPSoldier->GetBulletsPerShot());
+								ImGui::TextColored(ImColor(0, 255, 0), "Bullets Per Shell: %i", LPSoldier->GetBulletsPerShell());
+								ImGui::TextColored(ImColor(0, 255, 0), "RateOfFire: %.0f", LPSoldier->GetRateOfFire());
 								ImGui::TextColored(SSCleaner->BitBltState ? ImColor(0, 255, 0) : ImColor(255, 0, 0), "BitBlt Hooked: %s at %I64X", SSCleaner->BitBltState ? "Yes" : "No", SSCleaner->BitBltState ? (QWORD)SSCleaner->oBitBlt : 0);  //BitBlt() is used by PunkBuster to make screenshots
 								ImGui::TextColored(SSCleaner->CopyResourceState ? ImColor(0, 255, 0) : ImColor(255, 0, 0), "CopyResource Hooked: %s at %I64X", SSCleaner->CopyResourceState ? "Yes" : "No", SSCleaner->CopyResourceState ? (QWORD)SSCleaner->oCopyResource : 0);   //CopyResource() is used by FairFight to make screenshots
 								ImGui::TextColored(SSCleaner->CopySubresourceRegionState ? ImColor(0, 255, 0) : ImColor(255, 0, 0), "CopySubresourceRegion Hooked: %s at %I64X", SSCleaner->CopySubresourceRegionState ? "Yes" : "No", SSCleaner->CopySubresourceRegionState ? (QWORD)SSCleaner->oCopySubresource : 0);  //CopySubresourceRegion() is used by (PunkBuster/FairFight) to make screenshots
