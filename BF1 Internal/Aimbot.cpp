@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "Aimbot.h"
+#include <iostream>
+#include <string.h>
+#include "IMem.h"
 
 float GetAngleBetweenVectors3D(Vector3 v1, Vector3 v2);
 Vector3 CalculatePerfectTrajectory(Vector3 From, Vector3 To, Vector3 EntityVelocity, float BulletVelocity, float Gravity);
@@ -12,26 +15,26 @@ float Aimbot::FOV = 90.f; //20.f
 float Aimbot::Distance = 300.f; //100.f
 int Aimbot::Bone = NECK; //HEAD
 int Aimbot::RetargetTimer = 200; //200
-bool Aimbot::RandomBone = true; //false
+bool Aimbot::RandomBone = false; //false
 bool Aimbot::PrioritizeDistance = true;
 bool Aimbot::AimPrediction = true;
 float Aimbot::AimPredictXYZ = 1.0;
-float Aimbot::AimOffsetY = 1.0;
-bool Aimbot::AimVehicles=false;
-bool Aimbot::AimHorses = false;
+float Aimbot::AimOffsetY = 0;
+bool Aimbot::AimVehicles = true;
+bool Aimbot::AimHorses = true;
 int Aimbot::VehicleBone = UP;
-int Aimbot::HorseBone = CENTER;
-bool Aimbot::AimSlots2 = false;
-bool Aimbot::AimSlots5 = false;
-bool Aimbot::AimSlots6 = false;
-bool Aimbot::AimSlots7 = false;
+int Aimbot::HorseBone = UP;
+bool Aimbot::AimSlots2 = true;
+bool Aimbot::AimSlots5 = true;
+bool Aimbot::AimSlots6 = true;
+bool Aimbot::AimSlots7 = true;
 
 CSoldier* ActualTarget = nullptr;
 
 bool IsAiming = false;
 
 void AimbotThread()
-{	
+{
 	while (true)
 	{
 		CEntity* LocalPlayer = Game::GetLocalPlayer();
@@ -45,7 +48,7 @@ void AimbotThread()
 
 				if (Slot == 0 || Slot == 1 || (Slot == 2 && Aimbot::AimSlots2) || (Slot == 5 && Aimbot::AimSlots5) || (Slot == 6 && Aimbot::AimSlots6) || (Slot == 7 && Aimbot::AimSlots7))
 				{
-					if (GetAsyncKeyState(0xA4) || GetAsyncKeyState(VK_RBUTTON) || GetAsyncKeyState(VK_LBUTTON))
+					if (GetAsyncKeyState(key_Aim2) || GetAsyncKeyState(key_Aim1) || GetAsyncKeyState(VK_LBUTTON))
 					{
 						if (!IsAiming)
 						{
@@ -63,7 +66,7 @@ void AimbotThread()
 								giveCleanSS = false;  //when aim suspend "Provide Clean Screenshot" feature
 						}
 					}
-					if (!GetAsyncKeyState(0xA4) && !GetAsyncKeyState(VK_RBUTTON) && !GetAsyncKeyState(VK_LBUTTON) && IsAiming)
+					if (!GetAsyncKeyState(key_Aim2) && !GetAsyncKeyState(key_Aim1) && !GetAsyncKeyState(VK_LBUTTON) && IsAiming)
 					{
 						IsAiming = false;
 						ActualTarget = nullptr;
@@ -71,14 +74,14 @@ void AimbotThread()
 							LPSoldier->SetSpreadEnabled(false);
 						if (Features::InstantHit)
 							LPSoldier->SetBulletData(false);
-						if (Features::giveCleanSS && Features::giveCleanSSwithRMB )
+						if (Features::giveCleanSS && Features::giveCleanSSwithRMB)
 							giveCleanSS = true;  //when not aim unsuspend "Provide Clean Screenshot" feature
 					}
 				}
 				else if ((Slot == 2 || Slot == 3 || Slot == 4 || Slot == 5 || Slot == 6 || Slot == 7) && Features::giveCleanSS && Features::giveCleanSSwithRMB) {  //when you play with 3 4 5 and aim, see ESP if Features::giveCleanSS=On
-					if (GetAsyncKeyState(0xA4) || GetAsyncKeyState(VK_RBUTTON) || GetAsyncKeyState(VK_LBUTTON))						
+					if (GetAsyncKeyState(key_Aim2) || GetAsyncKeyState(key_Aim1) || GetAsyncKeyState(VK_LBUTTON))
 						giveCleanSS = false;  //when aim suspend "Provide Clean Screenshot" feature
-					if (!GetAsyncKeyState(0xA4) && !GetAsyncKeyState(VK_RBUTTON) && !GetAsyncKeyState(VK_LBUTTON))						
+					if (!GetAsyncKeyState(key_Aim2) && !GetAsyncKeyState(key_Aim1) && !GetAsyncKeyState(VK_LBUTTON))
 						giveCleanSS = true;  //when not aim unsuspend "Provide Clean Screenshot" feature
 				}
 				else if (Features::giveCleanSS && Features::giveCleanSSwithRMB)
@@ -86,7 +89,7 @@ void AimbotThread()
 			}
 		}
 
-		if ((GetAsyncKeyState(VK_RBUTTON) || GetAsyncKeyState(0xA4)) && Features::Aimbot)
+		if ((GetAsyncKeyState(key_Aim1) || GetAsyncKeyState(key_Aim2)) && Features::Aimbot)
 		{
 			CEntity* LocalPlayer = Game::GetLocalPlayer();
 			if (Mem::IsValid(LocalPlayer) && Mem::IsValid(LocalPlayer->GetSoldier()))
@@ -114,7 +117,7 @@ void AimbotThread()
 							{
 								CEntity* Ent = EntityList->GetEntity(i);
 								if (Mem::IsValid(Ent))
-								{									
+								{
 									bool isValidTarget = false;
 									bool isVehicle = false;   //soldier=false vehicle=true
 									CSoldier* EntSoldier = Ent->GetSoldier();
@@ -122,16 +125,16 @@ void AimbotThread()
 										isValidTarget = true;
 										isVehicle = false;
 									}
-									else if ((Aimbot::AimVehicles||Aimbot::AimHorses) && Mem::IsValid(Ent->GetCurrentVehicle())) {
+									else if ((Aimbot::AimVehicles || Aimbot::AimHorses) && Mem::IsValid(Ent->GetCurrentVehicle())) {
 										isValidTarget = true;
 										isVehicle = true;
-									}	
+									}
 
-									if(isValidTarget)      //if (Mem::IsValid(EntSoldier) && Mem::IsValid(EntSoldier->HealthComponent) && Mem::IsValid(EntSoldier->prediction)) 
-									{							 
+									if (isValidTarget)      //if (Mem::IsValid(EntSoldier) && Mem::IsValid(EntSoldier->HealthComponent) && Mem::IsValid(EntSoldier->prediction)) 
+									{
 										if (Ent->GetTeam() != LocalPlayer->GetTeam())       //if (Ent->GetTeam() != LocalPlayer->GetTeam() && !EntSoldier->m_Occluded && Aimbot::Bone >= 0 && EntSoldier->HealthComponent->HP >= 0.1f)
 										{
-											Vector3 Pos= Vector3::Zero;
+											Vector3 Pos = Vector3::Zero;
 											if (!isVehicle && !EntSoldier->m_Occluded && Aimbot::Bone >= 0 && EntSoldier->HealthComponent->HP >= 0.1f) {  //if soldier
 												static const eBones RandBones[] = { HEAD, CHEST, HIP, STOMACH, NECK, RIGHT_FEMUR, LEFT_FEMUR, LEFT_KNEE, RIGHT_KNEE };
 												if (!Aimbot::RandomBone)
@@ -147,9 +150,9 @@ void AimbotThread()
 												else   //if tank
 													Ent->GetCurrentVehicle()->GetVehiclePosition(Pos, Aimbot::VehicleBone);
 											}
-											
+
 											if (Pos != Vector3::Zero)  //if Pos is set  Pos != Vector3::Zero //if (EntSoldier->GetBonePosition(Pos, BoneToAim) || Ent->GetCurrentVehicle()->GetVehiclePosition(Pos) ){
-											{	
+											{
 												MyAngles = LPSoldier->GetAngles();
 												if (MyAngles.Length() != 0.f)
 												{
@@ -165,11 +168,43 @@ void AimbotThread()
 																{
 																	NearestOne = dist;
 																	AimHere = Pos;
-																	CurrentTarget = EntSoldier;	
-																	if (Aimbot::AimPrediction) {																		
+																	CurrentTarget = EntSoldier;
+																	if (Aimbot::AimPrediction) {
+																		/*/////////////////////////////////
+																		//Mem::ReadPtr<unsigned int>({ (QWORD)this, 0x658, 0x960 }, false);
+																		//Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 }
+																		//Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x140 }, false);
+																		std::ofstream outputFile1;		//log
+																		if (LPSoldier->GetActiveSlot() == 0) outputFile1.open(L"e:\\games\\5\\battlefieldMachinegun.log");
+																		if (LPSoldier->GetActiveSlot() == 1) outputFile1.open(L"e:\\games\\5\\battlefieldPistol.log");
+																		if (LPSoldier->GetActiveSlot() == 5) outputFile1.open(L"e:\\games\\5\\battlefieldGranate.log");
+																		if (LPSoldier->GetActiveSlot() == 2) outputFile1.open(L"e:\\games\\5\\battlefieldRPG.log");
+																		for (size_t i = 0; i < 0x4A30 * 100; i++) {
+																		//QWORD LastPtr = Mem::Read<QWORD>(Offsets[0] + Offsets[1]);
+																		//LastPtr = Mem::Read<QWORD>(LastPtr + Offsets[2]);
+																		//LastPtr = Mem::Read<QWORD>(LastPtr + Offsets[3]);
+																		//LastPtr = Mem::Read<QWORD>(LastPtr + Offsets[4]);
+																		//LastPtr = Mem::Read<QWORD>(LastPtr + Offsets[5]);
+																		//LastPtr = Mem::Read<QWORD>(LastPtr + Offsets[6]);
+																		//LastPtr = Mem::Read<QWORD>(LastPtr + i);
+																		//float val = Mem::Read<float>(LastPtr);
+																		float val = Mem::ReadPtr<float>({ (QWORD)LPSoldier, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x140+i }, false);
+																		//float val = Mem::ReadPtr<float>({ (QWORD)LPSoldier, 0x658, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 + 0x0020 +i }, false);
+																		if((LPSoldier->GetActiveSlot() == 0) && val >= 0.1 && val <= 1 && val!=1.0)
+																		outputFile1 << "val="<< val << " #i=" << i << std::endl;
+																		if ((LPSoldier->GetActiveSlot() == 1) && val >= 0.1 && val <= 1 && val != 1.0)
+																		outputFile1 << "val=" << val << " #i=" << i << std::endl;
+																		if ((LPSoldier->GetActiveSlot() == 5) && val >= 1.2 && val <= 8 && val != 1.0)
+																		outputFile1 << "val=" << val << " #i=" << i << std::endl;
+																		if ((LPSoldier->GetActiveSlot() == 2) && val >= 1 && val <= 5 && val != 1.0)
+																		outputFile1 << "val=" << val << " #i=" << i << std::endl;
+																		}
+																		outputFile1.close();  Sleep(40);
+																		//Log->AddLog("BulletVelocity %p \n",LPSoldier );
+																		*////////////////////////////////////////////
 																		Vector3 velocity = isVehicle ? Vector3(((ClientVehicleEntity*)Ent->GetCurrentVehicle())->m_Velocity) : CurrentTarget->GetVelocity();
-																		AimHere = BulletVelocityCorrection(AimHere, velocity, LPSoldier->GetVelocity(), NearestOne*Aimbot::AimPredictXYZ*Aimbot::AimPredictXYZ, LPSoldier->GetBulletVelocity());
-																		AimHere.y = AimHere.y += BulletDropCorrection(LPSoldier->GetBulletVelocity(), LPSoldier->GetBulletGravity(), NearestOne*Aimbot::AimOffsetY);
+																		AimHere = BulletVelocityCorrection(AimHere, velocity, LPSoldier->GetVelocity(), NearestOne*pow(Aimbot::AimPredictXYZ, 2), LPSoldier->GetBulletVelocity());
+																		AimHere.y += BulletDropCorrection(LPSoldier->GetBulletVelocity(), LPSoldier->GetBulletGravity(), NearestOne) + Aimbot::AimOffsetY;
 																	}
 																}
 															}
@@ -177,17 +212,17 @@ void AimbotThread()
 															{
 																NearestOne = dist;
 																AimHere = Pos;
-																CurrentTarget = EntSoldier;	
-																if (Aimbot::AimPrediction) {																	
+																CurrentTarget = EntSoldier;
+																if (Aimbot::AimPrediction) {
 																	Vector3 velocity = isVehicle ? Vector3(((ClientVehicleEntity*)Ent->GetCurrentVehicle())->m_Velocity) : CurrentTarget->GetVelocity();
-																	AimHere = BulletVelocityCorrection(AimHere, velocity, LPSoldier->GetVelocity(), NearestOne*Aimbot::AimPredictXYZ*Aimbot::AimPredictXYZ, LPSoldier->GetBulletVelocity());
-																	AimHere.y = AimHere.y += BulletDropCorrection(LPSoldier->GetBulletVelocity(), LPSoldier->GetBulletGravity(), NearestOne*Aimbot::AimOffsetY);
+																	AimHere = BulletVelocityCorrection(AimHere, velocity, LPSoldier->GetVelocity(), NearestOne*pow(Aimbot::AimPredictXYZ, 2), LPSoldier->GetBulletVelocity());
+																	AimHere.y += BulletDropCorrection(LPSoldier->GetBulletVelocity(), LPSoldier->GetBulletGravity(), NearestOne) + Aimbot::AimOffsetY;
 																}
-															}																
+															}
 														}
 													}
 												}
-											//}
+												//}
 											}
 										}
 									}
@@ -195,7 +230,7 @@ void AimbotThread()
 							}
 						}
 						/*//TEST AIM IN POINT CODE
-						AimHere = Vector3(3, 3, 3);  
+						AimHere = Vector3(3, 3, 3);
 						CurrentTarget = 0;*/
 						if (NearestOne <= Aimbot::Distance && CurrentTarget)
 						{
@@ -213,18 +248,18 @@ void AimbotThread()
 							}
 						}
 						/*//TEST AIM IN POINT CODE
-						else   
+						else
 						{
-							if (ActualTarget && CurrentTarget != ActualTarget)
-							{
-								ActualTarget = nullptr;
-								Sleep(Aimbot::RetargetTimer);
-								continue;
-							}
-							MyAngles = LPSoldier->GetAngles();
-							LPSoldier->SetAngles(Aimbot::CalculateAngle(AimHere, MyPos, MyAngles)); //this cause medic bug. If called once medic cannot revive anymore
+						if (ActualTarget && CurrentTarget != ActualTarget)
+						{
+						ActualTarget = nullptr;
+						Sleep(Aimbot::RetargetTimer);
+						continue;
+						}
+						MyAngles = LPSoldier->GetAngles();
+						LPSoldier->SetAngles(Aimbot::CalculateAngle(AimHere, MyPos, MyAngles)); //this cause medic bug. If called once medic cannot revive anymore
 
-							ActualTarget = CurrentTarget;
+						ActualTarget = CurrentTarget;
 						}*/
 					}
 				}
@@ -347,42 +382,42 @@ Vector3 Aimbot::CalculateAngle(Vector3 _Target, Vector3 _LocalPos, Vector3 _Angl
 }
 /*
 Vector3 Aimbot::CalculateAngle(Vector3 _Target, Vector3 _LocalPos, Vector3 _Angles)
-{	
-	Vector3 vDirection = _Target - _LocalPos;
-	Vector2 vFinal = Vector2(-atan2(vDirection.x, vDirection.z), atan2(vDirection.y, sqrtf(vDirection.x * vDirection.x + vDirection.z * vDirection.z)));
-	//static float CorrectPercent = (1 / (200 / std::max(abs(vDirection.x), abs(vDirection.z)))) *0.002;  //correct percentage
-	//static float CorrectDelta = -atan2(vDirection.x, vDirection.z) * CorrectPercent;
-	//Vector2 vFinal = Vector2(-atan2(vDirection.x, vDirection.z) + (Features::Radar ? 0 : CorrectDelta), atan2(vDirection.y, sqrtf(vDirection.x * vDirection.x + vDirection.z * vDirection.z)));
-	//Log->AddLog("x=%.2f z=%.2f atan= %.3f  corrDelta= %.3f  corrPercent= %.3f\n", vDirection.x, vDirection.z, -atan2(vDirection.x, vDirection.z), CorrectDelta, CorrectPercent);
-	
-	SmoothAngle(Vector2(_Angles.x, _Angles.y), vFinal, Aimbot::SmoothFactor);
-	return vFinal;
+{
+Vector3 vDirection = _Target - _LocalPos;
+Vector2 vFinal = Vector2(-atan2(vDirection.x, vDirection.z), atan2(vDirection.y, sqrtf(vDirection.x * vDirection.x + vDirection.z * vDirection.z)));
+//static float CorrectPercent = (1 / (200 / std::max(abs(vDirection.x), abs(vDirection.z)))) *0.002;  //correct percentage
+//static float CorrectDelta = -atan2(vDirection.x, vDirection.z) * CorrectPercent;
+//Vector2 vFinal = Vector2(-atan2(vDirection.x, vDirection.z) + (Features::Radar ? 0 : CorrectDelta), atan2(vDirection.y, sqrtf(vDirection.x * vDirection.x + vDirection.z * vDirection.z)));
+//Log->AddLog("x=%.2f z=%.2f atan= %.3f  corrDelta= %.3f  corrPercent= %.3f\n", vDirection.x, vDirection.z, -atan2(vDirection.x, vDirection.z), CorrectDelta, CorrectPercent);
+
+SmoothAngle(Vector2(_Angles.x, _Angles.y), vFinal, Aimbot::SmoothFactor);
+return vFinal;
 }*/
 
 /*
 #define M_RADPI 57.295779513082
 Vector3 Aimbot::CalculateAngle(Vector3 _Target, Vector3 _LocalPos, Vector3 _Angles)
 {
-	Vector3 Delta = _LocalPos - _Target;
-	Vector2 vFinal = Vector2((float)(atan(Delta.z / sqrt(Delta.x * Delta.x + Delta.y * Delta.y)) * M_RADPI), (float)(atan(Delta.y / Delta.x) * M_RADPI) );
-	if (Delta.x >= 0.0) vFinal.y += 180.0f;
+Vector3 Delta = _LocalPos - _Target;
+Vector2 vFinal = Vector2((float)(atan(Delta.z / sqrt(Delta.x * Delta.x + Delta.y * Delta.y)) * M_RADPI), (float)(atan(Delta.y / Delta.x) * M_RADPI) );
+if (Delta.x >= 0.0) vFinal.y += 180.0f;
 
-	SmoothAngle(Vector2(_Angles.x, _Angles.y), vFinal, Aimbot::SmoothFactor);
+SmoothAngle(Vector2(_Angles.x, _Angles.y), vFinal, Aimbot::SmoothFactor);
 
-	return vFinal;
+return vFinal;
 }
 
 Vector3 Aimbot::CalculateAngle(Vector3 _Target, Vector3 _LocalPos, Vector3 _Angles)
 {
-	Vector3 delta = _LocalPos - _Target;
-	Vector2 vFinal;
-	double hyp = sqrt(delta.x * delta.x + delta.y * delta.y);
-	vFinal.x = (float)(asinf(delta.x / hyp) * 57.295779513082f);
-	vFinal.y = (float)(atanf(delta.y / delta.x) * 57.295779513082f);	
+Vector3 delta = _LocalPos - _Target;
+Vector2 vFinal;
+double hyp = sqrt(delta.x * delta.x + delta.y * delta.y);
+vFinal.x = (float)(asinf(delta.x / hyp) * 57.295779513082f);
+vFinal.y = (float)(atanf(delta.y / delta.x) * 57.295779513082f);
 
-	if (delta.x >= 0.0)
-		vFinal.y += 180.0f;
+if (delta.x >= 0.0)
+vFinal.y += 180.0f;
 
-	SmoothAngle(Vector2(_Angles.x, _Angles.y), vFinal, Aimbot::SmoothFactor);
-	return vFinal;
+SmoothAngle(Vector2(_Angles.x, _Angles.y), vFinal, Aimbot::SmoothFactor);
+return vFinal;
 }*/

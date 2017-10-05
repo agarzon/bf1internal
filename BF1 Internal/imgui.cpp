@@ -2349,45 +2349,46 @@ static ImGuiIniData* AddWindowSettings(const char* name)
 
 // Zero-tolerance, poor-man .ini parsing
 // FIXME: Write something less rubbish
+
 /*static*/ void LoadSettings()
 {
-    ImGuiContext& g = *GImGui;
-    const char* filename = g.IO.IniFilename;
-    if (!filename)
-        return;
+	ImGuiContext& g = *GImGui;
+	const char* filename = g.IO.IniFilename;
+	if (!filename)
+		return;
 
-    int file_size;
-    char* file_data = (char*)ImLoadFileToMemory(filename, "rb", &file_size, 1);
-    if (!file_data)
-        return;
+	int file_size;
+	char* file_data = (char*)ImLoadFileToMemory(filename, "rb", &file_size, 1);
+	if (!file_data)
+		return;
 
-    ImGuiIniData* settings = NULL;
-    const char* buf_end = file_data + file_size;
-    for (const char* line_start = file_data; line_start < buf_end; )
-    {
-        const char* line_end = line_start;
-        while (line_end < buf_end && *line_end != '\n' && *line_end != '\r')
-            line_end++;
+	ImGuiIniData* settings = NULL;
+	const char* buf_end = file_data + file_size;
+	for (const char* line_start = file_data; line_start < buf_end; )
+	{
+		const char* line_end = line_start;
+		while (line_end < buf_end && *line_end != '\n' && *line_end != '\r')
+			line_end++;
 
-        if (line_start[0] == '[' && line_end > line_start && line_end[-1] == ']')
-        {
-            char name[64];
-            ImFormatString(name, IM_ARRAYSIZE(name), "%.*s", (int)(line_end-line_start-2), line_start+1);
-            settings = FindWindowSettings(name);
-            if (!settings)
-                settings = AddWindowSettings(name);
-        }
-        else if (settings)
-        {
-            float x, y;
-            float i=0;
+		if (line_start[0] == '[' && line_end > line_start && line_end[-1] == ']')
+		{
+			char name[64];
+			ImFormatString(name, IM_ARRAYSIZE(name), "%.*s", (int)(line_end - line_start - 2), line_start + 1);
+			settings = FindWindowSettings(name);
+			if (!settings)
+				settings = AddWindowSettings(name);
+		}
+		else if (settings)
+		{
+			float x, y;
+			float i = 0;
 			int j;
-            if (sscanf(line_start, "Pos=%f,%f", &x, &y) == 2)
-                settings->Pos = ImVec2(x, y);
-            else if (sscanf(line_start, "Size=%f,%f", &x, &y) == 2)
-                settings->Size = ImMax(ImVec2(x, y), g.Style.WindowMinSize);
-            else if (sscanf(line_start, "Collapsed=%d", &i) == 1)
-                settings->Collapsed = (i != 0);
+			if (sscanf(line_start, "Pos=%f,%f", &x, &y) == 2)
+				settings->Pos = ImVec2(x, y);
+			else if (sscanf(line_start, "Size=%f,%f", &x, &y) == 2)
+				settings->Size = ImMax(ImVec2(x, y), g.Style.WindowMinSize);
+			else if (sscanf(line_start, "Collapsed=%d", &i) == 1)
+				settings->Collapsed = (i != 0);
 			else if (sscanf(line_start, "ESP=%d\n", &j) == 1)
 				Features::ESP = j;
 			else if (sscanf(line_start, "Aimbot=%d\n", &j) == 1)
@@ -2453,7 +2454,7 @@ static ImGuiIniData* AddWindowSettings(const char* name)
 			else if (sscanf(line_start, "AimOffsetY=%f\n", &i) == 1)
 				Aimbot::AimOffsetY = i;
 			else if (sscanf(line_start, "MedicBugfix=%d\n", &j) == 1)
-				Features::MedicBugfix = j;			
+				Features::MedicBugfix = j;
 			else if (sscanf(line_start, "giveAutoCleanSS=%d\n", &j) == 1)
 				Features::giveAutoCleanSS = j;
 			else if (sscanf(line_start, "AutoCleanSSTimer=%f\n", &i) == 1)
@@ -2495,52 +2496,54 @@ static ImGuiIniData* AddWindowSettings(const char* name)
 			else if (sscanf(line_start, "key_HIP=%d\n", &j) == 1) key_HIP = j;
 			else if (sscanf(line_start, "key_TestSSBitBlt=%d\n", &j) == 1) key_TestSSBitBlt = j;
 			else if (sscanf(line_start, "key_TestSSCopyResource=%d\n", &j) == 1) key_TestSSCopyResource = j;
-        }
+			else if (sscanf(line_start, "key_Aim1=%d\n", &j) == 1) key_Aim1 = j;
+			else if (sscanf(line_start, "key_Aim2=%d\n", &j) == 1) key_Aim2 = j;
+		}
 
-        line_start = line_end+1;
-    }
+		line_start = line_end + 1;
+	}
 
-    ImGui::MemFree(file_data);
+	ImGui::MemFree(file_data);
 }
 
 static void SaveSettings()
 {
-    ImGuiContext& g = *GImGui;
-    const char* filename = g.IO.IniFilename;
-    if (!filename)
-        return;
+	ImGuiContext& g = *GImGui;
+	const char* filename = g.IO.IniFilename;
+	if (!filename)
+		return;
 
-    // Gather data from windows that were active during this session
-    for (int i = 0; i != g.Windows.Size; i++)
-    {
-        ImGuiWindow* window = g.Windows[i];
-        if (window->Flags & ImGuiWindowFlags_NoSavedSettings)
-            continue;
-        ImGuiIniData* settings = FindWindowSettings(window->Name);
-        settings->Pos = window->Pos;
-        settings->Size = window->SizeFull;
-        settings->Collapsed = window->Collapsed;
-    }
+	// Gather data from windows that were active during this session
+	for (int i = 0; i != g.Windows.Size; i++)
+	{
+		ImGuiWindow* window = g.Windows[i];
+		if (window->Flags & ImGuiWindowFlags_NoSavedSettings)
+			continue;
+		ImGuiIniData* settings = FindWindowSettings(window->Name);
+		settings->Pos = window->Pos;
+		settings->Size = window->SizeFull;
+		settings->Collapsed = window->Collapsed;
+	}
 
-    // Write .ini file
-    // If a window wasn't opened in this session we preserve its settings
-    FILE* f = fopen(filename, "wt");
-    if (!f)
-        return;
-    for (int i = 0; i != g.Settings.Size; i++)
-    {
-        const ImGuiIniData* settings = &g.Settings[i];
-        if (settings->Pos.x == FLT_MAX)
-            continue;
-        const char* name = settings->Name;
-        if (const char* p = strstr(name, "###"))  // Skip to the "###" marker if any. We don't skip past to match the behavior of GetID()
-            name = p;
-        fprintf(f, "[%s]\n", name);
-        fprintf(f, "Pos=%d,%d\n", (int)settings->Pos.x, (int)settings->Pos.y);
-        fprintf(f, "Size=%d,%d\n", (int)settings->Size.x, (int)settings->Size.y);
-        fprintf(f, "Collapsed=%d\n", settings->Collapsed);
-        fprintf(f, "\n");
-    }
+	// Write .ini file
+	// If a window wasn't opened in this session we preserve its settings
+	FILE* f = fopen(filename, "wt");
+	if (!f)
+		return;
+	for (int i = 0; i != g.Settings.Size; i++)
+	{
+		const ImGuiIniData* settings = &g.Settings[i];
+		if (settings->Pos.x == FLT_MAX)
+			continue;
+		const char* name = settings->Name;
+		if (const char* p = strstr(name, "###"))  // Skip to the "###" marker if any. We don't skip past to match the behavior of GetID()
+			name = p;
+		fprintf(f, "[%s]\n", name);
+		fprintf(f, "Pos=%d,%d\n", (int)settings->Pos.x, (int)settings->Pos.y);
+		fprintf(f, "Size=%d,%d\n", (int)settings->Size.x, (int)settings->Size.y);
+		fprintf(f, "Collapsed=%d\n", settings->Collapsed);
+		fprintf(f, "\n");
+	}
 	fprintf(f, "ESP=%d\n", Features::ESP);
 	fprintf(f, "Aimbot=%d\n", Features::Aimbot);
 	fprintf(f, "ShowMenu=%d\n", Features::ShowMenu);
@@ -2566,7 +2569,7 @@ static void SaveSettings()
 	fprintf(f, "MedicBugfix=%d\n", Features::MedicBugfix);
 	fprintf(f, "giveAutoCleanSS=%d\n", Features::giveAutoCleanSS);
 	fprintf(f, "AutoCleanSSTimer=%f\n", Features::AutoCleanSSTimer);
-	fprintf(f, "giveCleanSSwithRMB=%d\n", Features::giveCleanSSwithRMB);	
+	fprintf(f, "giveCleanSSwithRMB=%d\n", Features::giveCleanSSwithRMB);
 	fprintf(f, "SmoothFactor=%f\n", Aimbot::SmoothFactor);
 	fprintf(f, "FOV=%f\n", Aimbot::FOV);
 	fprintf(f, "Distance=%f\n", Aimbot::Distance);
@@ -2580,7 +2583,7 @@ static void SaveSettings()
 	fprintf(f, "AimVehicles=%d\n", Aimbot::AimVehicles);
 	fprintf(f, "AimHorses=%d\n", Aimbot::AimHorses);
 	fprintf(f, "VehicleBone=%d\n", Aimbot::VehicleBone);
-	fprintf(f, "HorseBone=%d\n", Aimbot::HorseBone);	
+	fprintf(f, "HorseBone=%d\n", Aimbot::HorseBone);
 	fprintf(f, "AimSlots2=%d\n", Aimbot::AimSlots2);
 	fprintf(f, "AimSlots5=%d\n", Aimbot::AimSlots5);
 	fprintf(f, "AimSlots6=%d\n", Aimbot::AimSlots6);
@@ -2606,8 +2609,9 @@ static void SaveSettings()
 	fprintf(f, "key_HIP=%d\n", key_HIP);
 	fprintf(f, "key_TestSSBitBlt=%d\n", key_TestSSBitBlt);
 	fprintf(f, "key_TestSSCopyResource=%d\n", key_TestSSCopyResource);
-
-    fclose(f);
+	fprintf(f, "key_Aim1=%d\n", key_Aim1);
+	fprintf(f, "key_Aim2=%d\n", key_Aim2);
+	fclose(f);
 }
 
 /*static*/ void MarkSettingsDirty()  //exposed for outside call

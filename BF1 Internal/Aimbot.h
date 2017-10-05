@@ -47,3 +47,5 @@ extern int key_NECK;
 extern int key_HIP;
 extern int key_TestSSBitBlt;
 extern int key_TestSSCopyResource;
+extern int key_Aim1;
+extern int key_Aim2;

@@ -1,3 +1,4 @@
+
 #pragma once
 #include "stdafx.h"
 #include "DX11.h"
@@ -26,8 +27,289 @@ extern int key_NECK;
 extern int key_HIP;
 extern int key_TestSSBitBlt;
 extern int key_TestSSCopyResource;
+extern int key_Aim1;
+extern int key_Aim2;
 
 void MainThread();
+
+////fix 05.09.2017////////////////////////
+class ClassInfoData;
+class FieldInfoCotainer;
+enum GamePlatform
+{
+	GamePlatform_Ps3 = 0,
+	GamePlatform_Win32 = 1,
+	GamePlatform_Xenon = 2,
+	GamePlatform_Gen4a = 3,
+	GamePlatform_Gen4b = 4,
+	GamePlatform_Android = 5,
+	GamePlatform_iOS = 6,
+	GamePlatform_OSX = 7,
+	GamePlatform_Linux = 8,
+	GamePlatform_Any = 9,
+	GamePlatform_Invalid = 10,
+	GamePlatformCount = 11,
+};
+class MemberInfo
+{
+public:
+	ClassInfoData* m_Data; //0x0000 
+
+	MemberInfo* GetMemberData() { return (MemberInfo*)m_Data; }
+};//Size=0x0008
+class MemberInfoData
+{
+public:
+	char* m_Name; //0x0000 
+	__int16 m_Flags; //0x0008 
+
+};//Size=0x000A
+class ModuleInfo
+{
+public:
+	char* m_Name; //0x0000 
+	ModuleInfo* m_Next; //0x0008 
+
+};//Size=0x0010
+class TypeInfoData : public MemberInfoData
+{
+public:
+	__int32 m_TotalSize; //0x000A 
+	char _0x000E[0x0002];
+	ModuleInfo* m_ModuleInfo; //0x0010 
+
+};//Size=0x0018
+class TypeInfo : public MemberInfo
+{
+public:
+	TypeInfo* m_Next; //0x0008 
+	WORD m_RuntimeID; //0x0010 
+	WORD m_Flags; //0x0012 
+	char _0x0014[0x0004];
+
+	TypeInfoData* GetTypeData() { return (TypeInfoData*)m_Data; }
+};//Size=0x0018
+class DataContainer
+{
+public:
+	char _0x0000[0x0010];
+
+};//Size=0x0010
+class SystemSettings : public DataContainer
+{
+public:
+	char* m_Name; //0x0010 
+	GamePlatform m_Platform; //0x0018 
+	char _0x001C[0x0004];
+
+};//Size=0x0020
+class SyncedBFSettings : public SystemSettings
+{
+public:
+	float m_RoundTimeLimit; //0x0020 
+	char _0x0024[0x0004];
+	char* m_JesusModeForPlayerTag; //0x0028 
+	char* m_JesusModeForPlayers; //0x0030 
+	__int32 m_Team1Faction; //0x0038 
+	__int32 m_Team2Faction; //0x003C 
+	__int32 m_Team3Faction; //0x0040 
+	__int32 m_Team4Faction; //0x0044 
+	DWORD m_CommanderSize; //0x0048 
+	char _0x004C[0x0004];
+	char* m_FieldSpecLevels; //0x0050 
+	char _0x0058[0x0008];//ServerTypeValues m_ServerType; //0x0058 
+	float m_HighLatency; //0x005C 
+	float m_CriticalLatency; //0x0060 
+	float m_HighLatencyVariation; //0x0064 
+	float m_CriticalLatencyVariation; //0x0068 
+	float m_HighPacketLossRatio; //0x006C 
+	float m_CriticalPacketLossRatio; //0x0070 
+	float m_LowMonitorRefresh; //0x0074 
+	float m_LowClientFps; //0x0078 
+	float m_BadExperienceIconsHoldTime; //0x007C 
+	float m_ServerFpsLowThresholdPerc; //0x0080 
+	float m_ServerFpsLowThresholdCritPerc; //0x0084 
+	__int32 m_WeatherSequencerState; //0x0088 
+	unsigned char m_AllUnlocksUnlocked; //0x008C 
+	unsigned char m_EnableMinimap; //0x008D 
+	unsigned char m_NoHud; //0x008E 
+	unsigned char m_EnableMinimapSpotting; //0x008F 
+	unsigned char m_Enable3dSpotting; //0x0090 
+	unsigned char m_EnableNameTag; //0x0091 
+	unsigned char m_EnableLandVehicles; //0x0092 
+	unsigned char m_EnableAirVehicles; //0x0093 
+	unsigned char m_EnableHorses; //0x0094 
+	unsigned char m_EnableMeleeWeapons; //0x0095 
+	unsigned char m_EnableShotguns; //0x0096 
+	unsigned char m_EnableHandguns; //0x0097 
+	unsigned char m_EnableExplosives; //0x0098 
+	unsigned char m_EnableLightMachineGun; //0x0099 
+	unsigned char m_EnableSubMachineGun; //0x009A 
+	unsigned char m_EnableSemiAutoRifle; //0x009B 
+	unsigned char m_EnableSingleActionRifle; //0x009C 
+	unsigned char m_EnableWeaponsForAll; //0x009D 
+	unsigned char m_OnlySquadLeaderSpawn; //0x009E 
+	unsigned char m_DisableCombatSquadSpawn; //0x009F 
+	unsigned char m_TeamSwitchingAllowed; //0x00A0 
+	unsigned char m_RevertBackToBF3KillerCamera; //0x00A1 
+	unsigned char m_DisableHitIndicators; //0x00A2 
+	unsigned char m_DisableVehicleCommanderActions; //0x00A3 
+	unsigned char m_IsCompetitive; //0x00A4 
+	unsigned char m_LowRankOnly; //0x00A5 
+	unsigned char m_CommanderEnabled; //0x00A6 
+	unsigned char m_FieldUpgradeSystemActive; //0x00A7 
+	unsigned char m_IsRanked; //0x00A8 
+	unsigned char m_Kit1Enabled; //0x00A9 
+	unsigned char m_Kit2Enabled; //0x00AA 
+	unsigned char m_Kit3Enabled; //0x00AB 
+	unsigned char m_Kit4Enabled; //0x00AC 
+	unsigned char m_Kit5Enabled; //0x00AD 
+	unsigned char m_Kit6Enabled; //0x00AE 
+	unsigned char m_Kit7Enabled; //0x00AF 
+	unsigned char m_Kit8Enabled; //0x00B0 
+	unsigned char m_Kit9Enabled; //0x00B1 
+	unsigned char m_EnableServerFpsTracking; //0x00B2 
+	unsigned char m_MeleeOnMovingPlatformEnabled; //0x00B3 
+	char _0x00B4[0x0004];
+
+};//Size=0x00B8
+class ClassInfo : public TypeInfo
+{
+public:
+	ClassInfo* m_Super; //0x0018 
+	SyncedBFSettings* m_SyncedBFSettings; //0x0020 
+	WORD m_ID; //0x0028 
+	WORD m_LastSubClassID; //0x002A 
+	char _0x002C[0x0004];
+	ClassInfo* m_FirstDerivedClass; //0x0030 
+	ClassInfo* m_NextSiblingClass; //0x0038 
+	FieldInfoCotainer* m_Fields; //0x0040  incl inherited classes 
+	__int32 m_TotalFieldCount; //0x0048 
+	char _0x004C[0x0005];
+
+	ClassInfoData* GetClassData() { return (ClassInfoData*)m_Data; }
+};//Size=0x0051
+class FieldInfoData : public MemberInfoData
+{
+public:
+	__int32 m_FieldOffset; //0x000A 
+	char _0x000E[0x0002];
+	TypeInfo* m_FieldTypeInfo; //0x0010 
+
+};//Size=0x0018
+class FieldInfoDataContainer
+{
+public:
+	FieldInfoData m_Array[0x003E]; //0x0000 
+
+};//Size=0x05D0
+class ClassInfoData : public TypeInfoData
+{
+public:
+	char _0x0018[0x0002];
+	unsigned char m_FieldCount; //0x001A 
+	char _0x001B[0x0005];
+	ClassInfo* m_Super; //0x0020 
+	char _0x0028[0x0008];
+	FieldInfoDataContainer* m_Fields; //0x0030 not incl inherited classes
+
+};//Size=0x0038
+class FieldInfo
+{
+public:
+	virtual TypeInfo* GetDeclaringType(); //
+	virtual unsigned int GetFieldIndex(); //
+
+	FieldInfoData* m_Data; //0x0008 
+	TypeInfo* m_DeclaringType; //0x0010 
+	__int32 m_FieldIndex; //0x0018 
+	__int32 m_AttributeMask; //0x001C 
+
+	FieldInfoData* GetFieldData() { return (FieldInfoData*)m_Data; }
+};//Size=0x0020
+class FieldInfoCotainer
+{
+public:
+	FieldInfo* m_Array[0x0040]; //0x0000 
+
+};//Size=0x0200
+class Dx11RenderTargetView
+{
+public:
+	virtual TypeInfo* getType();
+	virtual void Function1(); //
+	virtual void Function2(); //
+	virtual char* getDebugName(); //
+	virtual void Function4(); //
+	virtual unsigned int getWidth();
+	virtual unsigned int getHeight();
+	virtual void Function7(); //
+	virtual void Function8(); // maby getColorFormat
+	virtual void Function9(); // maby getDepthFormat
+	virtual void Function10(); //
+	virtual void Function11(); //
+	virtual unsigned int getRenderTargetCount();
+	virtual bool hasDepthTarget();
+	virtual void Function14(); //
+
+	char _0x0008[108];
+	__int32 m_height; //0x0074 
+	__int32 m_width; //0x0078 
+	char _0x007C[4];
+	unsigned int m_targetCount; //0x0080 
+	char _0x0084[76];
+	ID3D11RenderTargetView* m_renderTargetViews[0x8]; //0x00D0
+	ID3D11DepthStencilView* m_depthStencilView; //0x0110 
+};
+class Screen
+{
+public:
+	//char _0x02B8[0x02B8];  //maybe not accurate
+	Dx11RenderTargetView* m_pDefaultRenderView; //0x02B8
+};
+////end fix 05.09.2017////////////////////////////////
+/////for Dx11Renderer *pDxRenderer (not needed)///////
+class ScreenInfo
+{
+public:
+	__int32 m_width; //0x0000 
+	__int32 m_height; //0x0004 
+	__int32 m_winWidth; //0x0008 
+	__int32 m_winHeigh; //0x000C 
+	float m_fullscreenRefreshRate; //0x0010 
+
+};//Size=0x0014
+class DX11Screen
+{
+public:
+	char _0x0000[0x0008];
+	void* m_windowHandle; //0x0008 
+	char _0x0010[0x004C];
+	unsigned char m_isTopWindow; //0x005C 
+	unsigned char m_isMinimized; //0x005D 
+	unsigned char m_isMaximized; //0x005E 
+	unsigned char m_isResizing; //0x005F 
+	char _0x0060[0x0008];
+	ScreenInfo m_screenInfo; //0x0068 
+
+};//Size=0x007C
+class Dx11Renderer
+{
+public:
+	char _0x0000[0x07E0];
+	__int32 m_frameCounter; //0x07E0 
+	__int32 m_framesInProgress; //0x07E4 
+	__int32 m_framesInProgress2; //0x07E8 
+	unsigned char m_isActive; //0x07EC 
+	char _0x07ED[0x0003];
+	DX11Screen* m_pScreen; //0x07F0 
+
+	static Dx11Renderer* GetInstance()
+	{
+		return *(Dx11Renderer**)(OFFSET_DXRENDERER);
+	}
+};//Size=0x07F8
+  /////end for Dx11Renderer *pDxRenderer/////////////////////
 
 class CSoldier;
 
@@ -76,7 +358,7 @@ enum eBones
 	RIGHT_MALLEOLUS = 290,
 	RIGHT_TIPTOE = 291, // 
 	RIGHT_SHOULDER = 164, //
- 	RIGHT_BICEPS = 165, //
+	RIGHT_BICEPS = 165, //
 	RIGHT_ELBOW = 169, //
 	RIGHT_ULNA = 170, //
 	RIGHT_HAND = 170, //
@@ -95,9 +377,9 @@ enum eBones
 class QuatTransform
 {
 public:
-	Vector4 m_TransAndScale; 
+	Vector4 m_TransAndScale;
 	Vector4 m_Rotation;
-}; 
+};
 class AxisAlignedBox
 {
 public:
@@ -286,7 +568,7 @@ public:
 	BYTE m_isSprinting; //0x06A8
 	char pad_06A9[2]; //0x06A9
 	BYTE m_Occluded; //0x06AB
-	char pad_06AC[0x980-0x6AB]; //0x06AC
+	char pad_06AC[0x980 - 0x6AB]; //0x06AC
 
 	Vector3 GetPosition()
 	{
@@ -300,12 +582,12 @@ public:
 
 	float GetBulletVelocity()
 	{
-		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 }, false);
+		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 + 0x20 }, false);
 	}
 
 	void SetBulletVelocity(float _vel)
 	{
-		Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 }, _vel, false);
+		Mem::WritePtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x4A30, 0x130, 0x10, 0x88 + 0x20 }, _vel, false);
 	}
 
 	void SetBulletGravity(float _gravity)
@@ -315,7 +597,8 @@ public:
 
 	float GetBulletGravity()
 	{
-		return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x140 }, false);
+		//return Mem::ReadPtr<float>({ (QWORD)this, 0x658, 0x900, 0x38, 0x30, 0x90, 0x10, 0xC0, 0x140 }, false);
+		return (GetBulletVelocity()<500) ? (500 / GetBulletVelocity()) : (1200 / GetBulletVelocity());
 	}
 
 	void SetInstantHit(BYTE _state)
@@ -443,7 +726,7 @@ public:
 
 	//GetBonePositionLP is GetBonePosition version to be called only for Local soldier LPSoldier->.  Not for Entity soldiers(enemies). For Entity soldiers use GetBonePosition
 	bool GetBonePositionLP(Vector3& outPos, DWORD ID)
-	{		
+	{
 		QuatTransform Temp = Mem::Read<QuatTransform>(Mem::Read<QWORD>(Mem::Read<QWORD>((QWORD)this + 0x460) + 0x20) + (ID * 0x20));
 
 		if (Vector3(Temp.m_TransAndScale.x, Temp.m_TransAndScale.y, Temp.m_TransAndScale.z).Length() >= .1f/*1.f*/)
@@ -584,7 +867,7 @@ public:
 			outPos.y = (max.y - min.y) *0.88 + min.y;
 			outPos.z = (max.z - min.z) / 2 + min.z;
 		}
-		else if (ID == CENTER) {			
+		else if (ID == CENTER) {
 			outPos.x = (max.x - min.x) / 2 + min.x;
 			outPos.y = (max.y - min.y) / 2 + min.y;
 			outPos.z = (max.z - min.z) / 2 + min.z;
@@ -598,110 +881,110 @@ public:
 			outPos.x = (max.x - min.x) / 2 + min.x;
 			outPos.y = min.y;
 			outPos.z = (max.z - min.z) / 2 + min.z;
-		}				
+		}
 		else {
 			outPos.x = (max.x - min.x) / 2 + min.x;
 			outPos.y = (max.y - min.y) / 2 + min.y;
 			outPos.z = (max.z - min.z) / 2 + min.z;
 			return false;
-		}	
-			
+		}
+
 		return true;
 	}
 
 }; //Size=0x0008
-//////////this is only to take vehicle velocity
-  class Entity : public CVehicleEntity
-   {
-   public:
-   char _0x0008[0x0018];
-   };//Size=0x0020
-   class SpatialEntity : public Entity
-   {
-   public:
-   char _0x0020[0x0008];
-   };//Size=0x0028
-   class ComponentEntity : public SpatialEntity
-   {
-   public:
-   char _0x0028[0x0008];
-   char _0x0030[0x0008]; //ComponentData* m_Data; //0x0030
-   char _0x0038[0x0008]; //ComponentTable* m_ComponentTable; //0x0038
-   char _0x0040[0x0010];
-   };//Size=0x0050
-   class GameComponentEntity : public ComponentEntity
-   {
-   public:
-   char _0x0050[0x0020];
-   };//Size=0x0070
-   class ClientGameComponentEntity : public GameComponentEntity
-   {
-   public:
-   };//Size=0x0070
-   class ClientPhysicsEntity : public ClientGameComponentEntity
-   {
-   public:
-   char _0x0070[0x0020];
-   };//Size=0x0090
-   class ClientControllableEntity : public ClientPhysicsEntity
-   {
-   public:
-   char _0x0090[0x00A0];
-   char _0x0130[0x0008]; //ClientSpawnEntity* m_SpawnEntity; //0x0130
-   char _0x0138[0x0010];
-   char _0x0148[0x0008]; //Array<ClientPlayerEntryComponent*> m_EntryComponents; //0x0148
-   char _0x0150[0x0070];
-   char _0x01C0[0x0008]; //ClientControllableHealthComponent* m_HealthComponent; //0x01C0
-   char _0x01C8[0x0038];
-   //bool IsSoldier() { return GetID() == CID_ClientSoldierEntity; }
-   //bool IsVehicle() { return GetID() == CID_ClientVehicleEntity; }
-   };//Size=0x0200
+   //////////this is only to take vehicle velocity
+class Entity : public CVehicleEntity
+{
+public:
+	char _0x0008[0x0018];
+};//Size=0x0020
+class SpatialEntity : public Entity
+{
+public:
+	char _0x0020[0x0008];
+};//Size=0x0028
+class ComponentEntity : public SpatialEntity
+{
+public:
+	char _0x0028[0x0008];
+	char _0x0030[0x0008]; //ComponentData* m_Data; //0x0030
+	char _0x0038[0x0008]; //ComponentTable* m_ComponentTable; //0x0038
+	char _0x0040[0x0010];
+};//Size=0x0050
+class GameComponentEntity : public ComponentEntity
+{
+public:
+	char _0x0050[0x0020];
+};//Size=0x0070
+class ClientGameComponentEntity : public GameComponentEntity
+{
+public:
+};//Size=0x0070
+class ClientPhysicsEntity : public ClientGameComponentEntity
+{
+public:
+	char _0x0070[0x0020];
+};//Size=0x0090
+class ClientControllableEntity : public ClientPhysicsEntity
+{
+public:
+	char _0x0090[0x00A0];
+	char _0x0130[0x0008]; //ClientSpawnEntity* m_SpawnEntity; //0x0130
+	char _0x0138[0x0010];
+	char _0x0148[0x0008]; //Array<ClientPlayerEntryComponent*> m_EntryComponents; //0x0148
+	char _0x0150[0x0070];
+	char _0x01C0[0x0008]; //ClientControllableHealthComponent* m_HealthComponent; //0x01C0
+	char _0x01C8[0x0038];
+	//bool IsSoldier() { return GetID() == CID_ClientSoldierEntity; }
+	//bool IsVehicle() { return GetID() == CID_ClientVehicleEntity; }
+};//Size=0x0200
 
-   class ClientVehicleEntity : public ClientControllableEntity
-   {
-   public:
-   char _0x0200[0x0110];
-   D3DXVECTOR3 m_Velocity; //0x0310
-   byte m_VisibleUserSet;
-   char _0x031C[0x015C - 1];
-   char _0x0478[0x14D8]; //ClientChassisComponent* m_ClientChassisComponent; //0x0478
+class ClientVehicleEntity : public ClientControllableEntity
+{
+public:
+	char _0x0200[0x0110];
+	D3DXVECTOR3 m_Velocity; //0x0310
+	byte m_VisibleUserSet;
+	char _0x031C[0x015C - 1];
+	char _0x0478[0x14D8]; //ClientChassisComponent* m_ClientChassisComponent; //0x0478
 
-   //bool IsAlive(){ return IsValidPtr(m_HealthComponent) && m_HealthComponent->m_ControllableCurHealth > 0.0f; }
-   bool IsVisible(){ return m_VisibleUserSet; }
-   };//Size=0x1950
-   
-   class ClientCharacterEntity : public ClientControllableEntity
-   {
-   public:
-   char _0x0200[0x0100];
-   };//Size=0x0300
-   class ClientSoldierEntity : public ClientCharacterEntity
-   {
-   public:
-   char _0x0300[0x0190];
-   char _0x0490[0x0008];//ClientSoldierPhysicsComponent* m_ClientSoldierPhysicsComponent; //0x0490
-   char _0x0498[0x0100];
-   ClientSoldierPrediction* m_ClientSoldierPrediction; //0x0598
-   char _0x05A0[0x0014];
-   float m_AuthorativeYaw; //0x05B4
-   char _0x05B8[0x002C];
-   float m_AuthorativePitch; //0x05E4
-   unsigned char m_PoseState; //0x05E8
-   char _0x05E9[0x005F];
-   ClientSoldierWeaponsComponent* m_ClientSoldierWeaponsComponent; //0x0648
-   char _0x0650[0x0008];
-   char _0x0658[0x0008]; //ClientSoldierBreathControlComponent* m_ClientSoldierBreathControlComponent; //0x0658
-   char _0x0660[0x0008];
-   ClientAimEntity* m_ClientAimEntity; //0x0668
-   char _0x0670[0x0028 + 2];
-   unsigned char m_Sprinting; //0x0698
-   unsigned char m_Occluded; //0x0699
-   char _0x069A[0x02DE];
+						  //bool IsAlive(){ return IsValidPtr(m_HealthComponent) && m_HealthComponent->m_ControllableCurHealth > 0.0f; }
+	bool IsVisible() { return m_VisibleUserSet; }
+};//Size=0x1950
 
-   //bool IsAlive() { return IsValidPtr(m_HealthComponent) && m_HealthComponent->m_SoldierCurHealth > 0.0f; }
-   bool IsVisible() { return !m_Occluded; }  //not working for vehicles
-   };//Size=0x0960   
-//////end of code for vehicle velocity 
+class ClientCharacterEntity : public ClientControllableEntity
+{
+public:
+	char _0x0200[0x0100];
+};//Size=0x0300
+class ClientSoldierEntity : public ClientCharacterEntity
+{
+public:
+	char _0x0300[0x0190];
+	char _0x0490[0x0008];//ClientSoldierPhysicsComponent* m_ClientSoldierPhysicsComponent; //0x0490
+	char _0x0498[0x0100];
+	ClientSoldierPrediction* m_ClientSoldierPrediction; //0x0598
+	char _0x05A0[0x0014];
+	float m_AuthorativeYaw; //0x05B4
+	char _0x05B8[0x002C];
+	float m_AuthorativePitch; //0x05E4
+	unsigned char m_PoseState; //0x05E8   5E8 was old. it is 5F8 right now
+	char _0x05E9[0x005F];
+	ClientSoldierWeaponsComponent* m_ClientSoldierWeaponsComponent; //0x0648
+	char _0x0650[0x0008];
+	char _0x0658[0x0008]; //ClientSoldierBreathControlComponent* m_ClientSoldierBreathControlComponent; //0x0658
+	char _0x0660[0x0008];
+	ClientAimEntity* m_ClientAimEntity; //0x0668
+	char _0x0670[0x0028 + 2];
+	unsigned char m_Sprinting; //0x0698
+	unsigned char m_Occluded; //0x0699
+	char _0x069A[0x02DE];
+
+	//bool IsAlive() { return IsValidPtr(m_HealthComponent) && m_HealthComponent->m_SoldierCurHealth > 0.0f; }
+	bool IsVisible() { return !m_Occluded; }  //not working for vehicles
+};//Size=0x0960   
+  //////end of code for vehicle velocity 
 
 class Element
 {
@@ -716,37 +999,37 @@ public:
 class EntityIterator
 {
 public:
-	Element* first_element;
-	Element* current_element;
+Element* first_element;
+Element* current_element;
 
-	EntityIterator(GameWorld* game_world, intptr_t class_info)
-	{
-		using get_entity_list_fn = Element*(__thiscall*)(class_info, game_world);
-		static get_entity_list_fn get_entity_list = reinterpret_cast<get_entity_list_fn>(0x1447941F0);
+EntityIterator(GameWorld* game_world, intptr_t class_info)
+{
+using get_entity_list_fn = Element*(__thiscall*)(class_info, game_world);
+static get_entity_list_fn get_entity_list = reinterpret_cast<get_entity_list_fn>(0x1447941F0);
 
-		first_element = get_entity_list(class_info, game_world);
-		current_element = first_element;
-	}
+first_element = get_entity_list(class_info, game_world);
+current_element = first_element;
+}
 
-	bool has_next()
-	{
-		return current && current->flink;
-	}
+bool has_next()
+{
+return current && current->flink;
+}
 
-	Element* first()
-	{
-		return first_element;
-	}
+Element* first()
+{
+return first_element;
+}
 
-	Element* front()
-	{
-		return current_element;
-	}
+Element* front()
+{
+return current_element;
+}
 
-	Element* next()
-	{
-		return utility::valid_ptr(first_element) ? current_element = current_element->flink : nullptr;
-	}
+Element* next()
+{
+return utility::valid_ptr(first_element) ? current_element = current_element->flink : nullptr;
+}
 };*/
 
 class MaterialDecl

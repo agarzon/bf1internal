@@ -24,6 +24,8 @@ int key_NECK = VK_NUMPAD5;
 int key_HIP = VK_NUMPAD2;
 int key_TestSSBitBlt = VK_F5;
 int key_TestSSCopyResource = VK_F6;
+int key_Aim1 = VK_RBUTTON;
+int key_Aim2 = 0xA4;
 
 bool Features::ESP = true;
 bool Features::Aimbot = true;
@@ -35,7 +37,7 @@ bool Features::NoSway = true;
 int  Features::NoSwayRandomize = 2;
 bool Features::InstantHit = false;
 bool Features::Crosshair = true;
-int  Features::Radar = 0;
+int  Features::Radar = 1;
 int  Features::RadarDistance = 250;
 int  Features::RadarSize = 250;
 int  Features::RadarPosX = 1275;
@@ -47,11 +49,11 @@ bool Features::ShowName = false;
 bool Features::ShowDistance = false;
 bool Features::ShowESPBoxes = false;
 float Features::ESPDistance = 300.f; //999.f
-bool Features::giveAutoCleanSS = false;
-float Features::AutoCleanSSTimer = 20.0;
+bool Features::giveAutoCleanSS = true;
+float Features::AutoCleanSSTimer = 15.0;
 bool Features::giveCleanSS = false;
 bool Features::giveCleanSSwithRMB = true;
-bool Features::MedicBugfix=false;
+bool Features::MedicBugfix = false;
 
 std::map<QWORD, SwayDataSaved> SwayData;
 std::map<QWORD, BulletDataSaved> BulletData;
@@ -83,7 +85,7 @@ void MainThread()
 			Sleep(200);
 		}
 		if (GetAsyncKeyState(key_Radar)) { //VK_INSERT  Key INSERT
-			Features::Radar = Features::Radar ? 0 : 1;			
+			Features::Radar = Features::Radar ? 0 : 1;
 			Sleep(200);
 		}
 		if (GetAsyncKeyState(key_RadarWide)) { //VK_HOME  Key HOME
@@ -123,9 +125,9 @@ void MainThread()
 		if (GetAsyncKeyState(key_TestSSBitBlt)) { //VK_F5  Key F5 TEST SCREENSHOT BitBlt	
 			wchar_t wnd_title[256];
 			HWND win = GetForegroundWindow(); //FindWindowEx(NULL,NULL,L"Battlefield™ 1",NULL); //GetDesktopWindow();
-			GetWindowText(win, wnd_title, sizeof(wnd_title)/sizeof(wchar_t) );
+			GetWindowText(win, wnd_title, sizeof(wnd_title) / sizeof(wchar_t));
 			if (wcscmp(wnd_title, L"Battlefield™ 1")) //do not make screenshot when game minimized!!!					
-				return;			
+				return;
 			HDC dc = GetDC(NULL/*win*/);
 			HDCToFile("..\\hkBitBlt_provided.bmp", dc, { 0, 0, static_cast<int> (DX11Renderer::ScreenSX), static_cast<int> (DX11Renderer::ScreenSY) });
 			ReleaseDC(win, dc);
@@ -135,27 +137,27 @@ void MainThread()
 			DX11_mutex.lock();
 			ID3D11Texture2D* ScreenShotProvided = nullptr;
 			ID3D11Texture2D* ScreenShotBuffer = nullptr;
-			D3D11_TEXTURE2D_DESC ScreenShot;			
+			D3D11_TEXTURE2D_DESC ScreenShot;
 			HRESULT hr = DX11->DX11SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&ScreenShotBuffer));
-			memset(&ScreenShot, 0, sizeof(D3D11_TEXTURE2D_DESC));			
-			ScreenShotBuffer->GetDesc(&ScreenShot);			
+			memset(&ScreenShot, 0, sizeof(D3D11_TEXTURE2D_DESC));
+			ScreenShotBuffer->GetDesc(&ScreenShot);
 			DX11->DX11Device->CreateTexture2D(&ScreenShot, NULL, &ScreenShotProvided);
 			DX11->DX11DeviceContext->CopyResource(ScreenShotProvided, ScreenShotBuffer);
-		
+
 			ScreenShotBuffer->Release();
 			ScreenShotBuffer = nullptr;
 
 			HDC dxDC = GetDC(DX11->WTarget /*GetForegroundWindow()*/);
 			WriteBMP(extractBitmap(ScreenShotProvided), dxDC, L"..\\hkCopyResource_provided.bmp");  //extractBitmap will call the CopyResource
-						
+
 			ScreenShotProvided->Release();
 			ReleaseDC(DX11->WTarget, dxDC);
 			DX11_mutex.unlock();
 			Sleep(200);  //IMPORTANT! Sleep! Otherwise button will repeat 10 times
 		}
 		/*if (GetAsyncKeyState(VK_NUMPAD1)) { //Key NUMPAD1 TEST LOG
-			Log->AddLog("test\n");
-			Sleep(200);
+		Log->AddLog("test\n");
+		Sleep(200);
 		}*/
 		Sleep(60);
 	}

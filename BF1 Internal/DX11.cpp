@@ -6,7 +6,7 @@
 float DX11Renderer::ScreenX = 0, DX11Renderer::ScreenY = 0;
 float DX11Renderer::ScreenSX = 0, DX11Renderer::ScreenSY = 0;
 
-Vector2 GUI2::LastMousePosition = Vector2 (0, 0);
+Vector2 GUI2::LastMousePosition = Vector2(0, 0);
 Vector2 GUI2::MousePosition = Vector2(0, 0);
 
 using D3D11PresentHook = HRESULT(__stdcall*)(IDXGISwapChain*, UINT, UINT);
@@ -19,13 +19,13 @@ PLH::VEHHook* DetourPerFrameHook;
 CVMTHookManager64* pfh;
 
 static INT LastTick;
-static int LastLogSize=0;
+static int LastLogSize = 0;
 bool ShowLogAlert = false;
 bool giveCleanSS = false;
 std::mutex DX11_mutex;
 
 int __stdcall HookedPerFrame(uintptr_t _this, float a1)
-{	
+{
 	return PerFrameHook(_this, a1);
 }
 
@@ -36,7 +36,7 @@ void DX11Renderer::DX11RenderScene()
 	if (!Closing)
 	{
 		if (SSCleaner->BitBltState && !giveCleanSS)  //if giveCleanSS On, then hide all from screen and prepare for clean screenshot and wait FF to call BitBlt
-		{		
+		{
 			if (Features::giveCleanSS)
 				Features::giveAutoCleanSS = false;  //when giveCleanSS On firmly disable the other feature giveAutoCleanSS. Dont want both features to interfere
 
@@ -45,9 +45,9 @@ void DX11Renderer::DX11RenderScene()
 				SSCleaner->TakeSS();
 			}
 			else   //if Features::giveAutoCleanSS off => delete stored SS texture; BitBlt will be blocked
-				SSCleaner->NeedSS = false;			
+				SSCleaner->NeedSS = false;
 
-			if (!SSCleaner->NeedSS) 
+			if (!SSCleaner->NeedSS)
 			{
 				if (Features::ShowMenu)
 				{
@@ -92,8 +92,8 @@ void DX11Renderer::DX11RenderScene()
 									ImGui::Checkbox("Prioritize Distance", &Aimbot::PrioritizeDistance);
 									ImGui::Checkbox("Aim Prediction", &Aimbot::AimPrediction);
 									if (Aimbot::AimPrediction) {
-										ImGui::SliderFloat("Predict XYZ", &Aimbot::AimPredictXYZ, 0.1f, 3.f, "%.1f");
-										ImGui::SliderFloat("Offset Y", &Aimbot::AimOffsetY, 0.1f, 3.f, "%.1f");
+										ImGui::SliderFloat("Aim Predict XYZ", &Aimbot::AimPredictXYZ, 0.1f, 3.f, "%.1f");
+										ImGui::SliderFloat("Aim Offset Y", &Aimbot::AimOffsetY, -3.f, 3.f, "%.1f");
 									}
 									ImGui::SliderFloat("FOV", &Aimbot::FOV, 1.f, 360.f, "%.0f");
 									ImGui::SliderFloat("Max Distance", &Aimbot::Distance, 1.f, 750.f, "%.0f");
@@ -114,8 +114,8 @@ void DX11Renderer::DX11RenderScene()
 											Aimbot::Bone = eBones::CHEST;
 										else if (BoneSelected == 3)
 											Aimbot::Bone = eBones::HIP;
-									}									
-									ImGui::Checkbox("Aim at Vehicles", &Aimbot::AimVehicles);									
+									}
+									ImGui::Checkbox("Aim at Vehicles", &Aimbot::AimVehicles);
 									if (Aimbot::AimVehicles) {
 										ImGui::RadioButton("Top", &Aimbot::VehicleBone, TOP); ImGui::SameLine();
 										ImGui::RadioButton("Up", &Aimbot::VehicleBone, UP); ImGui::SameLine();
@@ -141,7 +141,7 @@ void DX11Renderer::DX11RenderScene()
 									ImGui::RadioButton("Radar Window", &Features::Radar, 3);
 									if (Features::Radar) {
 										ImGui::SliderInt("Radar Distance", &Features::RadarDistance, 5, 1000);
-										ImGui::SliderInt("Radar Size", &Features::RadarSize, 50.f, ScreenSY);										
+										ImGui::SliderInt("Radar Size", &Features::RadarSize, 50.f, ScreenSY);
 										if (Features::Radar != 3) {
 											ImGui::SliderInt("Radar Pos X", &Features::RadarPosX, 1.f, ScreenSX);
 											ImGui::SliderInt("Radar Pos Y", &Features::RadarPosY, 1.f, ScreenSY);
@@ -155,7 +155,7 @@ void DX11Renderer::DX11RenderScene()
 									ImGui::Checkbox("Spectators Warning", &Features::SpectWarn);
 									ImGui::Checkbox("Medic revive bugfix (use only if needed)", &Features::MedicBugfix);
 									ImGui::Checkbox("Provide Automatically Clean Screenshot", &Features::giveAutoCleanSS);
-									if(Features::giveAutoCleanSS)
+									if (Features::giveAutoCleanSS)
 										ImGui::SliderFloat("Auto Clean SS Timer", &Features::AutoCleanSSTimer, 0.1f, 30.f, "%.1f");
 									else {
 										ImGui::Checkbox("Provide Clean Screenshot (ScrollLock button to On/Off)", &Features::giveCleanSS);
@@ -169,12 +169,13 @@ void DX11Renderer::DX11RenderScene()
 											Log->Draw("", &LogOpened);
 								ImGui::TextColored(ImColor(0, 255, 0), "Weapon Slot: %i", LPSoldier->GetActiveSlot());  //weapon ID; 0 main gun. 1 pistoll; 2 injection (if medic)							
 								ImGui::TextColored(ImColor(0, 255, 0), "Bullet volocity: %.1f", LPSoldier->GetBulletVelocity());  //bullet volocity e.g. 800 for most main guns
+																																  //ImGui::TextColored(ImColor(0, 255, 0), "Bullet gravity: %.1f", LPSoldier->GetBulletGravity());
 								ImGui::TextColored(SSCleaner->BitBltState ? ImColor(0, 255, 0) : ImColor(255, 0, 0), "BitBlt Hooked: %s at %I64X", SSCleaner->BitBltState ? "Yes" : "No", SSCleaner->BitBltState ? (QWORD)SSCleaner->oBitBlt : 0);  //BitBlt() is used by PunkBuster to make screenshots
 								ImGui::TextColored(SSCleaner->CopyResourceState ? ImColor(0, 255, 0) : ImColor(255, 0, 0), "CopyResource Hooked: %s at %I64X", SSCleaner->CopyResourceState ? "Yes" : "No", SSCleaner->CopyResourceState ? (QWORD)SSCleaner->oCopyResource : 0);   //CopyResource() is used by FairFight to make screenshots
 								ImGui::TextColored(SSCleaner->CopySubresourceRegionState ? ImColor(0, 255, 0) : ImColor(255, 0, 0), "CopySubresourceRegion Hooked: %s at %I64X", SSCleaner->CopySubresourceRegionState ? "Yes" : "No", SSCleaner->CopySubresourceRegionState ? (QWORD)SSCleaner->oCopySubresource : 0);  //CopySubresourceRegion() is used by (PunkBuster/FairFight) to make screenshots
-								if(!SSCleaner->BitBltState)
+								if (!SSCleaner->BitBltState)
 									ImGui::TextColored(ImColor(255, 0, 0), "DANGER! SCREENSHOTS NOT BLOCKED!");
-								else if(!SSCleaner->CopyResourceState || !SSCleaner->CopySubresourceRegionState)
+								else if (!SSCleaner->CopyResourceState || !SSCleaner->CopySubresourceRegionState)
 									ImGui::TextColored(ImColor(255, 255, 0), "Play in Bordless mode only! Fullscreen unprotected from screenshots");
 								else
 									ImGui::TextColored(ImColor(255, 255, 0), "Play in Bordless mode only!");
@@ -183,520 +184,520 @@ void DX11Renderer::DX11RenderScene()
 							}
 						}
 					}
-				}												
-					if (Features::Crosshair) {					
-						DrawLine(ScreenSX / 2.f - ScreenSX*0.005, ScreenSY / 2.f, ScreenSX / 2.f + ScreenSX*0.005, ScreenSY / 2.f, Color(255, 0, 0, 200));
-						DrawLine(ScreenSX / 2.f, ScreenSY / 2.f - ScreenSX*0.005, ScreenSX / 2.f, ScreenSY / 2.f + ScreenSX*0.005, Color(255, 0, 0, 200));
-					}
-					if (!Mem::IsValid(Game::GetLocalPlayer()->GetCurrentVehicle())) { //sorry no radar when in a vehicle. Radar cant get coordinates of local soldier LPSoldier; GetPosition() or GetBonePosition() return incorect value
-						/////////////////////////////////////////////////RADAR https://www.unknowncheats.me/forum/battlefield-1-a/210381-bf1-internal-hack-source-2.html
-						if (Features::Radar == 1)  //draw radar box
-						{
-							rad_orginX = ((float)Features::RadarPosX) - Features::RadarSize / 2;
-							rad_orginY = ((float)Features::RadarPosY) + Features::RadarSize / 2;
-							FillRGB(rad_orginX - Features::RadarSize / 2, rad_orginY - Features::RadarSize, Features::RadarSize/**2*/, Features::RadarSize, Color(0, 0, 200, 30));
-							DrawLine(rad_orginX - Features::RadarSize / 2, rad_orginY, rad_orginX + Features::RadarSize / 2, rad_orginY, Color(0, 0, 200, 180));   //horizontal bottom line
-							DrawLine(rad_orginX, rad_orginY-Features::RadarSize*0.07+1, rad_orginX, rad_orginY - Features::RadarSize, Color(0, 0, 200, 50));    //vertival central line						
-							DrawTriangle(rad_orginX, rad_orginY-Features::RadarSize*0.07, rad_orginX-Features::RadarSize*0.03, rad_orginY, rad_orginX+Features::RadarSize*0.03, rad_orginY, Color(0, 0, 200, 110));
-						}
-						if (Features::Radar == 2)  //draw radar box
-						{
-							rad_orginX = ((float)Features::RadarPosX) - Features::RadarSize;
-							rad_orginY = ((float)Features::RadarPosY) + Features::RadarSize;
-							FillRGB(rad_orginX - Features::RadarSize, rad_orginY - Features::RadarSize, Features::RadarSize * 2, Features::RadarSize, Color(0, 0, 200, 30));
-							DrawLine(rad_orginX - Features::RadarSize, rad_orginY, rad_orginX + Features::RadarSize, rad_orginY, Color(0, 0, 200, 180));   //horizontal bottom line
-							DrawLine(rad_orginX, rad_orginY-Features::RadarSize*0.07+1, rad_orginX, rad_orginY - Features::RadarSize, Color(0, 0, 200, 50));  //vertival central line	
-							DrawTriangle(rad_orginX, rad_orginY-Features::RadarSize*0.07, rad_orginX-Features::RadarSize*0.03, rad_orginY, rad_orginX+Features::RadarSize*0.03, rad_orginY, Color(0, 0, 200, 110));
-						}
-						////////////////////End Radar
-					}
-					if (Features::ESP)
+				}
+				if (Features::Crosshair) {
+					DrawLine(ScreenSX / 2.f - ScreenSX*0.005, ScreenSY / 2.f, ScreenSX / 2.f + ScreenSX*0.005, ScreenSY / 2.f, Color(255, 0, 0, 200));
+					DrawLine(ScreenSX / 2.f, ScreenSY / 2.f - ScreenSX*0.005, ScreenSX / 2.f, ScreenSY / 2.f + ScreenSX*0.005, Color(255, 0, 0, 200));
+				}
+				if (!Mem::IsValid(Game::GetLocalPlayer()->GetCurrentVehicle())) { //sorry no radar when in a vehicle. Radar cant get coordinates of local soldier LPSoldier; GetPosition() or GetBonePosition() return incorect value
+																				  /////////////////////////////////////////////////RADAR https://www.unknowncheats.me/forum/battlefield-1-a/210381-bf1-internal-hack-source-2.html
+					if (Features::Radar == 1)  //draw radar box
 					{
-						CEntity* LocalPlayer = Game::GetLocalPlayer();
-						if (Mem::IsValid(LocalPlayer) && Mem::IsValid(LocalPlayer->GetSoldier()))
+						rad_orginX = ((float)Features::RadarPosX) - Features::RadarSize / 2;
+						rad_orginY = ((float)Features::RadarPosY) + Features::RadarSize / 2;
+						FillRGB(rad_orginX - Features::RadarSize / 2, rad_orginY - Features::RadarSize, Features::RadarSize/**2*/, Features::RadarSize, Color(0, 0, 200, 30));
+						DrawLine(rad_orginX - Features::RadarSize / 2, rad_orginY, rad_orginX + Features::RadarSize / 2, rad_orginY, Color(0, 0, 200, 100));   //horizontal bottom line
+						DrawLine(rad_orginX, rad_orginY - Features::RadarSize*0.07 + 1, rad_orginX, rad_orginY - Features::RadarSize, Color(0, 0, 200, 30));    //vertival central line						
+						DrawTriangle(rad_orginX, rad_orginY - Features::RadarSize*0.07, rad_orginX - Features::RadarSize*0.03, rad_orginY, rad_orginX + Features::RadarSize*0.03, rad_orginY, Color(0, 0, 200, 80)); //triangle on origin
+					}
+					if (Features::Radar == 2)  //draw radar box
+					{
+						rad_orginX = ((float)Features::RadarPosX) - Features::RadarSize;
+						rad_orginY = ((float)Features::RadarPosY) + Features::RadarSize;
+						FillRGB(rad_orginX - Features::RadarSize, rad_orginY - Features::RadarSize, Features::RadarSize * 2, Features::RadarSize, Color(0, 0, 200, 30));
+						DrawLine(rad_orginX - Features::RadarSize, rad_orginY, rad_orginX + Features::RadarSize, rad_orginY, Color(0, 0, 200, 100));   //horizontal bottom line
+						DrawLine(rad_orginX, rad_orginY - Features::RadarSize*0.07 + 1, rad_orginX, rad_orginY - Features::RadarSize, Color(0, 0, 200, 30));  //vertival central line	
+						DrawTriangle(rad_orginX, rad_orginY - Features::RadarSize*0.07, rad_orginX - Features::RadarSize*0.03, rad_orginY, rad_orginX + Features::RadarSize*0.03, rad_orginY, Color(0, 0, 200, 80)); //triangle on origin
+					}
+					////////////////////End Radar
+				}
+				if (Features::ESP)
+				{
+					CEntity* LocalPlayer = Game::GetLocalPlayer();
+					if (Mem::IsValid(LocalPlayer) && Mem::IsValid(LocalPlayer->GetSoldier()))
+					{
+						CSoldier* LPSoldier = LocalPlayer->GetSoldier();
+						if ((Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->prediction)) || (Mem::IsValid(LocalPlayer->GetCurrentVehicle())))
 						{
-							CSoldier* LPSoldier = LocalPlayer->GetSoldier();
-							if ((Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->prediction)) || (Mem::IsValid(LocalPlayer->GetCurrentVehicle())))
-							{
-								if (Features::ShowFOV)
-									DrawCircle(ScreenSX / 2.f, ScreenSY / 2.f, Color(0, 255, 255, 255), Aimbot::FOV, 25);
+							if (Features::ShowFOV)
+								DrawCircle(ScreenSX / 2.f, ScreenSY / 2.f, Color(0, 255, 255, 255), Aimbot::FOV, 25);
 
-								//PLAYERS
-								CEntityList* EntityList = Game::GetEntityList();
-								ClientPlayerManager* PlayerManager = Game::GetClientPlayerManager();
-								/////////////Spectators warning//////////////
-								if (Features::SpectWarn && Mem::IsValid(PlayerManager))
+							//PLAYERS
+							CEntityList* EntityList = Game::GetEntityList();
+							ClientPlayerManager* PlayerManager = Game::GetClientPlayerManager();
+							/////////////Spectators warning//////////////
+							if (Features::SpectWarn && Mem::IsValid(PlayerManager))
+							{
+								CSpectatorList* SpectatorList = PlayerManager->GetSpectators();
+								if (Mem::IsValid(SpectatorList))
 								{
-									CSpectatorList* SpectatorList = PlayerManager->GetSpectators();
-									if (Mem::IsValid(SpectatorList))
+									int ValidSpecs = 0;
+									bool FirstText = true;
+									for (int i = 0; i < 16; i++)
 									{
-										int ValidSpecs = 0;
-										bool FirstText = true;
-										for (int i = 0; i < 16; i++)
+										CSpectator* Spec = SpectatorList->GetSpectator(i);
+										if (Mem::IsValid(Spec) && LocalPlayer->GetPlayerView() == Spec->GetView())
 										{
-											CSpectator* Spec = SpectatorList->GetSpectator(i);
-											if (Mem::IsValid(Spec) && LocalPlayer->GetPlayerView() == Spec->GetView())
+											if (FirstText)
 											{
-												if (FirstText)
-												{
-													DrawDXText(ScreenSX / 2.f, ScreenSY * 0.91f/*- 200.f*/, 1.f, true, 0.f, Color(255, 0, 70, 200), true, "*Spectator Warning*");
-													FirstText = false;
-												}
-												//DrawDXText(ScreenSX / 2.f, (ScreenSY - 200.f) + 25.f + (ValidSpecs * 20.f), 1.f, true, 0.f, Color(255, 255, 0, 255), true, "-%i. %s %I64X", ValidSpecs + 1, Spec->Name, Spec);
-												DrawDXText(ScreenSX / 2.f, (ScreenSY * 0.91f) + 25.f + (ValidSpecs * 20.f), 1.f, true, 0.f, Color(255, 0, 70, 200), true, "%s", Spec->Name);
-												ValidSpecs++;
+												DrawDXText(ScreenSX / 2.f, ScreenSY * 0.91f/*- 200.f*/, 1.f, true, 0.f, Color(255, 0, 70, 200), true, "*Spectator Warning*");
+												FirstText = false;
 											}
+											//DrawDXText(ScreenSX / 2.f, (ScreenSY - 200.f) + 25.f + (ValidSpecs * 20.f), 1.f, true, 0.f, Color(255, 255, 0, 255), true, "-%i. %s %I64X", ValidSpecs + 1, Spec->Name, Spec);
+											DrawDXText(ScreenSX / 2.f, (ScreenSY * 0.91f) + 25.f + (ValidSpecs * 20.f), 1.f, true, 0.f, Color(255, 0, 70, 200), true, "%s", Spec->Name);
+											ValidSpecs++;
 										}
 									}
 								}
-								/*//TEST AIM IN POINT CODE
-								Vector3 testPos = Vector3(3, 3, 3);  
-								Vector3 testSP;
-								Vector3 testShootSpace;
-								LPSoldier->GetBonePosition(testShootSpace, 98);
-								Vector3 ShootSpaceSP;
-								if (Game::W2S(testPos, testSP))
+							}
+							/*//TEST AIM IN POINT CODE
+							Vector3 testPos = Vector3(3, 3, 3);
+							Vector3 testSP;
+							Vector3 testShootSpace;
+							LPSoldier->GetBonePosition(testShootSpace, 98);
+							Vector3 ShootSpaceSP;
+							if (Game::W2S(testPos, testSP))
+							{
+							DrawCircle(testSP.x, testSP.y, Color(255, 0, 0, 255), 2, 25);
+							DrawLine(testSP.x, testSP.y, ScreenSX / 2.f, ScreenSY / 2.f + ScreenSX*0.2, Color(255, 0, 0, 255));
+							}*/
+							/////////////////////////////////
+							if (Mem::IsValid(EntityList))
+							{
+								/*std::ofstream outputFile;		//log
+								outputFile.open(L"C:\\battlefield1_ESP.log");
+								outputFile << "start" << std::endl;*/
+								for (int i = 0; i < 64; i++)
 								{
-									DrawCircle(testSP.x, testSP.y, Color(255, 0, 0, 255), 2, 25);
-									DrawLine(testSP.x, testSP.y, ScreenSX / 2.f, ScreenSY / 2.f + ScreenSX*0.2, Color(255, 0, 0, 255));
-								}*/
-								/////////////////////////////////
-								if (Mem::IsValid(EntityList))
-								{
-									/*std::ofstream outputFile;		//log						
-									 outputFile.open(L"C:\\battlefield1_ESP.log");
-									 outputFile << "start" << std::endl;*/
-									for (int i = 0; i < 64; i++)
+									//outputFile << i << " ===== " << std::endl;  //log
+
+									CEntity* Ent = EntityList->GetEntity(i);
+									if (Mem::IsValid(Ent))
 									{
-										//outputFile << i << " ===== " << std::endl;  //log
+										CSoldier* EntSoldier = Ent->GetSoldier();
+										/*outputFile << "CEntity->getSoldier() -- ok" << std::endl;  //log
+										outputFile << "Is CSoldier valid: " << Mem::IsValid(EntSoldier) << std::endl;
+										if (Mem::IsValid(EntSoldier)) {
+										outputFile << "Soldier Name: " << Ent->Name << std::endl;
+										outputFile << "Is HealthComponent valid: " << Mem::IsValid(EntSoldier->HealthComponent) << std::endl;
+										if (Mem::IsValid(EntSoldier->HealthComponent))
+										outputFile << "HealthComponent HP: " <<  EntSoldier->HealthComponent->HP << std::endl;
+										}*/
 
-										CEntity* Ent = EntityList->GetEntity(i);
-										if (Mem::IsValid(Ent))
+										if (Mem::IsValid(EntSoldier) && Mem::IsValid(EntSoldier->HealthComponent) && EntSoldier->HealthComponent->HP >= 0.1f && EntSoldier->HealthComponent->HP <= 100.f)
 										{
-											CSoldier* EntSoldier = Ent->GetSoldier();
-											/*outputFile << "CEntity->getSoldier() -- ok" << std::endl;  //log
-											outputFile << "Is CSoldier valid: " << Mem::IsValid(EntSoldier) << std::endl;
-											if (Mem::IsValid(EntSoldier)) {
-												outputFile << "Soldier Name: " << Ent->Name << std::endl;
-												outputFile << "Is HealthComponent valid: " << Mem::IsValid(EntSoldier->HealthComponent) << std::endl;
-												if (Mem::IsValid(EntSoldier->HealthComponent)) 
-													outputFile << "HealthComponent HP: " <<  EntSoldier->HealthComponent->HP << std::endl;											
-											}*/
+											Vector3 HeadPos;
 
-											if (Mem::IsValid(EntSoldier) && Mem::IsValid(EntSoldier->HealthComponent) && EntSoldier->HealthComponent->HP >= 0.1f && EntSoldier->HealthComponent->HP <= 100.f)
-											{
-												Vector3 HeadPos;
+											if (Features::MedicBugfix && Ent->GetTeam() == LocalPlayer->GetTeam()) { //if MedicBugfix do not show own team mates because GetBonePosition makes then unable to revive
+												Features::ESPShowFriends = false;
+												continue;
+											}
 
-												if (Features::MedicBugfix && Ent->GetTeam() == LocalPlayer->GetTeam()) { //if MedicBugfix do not show own team mates because GetBonePosition makes then unable to revive
-													Features::ESPShowFriends = false;
-													continue;
+											if (!EntSoldier->GetBonePosition(HeadPos, 53))
+												continue;
+											HeadPos = EntSoldier->GetPosition() + Vector3(0.f, 2.f, 0.f);
+											//outputFile << "HEAD: " << HeadPos.x << " " << HeadPos.y << " " << HeadPos.z << std::endl;  //log
+
+											Vector3 FeetPos = EntSoldier->GetPosition();
+											Vector3 HeadSP;
+											Vector3 FeetSP;
+											float dist = 0.f;
+
+											if (Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->prediction))  //local player on feet; GetPosition() works OK
+												dist = Vector3::Distance(FeetPos, LPSoldier->GetPosition());  //distance between other soldier and local player
+											else if (Mem::IsValid(LocalPlayer->GetCurrentVehicle())) {  //local player in vehicle; GetPosition() crash! => Take position from HEAD, not from GetPosition() prediction
+												static Vector3 MyHeadPos;
+												LPSoldier->GetBonePositionLP(MyHeadPos, HEAD);
+												dist = Vector3::Distance(FeetPos, MyHeadPos); //Log->AddLog("pos x=%2.2f y=%2.2f z=%2.2f | %2.2f %2.2f %2.2f | %.2f %.2f %.2f\n", MyHeadPos.x, MyHeadPos.y, MyHeadPos.z,((ClientVehicleEntity*)LocalPlayer->GetCurrentVehicle())->m_Velocity.x, ((ClientVehicleEntity*)LocalPlayer->GetCurrentVehicle())->m_Velocity.y, ((ClientVehicleEntity*)LocalPlayer->GetCurrentVehicle())->m_Velocity.z, ((PhysicsBody*)LocalPlayer->GetCurrentVehicle())->m_RigidBodyData->m_CenterOfMass.x, ((PhysicsBody*)LocalPlayer->GetCurrentVehicle())->m_RigidBodyData->m_CenterOfMass.y, ((PhysicsBody*)LocalPlayer->GetCurrentVehicle())->m_RigidBodyData->m_CenterOfMass.z);
+											}
+											if (!Mem::IsValid(LocalPlayer->GetCurrentVehicle())) { //sorry no radar when in a vehicle. Radar cant get coordinates of local soldier LPSoldier; GetPosition() or GetBonePosition() return incorect value
+																								   /////////////////RADAR https://www.unknowncheats.me/forum/battlefield-1-a/210381-bf1-internal-hack-source-2.html
+												if (Features::Radar == 1 && dist > .01f && dist < Features::RadarDistance && Ent->GetTeam() != LocalPlayer->GetTeam()) //add player if not in same team
+												{
+													float zs = LPSoldier->GetPosition().z - FeetPos.z;
+													float xs = LPSoldier->GetPosition().x - FeetPos.x;
+													float scale = ((float)Features::RadarDistance) / Features::RadarSize;
+													zs /= scale;
+													xs /= scale;
+
+													Vector3 Yaw = -LPSoldier->GetAngles(); // okay
+													float xpos = xs * (float)cos(Yaw.x) - zs * (float)sin(Yaw.x);
+													float ypos = xs * (float)sin(Yaw.x) + zs * (float)cos(Yaw.x);
+													xpos = xpos * 2 + (rad_orginX);
+													ypos = ypos * 2 + (rad_orginY);
+
+													if (xpos < (float)(rad_orginX - Features::RadarSize / 2)) xpos = (float)(rad_orginX - Features::RadarSize / 2);
+													if (ypos < (float)(rad_orginY - Features::RadarSize)) ypos = (float)(rad_orginY - Features::RadarSize);
+													if (xpos >(float)((rad_orginX)+Features::RadarSize / 2 - Features::RadarSize / 40)) xpos = (float)((rad_orginX)+Features::RadarSize / 2 - Features::RadarSize / 40);
+													if (ypos >(float)((rad_orginY)+Features::RadarSize - Features::RadarSize / 40)) ypos = (float)((rad_orginY)+Features::RadarSize - Features::RadarSize / 40);
+													//radar_size/40 is thloge size of the dot on the radar; radar_size/30 = bigger dots
+													FillRGB(xpos, ypos, Features::RadarSize / 40, Features::RadarSize / 40, Color(255, 0, 0, 200));
 												}
+												if (Features::Radar == 2 && dist > .01f && dist < Features::RadarDistance && Ent->GetTeam() != LocalPlayer->GetTeam()) //add player if not in same team
+												{
+													float zs = LPSoldier->GetPosition().z - FeetPos.z;
+													float xs = LPSoldier->GetPosition().x - FeetPos.x;
+													float scale = ((float)Features::RadarDistance) / Features::RadarSize;
+													zs /= scale;
+													xs /= scale;
 
-												if (!EntSoldier->GetBonePosition(HeadPos, 53))
-													continue;
-												HeadPos = EntSoldier->GetPosition() + Vector3(0.f, 2.f, 0.f);
-												//outputFile << "HEAD: " << HeadPos.x << " " << HeadPos.y << " " << HeadPos.z << std::endl;  //log
+													Vector3 Yaw = -LPSoldier->GetAngles(); // okay
+													float xpos = xs * (float)cos(Yaw.x) - zs * (float)sin(Yaw.x);
+													float ypos = xs * (float)sin(Yaw.x) + zs * (float)cos(Yaw.x);
+													xpos = xpos * 2 + (rad_orginX);
+													ypos = ypos * 2 + (rad_orginY);
 
-												Vector3 FeetPos = EntSoldier->GetPosition();
-												Vector3 HeadSP;
-												Vector3 FeetSP;
-												float dist = 0.f;
-
-												if (Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->prediction))  //local player on feet; GetPosition() works OK
-													dist = Vector3::Distance(FeetPos, LPSoldier->GetPosition());  //distance between other soldier and local player
-												else if (Mem::IsValid(LocalPlayer->GetCurrentVehicle())) {  //local player in vehicle; GetPosition() crash! => Take position from HEAD, not from GetPosition() prediction
-													static Vector3 MyHeadPos;
-													LPSoldier->GetBonePositionLP(MyHeadPos, HEAD);
-													dist = Vector3::Distance(FeetPos, MyHeadPos); //Log->AddLog("pos x=%2.2f y=%2.2f z=%2.2f | %2.2f %2.2f %2.2f | %.2f %.2f %.2f\n", MyHeadPos.x, MyHeadPos.y, MyHeadPos.z,((ClientVehicleEntity*)LocalPlayer->GetCurrentVehicle())->m_Velocity.x, ((ClientVehicleEntity*)LocalPlayer->GetCurrentVehicle())->m_Velocity.y, ((ClientVehicleEntity*)LocalPlayer->GetCurrentVehicle())->m_Velocity.z, ((PhysicsBody*)LocalPlayer->GetCurrentVehicle())->m_RigidBodyData->m_CenterOfMass.x, ((PhysicsBody*)LocalPlayer->GetCurrentVehicle())->m_RigidBodyData->m_CenterOfMass.y, ((PhysicsBody*)LocalPlayer->GetCurrentVehicle())->m_RigidBodyData->m_CenterOfMass.z);
+													if (xpos < (float)(rad_orginX - Features::RadarSize)) xpos = (float)(rad_orginX - Features::RadarSize);
+													if (ypos < (float)(rad_orginY - Features::RadarSize)) ypos = (float)(rad_orginY - Features::RadarSize);
+													if (xpos >(float)((rad_orginX)+Features::RadarSize - Features::RadarSize / 40)) xpos = (float)((rad_orginX)+Features::RadarSize - Features::RadarSize / 40);
+													if (ypos >(float)((rad_orginY)+Features::RadarSize - Features::RadarSize / 40)) ypos = (float)((rad_orginY)+Features::RadarSize - Features::RadarSize / 40);
+													//radar_size/40 is the size of the dot on the radar; radar_size/30 = bigger dots
+													FillRGB(xpos, ypos, Features::RadarSize / 40, Features::RadarSize / 40, Color(255, 0, 0, 200));
 												}
-												if(!Mem::IsValid(LocalPlayer->GetCurrentVehicle())) { //sorry no radar when in a vehicle. Radar cant get coordinates of local soldier LPSoldier; GetPosition() or GetBonePosition() return incorect value
-													/////////////////RADAR https://www.unknowncheats.me/forum/battlefield-1-a/210381-bf1-internal-hack-source-2.html
-													if (Features::Radar == 1 && dist > .01f && dist < Features::RadarDistance && Ent->GetTeam() != LocalPlayer->GetTeam()) //add player if not in same team
-													{															
-														float zs = LPSoldier->GetPosition().z - FeetPos.z;
-														float xs = LPSoldier->GetPosition().x - FeetPos.x;
-														float scale = ((float)Features::RadarDistance) / Features::RadarSize;
-														zs/= scale;
-														xs/= scale;
+												////////////////////End Radar
+												////////////////////radar window
+												if (Features::Radar == 3) {
+													ImVec2 position = ImVec2(ScreenSX - Features::RadarSize - 20, 0);
 
-														Vector3 Yaw = -LPSoldier->GetAngles(); // okay
-														float xpos = xs * (float)cos(Yaw.x) - zs * (float)sin(Yaw.x);
-														float ypos = xs * (float)sin(Yaw.x) + zs * (float)cos(Yaw.x);
-														xpos = xpos * 2 + (rad_orginX);
-														ypos = ypos * 2 + (rad_orginY);
+													ImVec2 radarSize = ImVec2(Features::RadarSize, Features::RadarSize);
+													ImColor radarLinesColor = ImColor(100, 100, 100, 255);
 
-														if (xpos < (float)(rad_orginX - Features::RadarSize / 2)) xpos = (float)(rad_orginX - Features::RadarSize / 2);
-														if (ypos < (float)(rad_orginY - Features::RadarSize)) ypos = (float)(rad_orginY - Features::RadarSize);
-														if (xpos > (float)((rad_orginX)+Features::RadarSize / 2 - Features::RadarSize / 40)) xpos = (float)((rad_orginX)+Features::RadarSize / 2 - Features::RadarSize / 40);
-														if (ypos > (float)((rad_orginY)+Features::RadarSize - Features::RadarSize / 40)) ypos = (float)((rad_orginY)+Features::RadarSize - Features::RadarSize / 40);
-														//radar_size/40 is thloge size of the dot on the radar; radar_size/30 = bigger dots
-														FillRGB(xpos, ypos, Features::RadarSize / 40, Features::RadarSize / 40, Color(255, 0, 0, 200));														
-													}
-													if (Features::Radar == 2 && dist > .01f && dist < Features::RadarDistance && Ent->GetTeam() != LocalPlayer->GetTeam()) //add player if not in same team
+													CEntity* LocalPlayer = Game::GetLocalPlayer();
+													CEntityList* EntityList = Game::GetEntityList();
+
+													ImGuiWindowFlags wFlags = /*ImGuiWindowFlags_NoResize |*/ ImGuiWindowFlags_NoCollapse;
+													if (!Features::ShowMenu)
 													{
-														float zs = LPSoldier->GetPosition().z - FeetPos.z;
-														float xs = LPSoldier->GetPosition().x - FeetPos.x;
-														float scale = ((float)Features::RadarDistance) / Features::RadarSize;
-														zs /= scale;
-														xs /= scale;
-
-														Vector3 Yaw = -LPSoldier->GetAngles(); // okay
-														float xpos = xs * (float)cos(Yaw.x) - zs * (float)sin(Yaw.x);
-														float ypos = xs * (float)sin(Yaw.x) + zs * (float)cos(Yaw.x);
-														xpos = xpos * 2 + (rad_orginX);
-														ypos = ypos * 2 + (rad_orginY);
-
-														if (xpos < (float)(rad_orginX - Features::RadarSize)) xpos = (float)(rad_orginX - Features::RadarSize);
-														if (ypos < (float)(rad_orginY - Features::RadarSize)) ypos = (float)(rad_orginY - Features::RadarSize);
-														if (xpos > (float)((rad_orginX)+Features::RadarSize - Features::RadarSize / 40)) xpos = (float)((rad_orginX)+Features::RadarSize - Features::RadarSize / 40);
-														if (ypos > (float)((rad_orginY)+Features::RadarSize - Features::RadarSize / 40)) ypos = (float)((rad_orginY)+Features::RadarSize - Features::RadarSize / 40);
-														//radar_size/40 is the size of the dot on the radar; radar_size/30 = bigger dots
-														FillRGB(xpos, ypos, Features::RadarSize / 40, Features::RadarSize / 40, Color(255, 0, 0, 200));														
+														wFlags |= ImGuiWindowFlags_NoInputs;
+														wFlags |= ImGuiWindowFlags_NoMove;
+														wFlags |= ImGuiWindowFlags_NoTitleBar;
 													}
-													////////////////////End Radar
-													////////////////////radar window
-													if (Features::Radar == 3) {
-														ImVec2 position = ImVec2(ScreenSX-Features::RadarSize-20, 0);
 
-														ImVec2 radarSize = ImVec2(Features::RadarSize, Features::RadarSize);
-														ImColor radarLinesColor = ImColor(100, 100, 100, 255);
+													ImGui::SetNextWindowPos(position, ImGuiSetCond_FirstUseEver);
+													if (ImGui::Begin("Radar", (bool*)Features::Radar, radarSize, 0.4f, wFlags))
+													{
+														ImVec2 pos1 = ImGui::GetWindowPos();
+														ImVec2 center = ImVec2(pos1.x + radarSize.x / 2, pos1.y + radarSize.y / 2);
+														ImGui::GetWindowDrawList()->AddLine(ImVec2(pos1.x, pos1.y), center, radarLinesColor);
+														ImGui::GetWindowDrawList()->AddLine(ImVec2(pos1.x + radarSize.x, pos1.y), center, radarLinesColor);
+														ImGui::GetWindowDrawList()->AddLine(ImVec2(pos1.x, pos1.y + radarSize.y / 2), ImVec2(pos1.x + radarSize.x, pos1.y + radarSize.y / 2), radarLinesColor);
+														ImGui::GetWindowDrawList()->AddLine(center, ImVec2(pos1.x + radarSize.x / 2, pos1.y + radarSize.y), radarLinesColor);
 
-														CEntity* LocalPlayer = Game::GetLocalPlayer();
-														CEntityList* EntityList = Game::GetEntityList();
+														float b = 15.f;
+														float d = (b / (2.f * sin(70.f / 2.f))) * cos(70.f / 2.f);
+														ImGui::GetWindowDrawList()->AddTriangleFilled(center - ImVec2(b / 2, -d / 2), center - ImVec2(0, d / 2), center + ImVec2(b / 2, d / 2), ImColor(0, 255, 0));
 
-														ImGuiWindowFlags wFlags = /*ImGuiWindowFlags_NoResize |*/ ImGuiWindowFlags_NoCollapse;
-														if (!Features::ShowMenu)
+														if (Mem::IsValid(EntityList) && Mem::IsValid(LocalPlayer))
 														{
-															wFlags |= ImGuiWindowFlags_NoInputs;
-															wFlags |= ImGuiWindowFlags_NoMove;
-															wFlags |= ImGuiWindowFlags_NoTitleBar;
-														}
-
-														ImGui::SetNextWindowPos(position, ImGuiSetCond_FirstUseEver);														
-														if (ImGui::Begin("Radar", (bool*)Features::Radar, radarSize, 0.4f, wFlags))
-														{															
-															ImVec2 pos1 = ImGui::GetWindowPos();
-															ImVec2 center = ImVec2(pos1.x + radarSize.x / 2, pos1.y + radarSize.y / 2);
-															ImGui::GetWindowDrawList()->AddLine(ImVec2(pos1.x, pos1.y), center, radarLinesColor);
-															ImGui::GetWindowDrawList()->AddLine(ImVec2(pos1.x + radarSize.x, pos1.y), center, radarLinesColor);
-															ImGui::GetWindowDrawList()->AddLine(ImVec2(pos1.x, pos1.y + radarSize.y / 2), ImVec2(pos1.x + radarSize.x, pos1.y + radarSize.y / 2), radarLinesColor);
-															ImGui::GetWindowDrawList()->AddLine(center, ImVec2(pos1.x + radarSize.x / 2, pos1.y + radarSize.y), radarLinesColor);
-
-															float b = 15.f;
-															float d = (b / (2.f * sin(70.f / 2.f))) * cos(70.f / 2.f);
-															ImGui::GetWindowDrawList()->AddTriangleFilled(center - ImVec2(b / 2, -d / 2), center - ImVec2(0, d / 2), center + ImVec2(b / 2, d / 2), ImColor(0, 255, 0));
-
-															if (Mem::IsValid(EntityList) && Mem::IsValid(LocalPlayer))
-															{																
-																CSoldier* LPSoldier = LocalPlayer->GetSoldier();
-																if (Mem::IsValid(LocalPlayer))
+															CSoldier* LPSoldier = LocalPlayer->GetSoldier();
+															if (Mem::IsValid(LocalPlayer))
+															{
+																Vector3 Yaw = LPSoldier->GetAngles();
+																Vector3 LPos = LPSoldier->GetShootSpace() - LPSoldier->GetSpawnOffset(); //=LPSoldier->getPosition();
+																for (int i = 0; i < 64; i++)
 																{
-																	Vector3 Yaw = LPSoldier->GetAngles();
-																	Vector3 LPos = LPSoldier->GetShootSpace() - LPSoldier->GetSpawnOffset(); //=LPSoldier->getPosition();
-																	for (int i = 0; i < 64; i++)
-																	{																		
-																		CEntity* Ent = EntityList->GetEntity(i); //ClientEntity* Ent = EntityList->getEntity(i);
-																		
-																		if (Mem::IsValid(Ent))
+																	CEntity* Ent = EntityList->GetEntity(i); //ClientEntity* Ent = EntityList->getEntity(i);
+
+																	if (Mem::IsValid(Ent))
+																	{
+																		if (Ent == LocalPlayer)
+																			continue;
+
+																		CSoldier* EntSoldier = Ent->GetSoldier(); //ClientSoldierEntity* EntSoldier = Ent->getSoldier();
+																		if (Mem::IsValid(EntSoldier))
 																		{
-																			if (Ent == LocalPlayer)
-																				continue;
+																			//if (!(EntSoldier->HealthComponent->HP >= 0.1f && EntSoldier->HealthComponent->maxHealth >= 100.f)) continue;
+																			Vector3 CPos; // = EntSoldier->getPosition();
+																			EntSoldier->GetBonePosition(CPos, Aimbot::Bone);
 
-																			CSoldier* EntSoldier = Ent->GetSoldier(); //ClientSoldierEntity* EntSoldier = Ent->getSoldier();
-																			if (Mem::IsValid(EntSoldier))
+																			float dist = Vector3::Distance(CPos, LPos);
+																			if (dist >= .01f && dist <= Features::RadarDistance && EntSoldier->HealthComponent->HP >= 0.1f && EntSoldier->HealthComponent->HP <= 100.f)
 																			{
-																				//if (!(EntSoldier->HealthComponent->HP >= 0.1f && EntSoldier->HealthComponent->maxHealth >= 100.f)) continue;
-																				Vector3 CPos; // = EntSoldier->getPosition();
-																				EntSoldier->GetBonePosition(CPos, Aimbot::Bone); 
-
-																				float dist = Vector3::Distance(CPos, LPos);
-																				if (dist >= .01f && dist <= Features::RadarDistance && EntSoldier->HealthComponent->HP >= 0.1f && EntSoldier->HealthComponent->HP <= 100.f)
-																				{
-																					ImColor pColor = ImColor(255, 0, 0);
-																					if (Ent->GetTeam() == LocalPlayer->GetTeam()) {
-																						if (!Features::ESPShowFriends) continue;
-																						ImColor pColor = ImColor(0, 255, 0);
-																					}
-
-																					float r_1 = LPos.z - CPos.z;
-																					float r_2 = LPos.x - CPos.x;
-																					float scale = ((float)Features::RadarDistance) / Features::RadarSize;
-																					r_1 /= scale;
-																					r_2 /= scale;
-																					float x_1 = r_2 * (float)cos((long double)-Yaw.x) - r_1 * sin((long double)-Yaw.x);
-																					float y_1 = r_2 * (float)sin((long double)-Yaw.x) + r_1 * cos((long double)-Yaw.x);
-
-																					ImGui::GetWindowDrawList()->AddCircleFilled(center + ImVec2(x_1, y_1), 2, ImColor(255, 0, 0));
+																				ImColor pColor = ImColor(255, 0, 0);
+																				if (Ent->GetTeam() == LocalPlayer->GetTeam()) {
+																					if (!Features::ESPShowFriends) continue;
+																					ImColor pColor = ImColor(0, 255, 0);
 																				}
-																			}
 
+																				float r_1 = LPos.z - CPos.z;
+																				float r_2 = LPos.x - CPos.x;
+																				float scale = ((float)Features::RadarDistance) / Features::RadarSize;
+																				r_1 /= scale;
+																				r_2 /= scale;
+																				float x_1 = r_2 * (float)cos((long double)-Yaw.x) - r_1 * sin((long double)-Yaw.x);
+																				float y_1 = r_2 * (float)sin((long double)-Yaw.x) + r_1 * cos((long double)-Yaw.x);
+
+																				ImGui::GetWindowDrawList()->AddCircleFilled(center + ImVec2(x_1, y_1), 2, ImColor(255, 0, 0));
+																			}
 																		}
+
 																	}
 																}
 															}
-															ImGui::End();
 														}
-													}
-													//////////////////////////end radar window
-												}
-												if (Game::W2S(HeadPos, HeadSP) && Game::W2S(FeetPos, FeetSP) && (Mem::IsValid(LocalPlayer->GetCurrentVehicle()) ? true : (dist >= .01f && dist < Features::ESPDistance))/*dist > 0.01f && dist < Features::ESPDistance*/) //if in vehicle show all, no matter distance (bugfix)
-												{
-													if (Ent->GetTeam() == LocalPlayer->GetTeam() && !Features::ESPShowFriends)
-														continue;
-
-													Color BoxColor = Color(0, 235, 235, 255);
-
-													bool Enemy = false, Visible = false;
-													if (Ent->GetTeam() != LocalPlayer->GetTeam())
-													{
-														Enemy = true;
-
-														if(!EntSoldier->m_Occluded) // czy go widac?
-														{
-															Visible = true;
-															BoxColor = Color(0, 255, 0, 255);
-														}
-														else
-															BoxColor = Color(255, 0, 0, 255);
-													}
-
-													float BoxSY = FeetSP.y - HeadSP.y;
-													float BoxSX = BoxSY / 2.f;
-													float BoxX = HeadSP.x - BoxSX / 2.f;
-													float BoxY = HeadSP.y;
-													float HP = EntSoldier->HealthComponent->HP;
-
-													if (Features::ShowESPBoxes)
-													{
-														DrawEmptyBox(BoxX - 1, BoxY - 1, BoxSX, BoxSY + 2, 3, Color(0, 0, 0, 175));
-														DrawEmptyBox(BoxX, HeadSP.y, BoxSX, BoxSY, 1, BoxColor);
-													}
-
-													if (!Mem::IsValid(LocalPlayer->GetCurrentVehicle())) {  //sorry, no ESP distance in vehicle. bugfix
-														std::string Distance;
-														if (Features::ShowName) Distance = "\n[" + std::to_string(static_cast<int>(dist)) + " m]";
-														else  Distance = "[" + std::to_string(static_cast<int>(dist)) + " m]";
-														DrawDXText(BoxX - 10.f, Features::ShowHealth ? BoxY + BoxSY + 4.f : BoxY + BoxSY, 0.6f, false, 0.f, Color(255, 255, 255, 255), true, "%s%s", Features::ShowName ? Ent->Name : "", Features::ShowDistance ? Distance.c_str() : "");
-													}
-													else
-														DrawDXText(BoxX - 10.f, Features::ShowHealth ? BoxY + BoxSY + 4.f : BoxY + BoxSY, 0.6f, false, 0.f, Color(255, 255, 255, 255), true, "%s", Features::ShowName ? Ent->Name : "");
-
-													if (Features::ShowHealth)
-													{
-														DrawBox(BoxX - 1, FeetSP.y + 2, (HP * BoxSX) / 100 + 3, 5, Color(0, 0, 0, 255));
-														DrawBox(BoxX, FeetSP.y + 3, (HP * BoxSX) / 100 + 1, 3, Color(((100 - HP) * 255) / 100, (HP * 255) / 100, 0, 255));
-													}
-
-													/*for (int i = 0; i < 200; i++)
-													{
-														Vector3 fucking, f2;
-														EntSoldier->GetBonePosition(fucking, i);
-														Game::W2S(fucking, f2);
-														DrawDXText(f2.x, f2.y, 0.5f, true, 0.f, Color(255, 255, 255, 255), true, "%i", i);
-													}*/ //BONES TEST
-
-													if (Features::ShowBones)
-													{
-														Vector3 NeckSP, ChestSP, StomachSP, HipSP, LShoulderSP, LBicepsSP, LElbowSP, LUlnaSP, LHandSP, LFemurSP, LKneeSP, LShinboneSP, LMalleolusSP, LTipToeSP,
-															RShoulderSP, RBicepsSP, RElbowSP, RUlnaSP, RHandSP, RFemurSP, RKneeSP, RShinboneSP, RMalleolusSP, RTipToeSP, NeckPos, ChestPos, StomachPos, HipPos,
-															LShoulderPos, LBicepsPos, LElbowPos, LUlnaPos, LHandPos, LFemurPos, LKneePos, LShinbonePos, LMalleolusPos, LTipToePos, RShoulderPos, RBicepsPos,
-															RElbowPos, RUlnaPos, RHandPos, RFemurPos, RKneePos, RShinbonePos, RMalleolusPos, RTipToePos;
-
-														EntSoldier->GetBonePosition(HeadPos, HEAD/*53*/);
-														EntSoldier->GetBonePosition(NeckPos, NECK);
-														/*Vector3 fucking, f2;
-														EntSoldier->GetBonePosition(fucking, HEAD);
-														Game::W2S(fucking, f2);
-														DrawCircle(f2.x, f2.y, Color(255, 0, 0, 255), 4.f, 10);*/
-														EntSoldier->GetBonePosition(ChestPos, CHEST);
-														EntSoldier->GetBonePosition(StomachPos, STOMACH);
-														EntSoldier->GetBonePosition(HipPos, HIP);
-
-														EntSoldier->GetBonePosition(LShoulderPos, LEFT_SHOULDER);
-														EntSoldier->GetBonePosition(LBicepsPos, LEFT_BICEPS);
-														EntSoldier->GetBonePosition(LElbowPos, LEFT_ELBOW);
-														EntSoldier->GetBonePosition(LUlnaPos, LEFT_ULNA);
-														EntSoldier->GetBonePosition(LHandPos, LEFT_HAND);
-														EntSoldier->GetBonePosition(LFemurPos, LEFT_FEMUR);
-														EntSoldier->GetBonePosition(LKneePos, LEFT_KNEE);
-														EntSoldier->GetBonePosition(LShinbonePos, LEFT_SHINBONE);
-														EntSoldier->GetBonePosition(LMalleolusPos, LEFT_MALLEOLUS);
-														EntSoldier->GetBonePosition(LTipToePos, LEFT_TIPTOE);
-
-														EntSoldier->GetBonePosition(RShoulderPos, RIGHT_SHOULDER);
-														EntSoldier->GetBonePosition(RBicepsPos, RIGHT_BICEPS);
-														EntSoldier->GetBonePosition(RElbowPos, RIGHT_ELBOW);
-														EntSoldier->GetBonePosition(RUlnaPos, RIGHT_ULNA);
-														EntSoldier->GetBonePosition(RHandPos, RIGHT_HAND);
-														EntSoldier->GetBonePosition(RFemurPos, RIGHT_FEMUR);
-														EntSoldier->GetBonePosition(RKneePos, RIGHT_KNEE);
-														EntSoldier->GetBonePosition(RShinbonePos, RIGHT_SHINBONE);
-														EntSoldier->GetBonePosition(RMalleolusPos, RIGHT_MALLEOLUS);
-														EntSoldier->GetBonePosition(RTipToePos, RIGHT_TIPTOE);
-
-														if (Game::W2S(HeadPos, HeadSP) &&
-															Game::W2S(NeckPos, NeckSP) &&
-															//Game::W2S(ChestPos, ChestSP) &&
-															//Game::W2S(StomachPos, StomachSP) &&
-															Game::W2S(HipPos, HipSP) &&
-															Game::W2S(LShoulderPos, LShoulderSP) &&
-															Game::W2S(LBicepsPos, LBicepsSP) &&
-															Game::W2S(LElbowPos, LElbowSP) &&
-															Game::W2S(LUlnaPos, LUlnaSP) &&
-															Game::W2S(LHandPos, LHandSP) &&
-															Game::W2S(LFemurPos, LFemurSP) &&
-															Game::W2S(LKneePos, LKneeSP) &&
-															Game::W2S(LShinbonePos, LShinboneSP) &&
-															Game::W2S(LMalleolusPos, LMalleolusSP) &&
-															Game::W2S(LTipToePos, LTipToeSP) &&
-															Game::W2S(RShoulderPos, RShoulderSP) &&
-															Game::W2S(RBicepsPos, RBicepsSP) &&
-															Game::W2S(RElbowPos, RElbowSP) &&
-															Game::W2S(RUlnaPos, RUlnaSP) &&
-															Game::W2S(RHandPos, RHandSP) &&
-															Game::W2S(RFemurPos, RFemurSP) &&
-															Game::W2S(RKneePos, RKneeSP) &&
-															Game::W2S(RShinbonePos, RShinboneSP) &&
-															Game::W2S(RMalleolusPos, RMalleolusSP) &&
-															Game::W2S(RTipToePos, RTipToeSP))
-														{
-															Color BonesColor = Color(0, 255, 255, 255);
-															if (Enemy)
-															{
-																if (Visible)
-																	BonesColor = Color(0, 255, 0, 255);
-																else
-																	BonesColor = Color(255, 0, 0, 255);
-															}											
-														
-															float HeadSize = sqrt(pow(HeadSP.x- NeckSP.x,2) + pow(HeadSP.y - NeckSP.y, 2));
-															DrawCircle(HeadSP.x, HeadSP.y, BonesColor, HeadSize/2.7, 10);														
-															//DrawCircle(HeadSP.x, HeadSP.y, BonesColor, 70.f / dist, 10);
-
-															DrawLine(HeadSP.x, HeadSP.y, NeckSP.x, NeckSP.y, BonesColor);
-															DrawLine(NeckSP.x, NeckSP.y, HipSP.x, HipSP.y, BonesColor);
-
-															DrawLine(NeckSP.x, NeckSP.y, LShoulderSP.x, LShoulderSP.y, BonesColor);
-															DrawLine(LShoulderSP.x, LShoulderSP.y, LBicepsSP.x, LBicepsSP.y, BonesColor);
-															DrawLine(LBicepsSP.x, LBicepsSP.y, LElbowSP.x, LElbowSP.y, BonesColor);
-															DrawLine(LElbowSP.x, LElbowSP.y, LHandSP.x, LHandSP.y, BonesColor);
-
-															DrawLine(NeckSP.x, NeckSP.y, RShoulderSP.x, RShoulderSP.y, BonesColor);
-															DrawLine(RShoulderSP.x, RShoulderSP.y, RBicepsSP.x, RBicepsSP.y, BonesColor);
-															DrawLine(RBicepsSP.x, RBicepsSP.y, RElbowSP.x, RElbowSP.y, BonesColor);
-															DrawLine(RElbowSP.x, RElbowSP.y, RHandSP.x, RHandSP.y, BonesColor);
-
-															DrawLine(HipSP.x, HipSP.y, LFemurSP.x, LFemurSP.y, BonesColor);
-															DrawLine(LFemurSP.x, LFemurSP.y, LKneeSP.x, LKneeSP.y, BonesColor);
-															DrawLine(LKneeSP.x, LKneeSP.y, LShinboneSP.x, LShinboneSP.y, BonesColor);
-															DrawLine(LShinboneSP.x, LShinboneSP.y, LMalleolusSP.x, LMalleolusSP.y, BonesColor);
-															DrawLine(LMalleolusSP.x, LMalleolusSP.y, LTipToeSP.x, LTipToeSP.y, BonesColor);
-
-															DrawLine(HipSP.x, HipSP.y, RFemurSP.x, RFemurSP.y, BonesColor);
-															DrawLine(RFemurSP.x, RFemurSP.y, RKneeSP.x, RKneeSP.y, BonesColor);
-															DrawLine(RKneeSP.x, RKneeSP.y, RShinboneSP.x, RShinboneSP.y, BonesColor);
-															DrawLine(RShinboneSP.x, RShinboneSP.y, RMalleolusSP.x, RMalleolusSP.y, BonesColor);
-															DrawLine(RMalleolusSP.x, RMalleolusSP.y, RTipToeSP.x, RTipToeSP.y, BonesColor);
-														}
+														ImGui::End();
 													}
 												}
+												//////////////////////////end radar window
 											}
-										}
-										if (Features::ShowVehicles && Mem::IsValid(Ent->GetCurrentVehicle()))
-										{
-											TransformAABBStruct _AABB;
-											Vector3 minSP, maxSP, cor2SP, cor3SP, cor4SP, cor5SP, cor6SP, cor7SP, NameSP;
-											CVehicleEntity* Vehicle = Ent->GetCurrentVehicle();
-											Matrix _Transform;
-											Vehicle->GetTransform(&_Transform);
-											Vector3 Position = Vector3(_Transform.m[3][0], _Transform.m[3][1], _Transform.m[3][2]);
-											glm::vec3 glmPos = glm::vec3(Position.x, Position.y, Position.z);
-
-											Color BoxColor = Color(0, 0, 150, 255); 
-
-											//to fix the vehicle friend/enemy color issue (all of them having the same color), change the following line
-											//https://www.unknowncheats.me/forum/battlefield-1-a/210381-bf1-internal-hack-source-3.html
-											//if (Vehicle->GetTeam() != LocalPlayer->GetTeam())
-											if (Ent->GetTeam() != LocalPlayer->GetTeam())
-												BoxColor = Color(255, 220, 0, 255);
-											else
-												if (!Features::ESPShowFriends)
+											if (Game::W2S(HeadPos, HeadSP) && Game::W2S(FeetPos, FeetSP) && (Mem::IsValid(LocalPlayer->GetCurrentVehicle()) ? true : (dist >= .01f && dist < Features::ESPDistance))/*dist > 0.01f && dist < Features::ESPDistance*/) //if in vehicle show all, no matter distance (bugfix)
+											{
+												if (Ent->GetTeam() == LocalPlayer->GetTeam() && !Features::ESPShowFriends)
 													continue;
 
-											Vehicle->GetAABB(&_AABB);
+												Color BoxColor = Color(0, 235, 235, 255);
 
-											glm::vec3 min = glm::vec3(_AABB.AABB.m_Min.x, _AABB.AABB.m_Min.y, _AABB.AABB.m_Min.z);
-											glm::vec3 max = glm::vec3(_AABB.AABB.m_Max.x, _AABB.AABB.m_Max.y, _AABB.AABB.m_Max.z);
-											glm::vec3 cor2(max.x, min.y, min.z);
-											glm::vec3 cor3(max.x, min.y, max.z);
-											glm::vec3 cor4(min.x, min.y, max.z);
-											glm::vec3 cor5(min.x, max.y, max.z);
-											glm::vec3 cor6(min.x, max.y, min.z);
-											glm::vec3 cor7(max.x, max.y, min.z);
-											glm::mat3 TransformMatrix(glm::vec3(_Transform.m[0][0], _Transform.m[1][0], _Transform.m[2][0]),
-																	  glm::vec3(_Transform.m[0][1], _Transform.m[1][1], _Transform.m[2][1]),
-																	  glm::vec3(_Transform.m[0][2], _Transform.m[1][2], _Transform.m[2][2]));
+												bool Enemy = false, Visible = false;
+												if (Ent->GetTeam() != LocalPlayer->GetTeam())
+												{
+													Enemy = true;
 
-											glm::vec3 crnr2 = glmPos + cor2 * TransformMatrix;
-											glm::vec3 crnr3 = glmPos + cor3 * TransformMatrix;
-											glm::vec3 crnr4 = glmPos + cor4 * TransformMatrix;
-											glm::vec3 crnr5 = glmPos + cor5 * TransformMatrix;
-											glm::vec3 crnr6 = glmPos + cor6 * TransformMatrix;
-											glm::vec3 crnr7 = glmPos + cor7 * TransformMatrix;
-											min = glmPos + min * TransformMatrix;
-											max = glmPos + max * TransformMatrix;
+													if (!EntSoldier->m_Occluded) // czy go widac?
+													{
+														Visible = true;
+														BoxColor = Color(0, 255, 0, 255);
+													}
+													else
+														BoxColor = Color(255, 0, 0, 255);
+												}
 
-											Vector3 MyHeadPos;
-											/*//Hope it's not wrong to post it here, but sometimes the medic is unable to revice someone. https://github.com/Tonyx97/BF1-Internal/issues/7
-											Vector3 MyHeadPos = LPSoldier->GetPosition(); // Feet Position, fix for Revive Bug
-											//LocalPlayer->GetSoldier()->GetBonePosition(MyHeadPos, HEAD); // Creates Revive Bug*/
+												float BoxSY = FeetSP.y - HeadSP.y;
+												float BoxSX = BoxSY / 2.f;
+												float BoxX = HeadSP.x - BoxSX / 2.f;
+												float BoxY = HeadSP.y;
+												float HP = EntSoldier->HealthComponent->HP;
 
-											if (Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->prediction))  //local player on feet; GetPosition() works OK
-												Vector3 MyHeadPos = LPSoldier->GetPosition(); // Feet Position, fix for Revive Bug
-											else     //local player in vehicle; GetPosition() crash! => Take position from HEAD, not from GetPosition() prediction
-												LPSoldier->GetBonePositionLP(MyHeadPos, HEAD); // Creates Revive Bug. Not aymore
+												if (Features::ShowESPBoxes)
+												{
+													DrawEmptyBox(BoxX - 1, BoxY - 1, BoxSX, BoxSY + 2, 3, Color(0, 0, 0, 175));
+													DrawEmptyBox(BoxX, HeadSP.y, BoxSX, BoxSY, 1, BoxColor);
+												}
 
-											float dist = Vector3::Distance(Vector3(min.x, min.y, min.z), MyHeadPos);
-											if ( (Mem::IsValid(LocalPlayer->GetCurrentVehicle()) ? true : (dist >= .01f && dist < Features::ESPDistance) ) &&  //if in vehicle show all, no matter distance (bugfix)
-												/*dist >= 1.f && dist < Features::ESPDistance &&*/
-												Game::W2S(Vector3(min.x, min.y, min.z), minSP) &&
-												Game::W2S(Vector3(max.x, max.y, max.z), maxSP) &&
-												Game::W2S(Vector3(crnr2.x, crnr2.y, crnr2.z), cor2SP) &&
-												Game::W2S(Vector3(crnr3.x, crnr3.y, crnr3.z), cor3SP) &&
-												Game::W2S(Vector3(crnr4.x, crnr4.y, crnr4.z), cor4SP) &&
-												Game::W2S(Vector3(crnr5.x, crnr5.y, crnr5.z), cor5SP) &&
-												Game::W2S(Vector3(crnr6.x, crnr6.y, crnr6.z), cor6SP) &&
-												Game::W2S(Vector3(crnr7.x, crnr7.y, crnr7.z), cor7SP) &&
-												Game::W2S(Vector3(glmPos.x, glmPos.y /*+ (max.y - min.y)*/, glmPos.z), NameSP))
-											{
-												DrawDXText(NameSP.x, NameSP.y, 0.8f, true, 0.f, Color(0, 255, 255, 255), true, "%s", Vehicle->GetName().c_str());
+												if (!Mem::IsValid(LocalPlayer->GetCurrentVehicle())) {  //sorry, no ESP distance in vehicle. bugfix
+													std::string Distance;
+													if (Features::ShowName) Distance = "\n[" + std::to_string(static_cast<int>(dist)) + " m]";
+													else  Distance = "[" + std::to_string(static_cast<int>(dist)) + " m]";
+													DrawDXText(BoxX - 10.f, Features::ShowHealth ? BoxY + BoxSY + 4.f : BoxY + BoxSY, 0.6f, false, 0.f, Color(255, 255, 255, 255), true, "%s%s", Features::ShowName ? Ent->Name : "", Features::ShowDistance ? Distance.c_str() : "");
+												}
+												else
+													DrawDXText(BoxX - 10.f, Features::ShowHealth ? BoxY + BoxSY + 4.f : BoxY + BoxSY, 0.6f, false, 0.f, Color(255, 255, 255, 255), true, "%s", Features::ShowName ? Ent->Name : "");
 
-												DrawLine(minSP.x, minSP.y, cor4SP.x, cor4SP.y, BoxColor);
-												DrawLine(minSP.x, minSP.y, cor2SP.x, cor2SP.y, BoxColor);
-												DrawLine(minSP.x, minSP.y, cor6SP.x, cor6SP.y, BoxColor);
-												DrawLine(maxSP.x, maxSP.y, cor5SP.x, cor5SP.y, BoxColor);
-												DrawLine(maxSP.x, maxSP.y, cor7SP.x, cor7SP.y, BoxColor);
-												DrawLine(maxSP.x, maxSP.y, cor3SP.x, cor3SP.y, BoxColor);
-												DrawLine(cor7SP.x, cor7SP.y, cor6SP.x, cor6SP.y, BoxColor);
-												DrawLine(cor7SP.x, cor7SP.y, cor2SP.x, cor2SP.y, BoxColor);
-												DrawLine(cor6SP.x, cor6SP.y, cor5SP.x, cor5SP.y, BoxColor);
-												DrawLine(cor6SP.x, cor6SP.y, cor7SP.x, cor7SP.y, BoxColor);
-												DrawLine(cor2SP.x, cor2SP.y, cor3SP.x, cor3SP.y, BoxColor);
-												DrawLine(cor3SP.x, cor3SP.y, cor4SP.x, cor4SP.y, BoxColor);
-												DrawLine(cor4SP.x, cor4SP.y, cor5SP.x, cor5SP.y, BoxColor);
+												if (Features::ShowHealth)
+												{
+													DrawBox(BoxX - 1, FeetSP.y + 2, (HP * BoxSX) / 100 + 3, 5, Color(0, 0, 0, 255));
+													DrawBox(BoxX, FeetSP.y + 3, (HP * BoxSX) / 100 + 1, 3, Color(((100 - HP) * 255) / 100, (HP * 255) / 100, 0, 255));
+												}
+
+												/*for (int i = 0; i < 200; i++)
+												{
+												Vector3 fucking, f2;
+												EntSoldier->GetBonePosition(fucking, i);
+												Game::W2S(fucking, f2);
+												DrawDXText(f2.x, f2.y, 0.5f, true, 0.f, Color(255, 255, 255, 255), true, "%i", i);
+												}*/ //BONES TEST
+
+												if (Features::ShowBones)
+												{
+													Vector3 NeckSP, ChestSP, StomachSP, HipSP, LShoulderSP, LBicepsSP, LElbowSP, LUlnaSP, LHandSP, LFemurSP, LKneeSP, LShinboneSP, LMalleolusSP, LTipToeSP,
+														RShoulderSP, RBicepsSP, RElbowSP, RUlnaSP, RHandSP, RFemurSP, RKneeSP, RShinboneSP, RMalleolusSP, RTipToeSP, NeckPos, ChestPos, StomachPos, HipPos,
+														LShoulderPos, LBicepsPos, LElbowPos, LUlnaPos, LHandPos, LFemurPos, LKneePos, LShinbonePos, LMalleolusPos, LTipToePos, RShoulderPos, RBicepsPos,
+														RElbowPos, RUlnaPos, RHandPos, RFemurPos, RKneePos, RShinbonePos, RMalleolusPos, RTipToePos;
+
+													EntSoldier->GetBonePosition(HeadPos, HEAD/*53*/);
+													EntSoldier->GetBonePosition(NeckPos, NECK);
+													/*Vector3 fucking, f2;
+													EntSoldier->GetBonePosition(fucking, HEAD);
+													Game::W2S(fucking, f2);
+													DrawCircle(f2.x, f2.y, Color(255, 0, 0, 255), 4.f, 10);*/
+													EntSoldier->GetBonePosition(ChestPos, CHEST);
+													EntSoldier->GetBonePosition(StomachPos, STOMACH);
+													EntSoldier->GetBonePosition(HipPos, HIP);
+
+													EntSoldier->GetBonePosition(LShoulderPos, LEFT_SHOULDER);
+													EntSoldier->GetBonePosition(LBicepsPos, LEFT_BICEPS);
+													EntSoldier->GetBonePosition(LElbowPos, LEFT_ELBOW);
+													EntSoldier->GetBonePosition(LUlnaPos, LEFT_ULNA);
+													EntSoldier->GetBonePosition(LHandPos, LEFT_HAND);
+													EntSoldier->GetBonePosition(LFemurPos, LEFT_FEMUR);
+													EntSoldier->GetBonePosition(LKneePos, LEFT_KNEE);
+													EntSoldier->GetBonePosition(LShinbonePos, LEFT_SHINBONE);
+													EntSoldier->GetBonePosition(LMalleolusPos, LEFT_MALLEOLUS);
+													EntSoldier->GetBonePosition(LTipToePos, LEFT_TIPTOE);
+
+													EntSoldier->GetBonePosition(RShoulderPos, RIGHT_SHOULDER);
+													EntSoldier->GetBonePosition(RBicepsPos, RIGHT_BICEPS);
+													EntSoldier->GetBonePosition(RElbowPos, RIGHT_ELBOW);
+													EntSoldier->GetBonePosition(RUlnaPos, RIGHT_ULNA);
+													EntSoldier->GetBonePosition(RHandPos, RIGHT_HAND);
+													EntSoldier->GetBonePosition(RFemurPos, RIGHT_FEMUR);
+													EntSoldier->GetBonePosition(RKneePos, RIGHT_KNEE);
+													EntSoldier->GetBonePosition(RShinbonePos, RIGHT_SHINBONE);
+													EntSoldier->GetBonePosition(RMalleolusPos, RIGHT_MALLEOLUS);
+													EntSoldier->GetBonePosition(RTipToePos, RIGHT_TIPTOE);
+
+													if (Game::W2S(HeadPos, HeadSP) &&
+														Game::W2S(NeckPos, NeckSP) &&
+														//Game::W2S(ChestPos, ChestSP) &&
+														//Game::W2S(StomachPos, StomachSP) &&
+														Game::W2S(HipPos, HipSP) &&
+														Game::W2S(LShoulderPos, LShoulderSP) &&
+														Game::W2S(LBicepsPos, LBicepsSP) &&
+														Game::W2S(LElbowPos, LElbowSP) &&
+														Game::W2S(LUlnaPos, LUlnaSP) &&
+														Game::W2S(LHandPos, LHandSP) &&
+														Game::W2S(LFemurPos, LFemurSP) &&
+														Game::W2S(LKneePos, LKneeSP) &&
+														Game::W2S(LShinbonePos, LShinboneSP) &&
+														Game::W2S(LMalleolusPos, LMalleolusSP) &&
+														Game::W2S(LTipToePos, LTipToeSP) &&
+														Game::W2S(RShoulderPos, RShoulderSP) &&
+														Game::W2S(RBicepsPos, RBicepsSP) &&
+														Game::W2S(RElbowPos, RElbowSP) &&
+														Game::W2S(RUlnaPos, RUlnaSP) &&
+														Game::W2S(RHandPos, RHandSP) &&
+														Game::W2S(RFemurPos, RFemurSP) &&
+														Game::W2S(RKneePos, RKneeSP) &&
+														Game::W2S(RShinbonePos, RShinboneSP) &&
+														Game::W2S(RMalleolusPos, RMalleolusSP) &&
+														Game::W2S(RTipToePos, RTipToeSP))
+													{
+														Color BonesColor = Color(0, 255, 255, 255);
+														if (Enemy)
+														{
+															if (Visible)
+																BonesColor = Color(0, 255, 0, 255);
+															else
+																BonesColor = Color(255, 0, 0, 255);
+														}
+
+														float HeadSize = sqrt(pow(HeadSP.x - NeckSP.x, 2) + pow(HeadSP.y - NeckSP.y, 2));
+														DrawCircle(HeadSP.x, HeadSP.y, BonesColor, HeadSize / 2.7, 10);
+														//DrawCircle(HeadSP.x, HeadSP.y, BonesColor, 70.f / dist, 10);
+
+														DrawLine(HeadSP.x, HeadSP.y, NeckSP.x, NeckSP.y, BonesColor);
+														DrawLine(NeckSP.x, NeckSP.y, HipSP.x, HipSP.y, BonesColor);
+
+														DrawLine(NeckSP.x, NeckSP.y, LShoulderSP.x, LShoulderSP.y, BonesColor);
+														DrawLine(LShoulderSP.x, LShoulderSP.y, LBicepsSP.x, LBicepsSP.y, BonesColor);
+														DrawLine(LBicepsSP.x, LBicepsSP.y, LElbowSP.x, LElbowSP.y, BonesColor);
+														DrawLine(LElbowSP.x, LElbowSP.y, LHandSP.x, LHandSP.y, BonesColor);
+
+														DrawLine(NeckSP.x, NeckSP.y, RShoulderSP.x, RShoulderSP.y, BonesColor);
+														DrawLine(RShoulderSP.x, RShoulderSP.y, RBicepsSP.x, RBicepsSP.y, BonesColor);
+														DrawLine(RBicepsSP.x, RBicepsSP.y, RElbowSP.x, RElbowSP.y, BonesColor);
+														DrawLine(RElbowSP.x, RElbowSP.y, RHandSP.x, RHandSP.y, BonesColor);
+
+														DrawLine(HipSP.x, HipSP.y, LFemurSP.x, LFemurSP.y, BonesColor);
+														DrawLine(LFemurSP.x, LFemurSP.y, LKneeSP.x, LKneeSP.y, BonesColor);
+														DrawLine(LKneeSP.x, LKneeSP.y, LShinboneSP.x, LShinboneSP.y, BonesColor);
+														DrawLine(LShinboneSP.x, LShinboneSP.y, LMalleolusSP.x, LMalleolusSP.y, BonesColor);
+														DrawLine(LMalleolusSP.x, LMalleolusSP.y, LTipToeSP.x, LTipToeSP.y, BonesColor);
+
+														DrawLine(HipSP.x, HipSP.y, RFemurSP.x, RFemurSP.y, BonesColor);
+														DrawLine(RFemurSP.x, RFemurSP.y, RKneeSP.x, RKneeSP.y, BonesColor);
+														DrawLine(RKneeSP.x, RKneeSP.y, RShinboneSP.x, RShinboneSP.y, BonesColor);
+														DrawLine(RShinboneSP.x, RShinboneSP.y, RMalleolusSP.x, RMalleolusSP.y, BonesColor);
+														DrawLine(RMalleolusSP.x, RMalleolusSP.y, RTipToeSP.x, RTipToeSP.y, BonesColor);
+													}
+												}
 											}
 										}
 									}
-									//outputFile.close();  //log
+									if (Features::ShowVehicles && Mem::IsValid(Ent->GetCurrentVehicle()))
+									{
+										TransformAABBStruct _AABB;
+										Vector3 minSP, maxSP, cor2SP, cor3SP, cor4SP, cor5SP, cor6SP, cor7SP, NameSP;
+										CVehicleEntity* Vehicle = Ent->GetCurrentVehicle();
+										Matrix _Transform;
+										Vehicle->GetTransform(&_Transform);
+										Vector3 Position = Vector3(_Transform.m[3][0], _Transform.m[3][1], _Transform.m[3][2]);
+										glm::vec3 glmPos = glm::vec3(Position.x, Position.y, Position.z);
+
+										Color BoxColor = Color(0, 0, 150, 255);
+
+										//to fix the vehicle friend/enemy color issue (all of them having the same color), change the following line
+										//https://www.unknowncheats.me/forum/battlefield-1-a/210381-bf1-internal-hack-source-3.html
+										//if (Vehicle->GetTeam() != LocalPlayer->GetTeam())
+										if (Ent->GetTeam() != LocalPlayer->GetTeam())
+											BoxColor = Color(255, 220, 0, 255);
+										else
+											if (!Features::ESPShowFriends)
+												continue;
+
+										Vehicle->GetAABB(&_AABB);
+
+										glm::vec3 min = glm::vec3(_AABB.AABB.m_Min.x, _AABB.AABB.m_Min.y, _AABB.AABB.m_Min.z);
+										glm::vec3 max = glm::vec3(_AABB.AABB.m_Max.x, _AABB.AABB.m_Max.y, _AABB.AABB.m_Max.z);
+										glm::vec3 cor2(max.x, min.y, min.z);
+										glm::vec3 cor3(max.x, min.y, max.z);
+										glm::vec3 cor4(min.x, min.y, max.z);
+										glm::vec3 cor5(min.x, max.y, max.z);
+										glm::vec3 cor6(min.x, max.y, min.z);
+										glm::vec3 cor7(max.x, max.y, min.z);
+										glm::mat3 TransformMatrix(glm::vec3(_Transform.m[0][0], _Transform.m[1][0], _Transform.m[2][0]),
+											glm::vec3(_Transform.m[0][1], _Transform.m[1][1], _Transform.m[2][1]),
+											glm::vec3(_Transform.m[0][2], _Transform.m[1][2], _Transform.m[2][2]));
+
+										glm::vec3 crnr2 = glmPos + cor2 * TransformMatrix;
+										glm::vec3 crnr3 = glmPos + cor3 * TransformMatrix;
+										glm::vec3 crnr4 = glmPos + cor4 * TransformMatrix;
+										glm::vec3 crnr5 = glmPos + cor5 * TransformMatrix;
+										glm::vec3 crnr6 = glmPos + cor6 * TransformMatrix;
+										glm::vec3 crnr7 = glmPos + cor7 * TransformMatrix;
+										min = glmPos + min * TransformMatrix;
+										max = glmPos + max * TransformMatrix;
+
+										Vector3 MyHeadPos;
+										/*//Hope it's not wrong to post it here, but sometimes the medic is unable to revice someone. https://github.com/Tonyx97/BF1-Internal/issues/7
+										Vector3 MyHeadPos = LPSoldier->GetPosition(); // Feet Position, fix for Revive Bug
+										//LocalPlayer->GetSoldier()->GetBonePosition(MyHeadPos, HEAD); // Creates Revive Bug*/
+
+										if (Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->prediction))  //local player on feet; GetPosition() works OK
+											Vector3 MyHeadPos = LPSoldier->GetPosition(); // Feet Position, fix for Revive Bug
+										else     //local player in vehicle; GetPosition() crash! => Take position from HEAD, not from GetPosition() prediction
+											LPSoldier->GetBonePositionLP(MyHeadPos, HEAD); // Creates Revive Bug. Not aymore
+
+										float dist = Vector3::Distance(Vector3(min.x, min.y, min.z), MyHeadPos);
+										if ((Mem::IsValid(LocalPlayer->GetCurrentVehicle()) ? true : (dist >= .01f && dist < Features::ESPDistance)) &&  //if in vehicle show all, no matter distance (bugfix)
+																																						 /*dist >= 1.f && dist < Features::ESPDistance &&*/
+											Game::W2S(Vector3(min.x, min.y, min.z), minSP) &&
+											Game::W2S(Vector3(max.x, max.y, max.z), maxSP) &&
+											Game::W2S(Vector3(crnr2.x, crnr2.y, crnr2.z), cor2SP) &&
+											Game::W2S(Vector3(crnr3.x, crnr3.y, crnr3.z), cor3SP) &&
+											Game::W2S(Vector3(crnr4.x, crnr4.y, crnr4.z), cor4SP) &&
+											Game::W2S(Vector3(crnr5.x, crnr5.y, crnr5.z), cor5SP) &&
+											Game::W2S(Vector3(crnr6.x, crnr6.y, crnr6.z), cor6SP) &&
+											Game::W2S(Vector3(crnr7.x, crnr7.y, crnr7.z), cor7SP) &&
+											Game::W2S(Vector3(glmPos.x, glmPos.y /*+ (max.y - min.y)*/, glmPos.z), NameSP))
+										{
+											DrawDXText(NameSP.x, NameSP.y, 0.8f, true, 0.f, Color(0, 255, 255, 255), true, "%s", Vehicle->GetName().c_str());
+
+											DrawLine(minSP.x, minSP.y, cor4SP.x, cor4SP.y, BoxColor);
+											DrawLine(minSP.x, minSP.y, cor2SP.x, cor2SP.y, BoxColor);
+											DrawLine(minSP.x, minSP.y, cor6SP.x, cor6SP.y, BoxColor);
+											DrawLine(maxSP.x, maxSP.y, cor5SP.x, cor5SP.y, BoxColor);
+											DrawLine(maxSP.x, maxSP.y, cor7SP.x, cor7SP.y, BoxColor);
+											DrawLine(maxSP.x, maxSP.y, cor3SP.x, cor3SP.y, BoxColor);
+											DrawLine(cor7SP.x, cor7SP.y, cor6SP.x, cor6SP.y, BoxColor);
+											DrawLine(cor7SP.x, cor7SP.y, cor2SP.x, cor2SP.y, BoxColor);
+											DrawLine(cor6SP.x, cor6SP.y, cor5SP.x, cor5SP.y, BoxColor);
+											DrawLine(cor6SP.x, cor6SP.y, cor7SP.x, cor7SP.y, BoxColor);
+											DrawLine(cor2SP.x, cor2SP.y, cor3SP.x, cor3SP.y, BoxColor);
+											DrawLine(cor3SP.x, cor3SP.y, cor4SP.x, cor4SP.y, BoxColor);
+											DrawLine(cor4SP.x, cor4SP.y, cor5SP.x, cor5SP.y, BoxColor);
+										}
+									}
 								}
+								//outputFile.close();  //log
 							}
 						}
 					}
+				}
 			}
 		}
 		/////log show on screen/////////////////////////
 		if (!SSCleaner->NeedSS && Mem::IsValid(Log.get())) //log got something => alert, show on screen last line
-			if (Log->Buf.size() && LastLogSize != Log->Buf.size()){
+			if (Log->Buf.size() && LastLogSize != Log->Buf.size()) {
 				if (GetTickCount() - LastTick < 15000) { // Show time 15 sec.
 					if (GetTickCount() - LastTick > 1000) //show 1 sec after added log just to be safe when use of Features::giveCleanSS to not capture log printed on screen (although they are one thread sequently called)
 						DrawDXText(ScreenSX / 2.f, (ScreenSY * 0.91f) - 25.f, 1.f, true, 0.f, Color(255, 0, 70, 200), true, "%s", Log->GetLastLine());
@@ -724,13 +725,27 @@ HRESULT HookedDX11Renderer(IDXGISwapChain* _SwapChain, UINT SyncInterval, UINT F
 {
 	if (!_Initialized) _Initialized = DX11->InitDX11RenderStuff(_SwapChain);
 
+	////fix 05.09.2017////////////////////////
+	DX11->DX11Device->GetImmediateContext(&(DX11->DX11DeviceContext));
+
+	Dx11RenderTargetView* pDxRenderTargetView = Mem::ReadPtr<Dx11RenderTargetView*>({ OFFSET_DXRENDERER, 0x820, 0x02B8 }, true);
+	if (!pDxRenderTargetView) exit(1);
+
+	ID3D11RenderTargetView* pTargetViews[0x8];
+	for (int i = 0; i < pDxRenderTargetView->m_targetCount; i++)
+		pTargetViews[i] = pDxRenderTargetView->m_renderTargetViews[i];
+
+	DX11->DX11DeviceContext->OMSetRenderTargets(pDxRenderTargetView->m_targetCount, pTargetViews, pDxRenderTargetView->m_depthStencilView);
+	DX11->DX11BackBuffer = (ID3D11Texture2D*)pTargetViews;
+	//////////////////////////////////////////////
+
 	DX11->DX11RenderScene();
 
 	return DX11HookPresent(_SwapChain, SyncInterval, Flags);
 }
 
 DWORD DX11Renderer::InitDevice(HMODULE _DllModule, const wchar_t* HWNDTarget)
-{		
+{
 	while (true)
 	{
 		if (GetAsyncKeyState(key_StartHack)) break;  //VK_END
@@ -752,9 +767,9 @@ DWORD DX11Renderer::InitDevice(HMODULE _DllModule, const wchar_t* HWNDTarget)
 	ScreenSY = TarDims.bottom - TarDims.top;
 
 	Crosshair = false;
-	//radar_size = 200;
 
-	IDXGISwapChain* sc = Mem::ReadPtr<IDXGISwapChain*>({ OFFSET_DXRENDERER, 0x7F0, 0x280 }, true);
+	//IDXGISwapChain* sc = Mem::ReadPtr<IDXGISwapChain*>({ OFFSET_DXRENDERER, 0x7F0, 0x280 }, true);
+	IDXGISwapChain* sc = Mem::ReadPtr<IDXGISwapChain*>({ OFFSET_DXRENDERER, 0x7F0 + 0x30, 0x280, 0x10 }, true);  //IDXGISwapChain* m_swapChain; //0x0010  https://www.unknowncheats.me/forum/1799228-post1160.html   https://www.unknowncheats.me/forum/battlefield-1-a/186728-battlefield-1-reversing-struct-offsets-thread-59.html
 	if (!Mem::IsValid(sc))
 		exit(1);
 
@@ -766,10 +781,10 @@ DWORD DX11Renderer::InitDevice(HMODULE _DllModule, const wchar_t* HWNDTarget)
 	DX11HookPresent = PresentHook->GetOriginal<D3D11PresentHook>();
 
 	pfh = NULL;
-	pfh = new CVMTHookManager64((QWORD**)BorderInputNode::Get()->input_node);  //disable this if you dont have BORDER_INPUT_NODE
-	PerFrameHook = (PerFrameHook_t)pfh->dwGetMethodAddress(3);   //disable this if you dont have BORDER_INPUT_NODE
-	pfh->dwHookMethod((DWORD64)HookedPerFrame, 3);    //disable this if you dont have BORDER_INPUT_NODE
-	
+	//pfh = new CVMTHookManager64((QWORD**)BorderInputNode::Get()->input_node);  //disable this if you dont have BORDER_INPUT_NODE
+	//PerFrameHook = (PerFrameHook_t)pfh->dwGetMethodAddress(3);   //disable this if you dont have BORDER_INPUT_NODE
+	//pfh->dwHookMethod((DWORD64)HookedPerFrame, 3);    //disable this if you dont have BORDER_INPUT_NODE
+
 	IHooks::Initialize(Target);
 
 	while (true)
@@ -1031,7 +1046,7 @@ void DX11Renderer::DrawTriangle(float angle1x, float angle1y, float angle2x, flo
 void DX11Renderer::DrawCircle(float x, float y, Color color, float radius, int _s)
 {
 	if (!Initialized) return;
-	float Angle = (360.0f / _s)*(3.1415926f / 180); 
+	float Angle = (360.0f / _s)*(3.1415926f / 180);
 
 	float Cos = cos(Angle);
 	float Sin = sin(Angle);
@@ -1070,7 +1085,7 @@ void DX11Renderer::CleanupDevice()
 	DX11DeviceContext->Release();
 	PresentHook->UnHook();
 	//DetourPerFrameHook->UnHook();
-	if (pfh != NULL ) pfh->UnHook();
+	if (pfh != NULL) pfh->UnHook();
 	if (SSCleaner->BitBltState) SSCleaner->BitBltHook->UnHook();
 	if (SSCleaner->CopyResourceState) SSCleaner->CopyResourceHook->UnHook();
 	if (SSCleaner->CopySubresourceRegionState) SSCleaner->CopySubresourceHook->UnHook();
@@ -1274,4 +1289,3 @@ void DXTKStateSaver::releaseSavedState()
 
 std::unique_ptr<DX11Renderer> DX11;
 std::unique_ptr<CLog> Log;
-

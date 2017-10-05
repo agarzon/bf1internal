@@ -78,11 +78,11 @@ struct CLog
 		sprintf(tmp, "%d", Buf.Buf.size());
 		return tmp;*/
 		if (Buf.Buf.size() == 0)
-			return NULL;	
-		
-		for (int i = Buf.Buf.size()-3; i >= 0; i--) {
+			return NULL;
+
+		for (int i = Buf.Buf.size() - 3; i >= 0; i--) {
 			if (Buf.Buf.Data[i] == '\n')
-				return &Buf.Buf.Data[i+1];
+				return &Buf.Buf.Data[i + 1];
 			if (i == 0)  //in case only one line in the log
 				return Buf.Buf.begin();
 
@@ -113,7 +113,7 @@ private:
 
 	D3D11_BLEND_DESC BlendStateDesc;
 	ID3D11BlendState* AlphaOnBlendState;
-	
+
 	std::unique_ptr<PrimitiveBatch<VertexPositionColor>> DX11Batch;
 	std::unique_ptr<BasicEffect>						 DX11BatchEffects;
 	std::unique_ptr<EffectFactory>						 DX11FXFactory;
@@ -149,7 +149,7 @@ private:
 	void DX11End();
 
 	void CleanupDevice();
-	
+
 	bool Crosshair; //draw Crosshair	
 	float rad_orginX; //radar X centre
 	float rad_orginY; //radar Y centre (bottom rather)
@@ -298,5 +298,7 @@ extern int key_NECK;
 extern int key_HIP;
 extern int key_TestSSBitBlt;
 extern int key_TestSSCopyResource;
+extern int key_Aim1;
+extern int key_Aim2;
 
 #endif DX11_INCLUDE

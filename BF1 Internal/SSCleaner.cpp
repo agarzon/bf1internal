@@ -3,12 +3,12 @@
 #include "DX11.h"
 
 //HOOKED FUNCTIONS
-   //BitBlt() is used by PunkBuster/FF to make screenshots. When FF call BitBlt() it will call our hooked hkBitBlt(). Called in SAME thread after DX11Renderer::DX11RenderScene(), so can not use mutex to sync and undraw the ESP and provide clean screenshot, this idea did not worked
+//BitBlt() is used by PunkBuster/FF to make screenshots. When FF call BitBlt() it will call our hooked hkBitBlt(). Called in SAME thread after DX11Renderer::DX11RenderScene(), so can not use mutex to sync and undraw the ESP and provide clean screenshot, this idea did not worked
 BOOL hkBitBlt(HDC destination, int x_destination, int y_destination, int width, int height, HDC source, int x_source, int y_source, DWORD rop)
 {
-	BOOL BitBltResult=false;
+	BOOL BitBltResult = false;
 	auto PO = SSCleaner->BitBltHook->GetProtectionObject();
-	
+
 	if (ShowLogAlert && SSCleaner->NeedSS) { //if any log shown on screen, do not make screeshot	  
 		return false;  //called by us durring log shown on screen. Just skip and dont log anything
 	}
@@ -24,13 +24,13 @@ BOOL hkBitBlt(HDC destination, int x_destination, int y_destination, int width, 
 		//Log->AddLog("Screenshot BitBlt call by us %i x %i\n", width, height);
 		return BitBltResult;
 	}
-	else if(Features::giveAutoCleanSS && !SSCleaner->NeedSS) {  //BitBlt not called by us => called by FF, so spoof the source HDC
+	else if (Features::giveAutoCleanSS && !SSCleaner->NeedSS) {  //BitBlt not called by us => called by FF, so spoof the source HDC
 		BitBltResult = SSCleaner->oBitBlt(destination, x_destination, y_destination, width, height, SSCleaner->GetCleanSSMemoryDC(), x_source, y_source, rop);
 		HDCToFile("..\\hkBitBlt_spoofed.bmp", SSCleaner->GetCleanSSMemoryDC(), { x_source, y_source, width, height });
 		Log->AddLog("Screenshot BitBlt spoofed %i x %i\n", width, height);
 		return BitBltResult;
 	}
-	
+
 	//assume Features::giveAutoCleanSS=false
 	if (giveCleanSS) {  //if giveCleanSS On, let FF make clean screenshot
 		BitBltResult = SSCleaner->oBitBlt(destination, x_destination, y_destination, width, height, source, x_source, y_source, rop);
@@ -41,16 +41,16 @@ BOOL hkBitBlt(HDC destination, int x_destination, int y_destination, int width, 
 		BitBltResult = false;  //do not give screenshot to FF
 		HDCToFile("..\\hkBitBlt_blocked.bmp", source, { x_source, y_source, width, height });
 		Log->AddLog("Attempted and blocked screenshot BitBlt %i x %i\n", width, height);  //the others x_destination y_destination x_source y_source are =0
-	}	
+	}
 
 	return BitBltResult; // SSCleaner->oBitBlt(destination, x_destination, y_destination, width, height, source, x_source, y_source, rop);   //the others x_destination y_destination x_source y_source are =0
 }
 
-   //CopyResource() is used by FairFight to make screenshots
+//CopyResource() is used by FairFight to make screenshots
 void hkCopyResource(ID3D11DeviceContext* DeviceContext, ID3D11Resource* DestResource, ID3D11Resource* SrcResource)
 {
 	auto PO = SSCleaner->CopyResourceHook->GetProtectionObject();
-	
+
 	if (DestResource)
 	{
 		ID3D11Texture2D* texture_2d = static_cast<ID3D11Texture2D*>(DestResource);
@@ -71,10 +71,10 @@ void hkCopyResource(ID3D11DeviceContext* DeviceContext, ID3D11Resource* DestReso
 			}
 
 			if (Features::giveAutoCleanSS && SSCleaner->NeedSS) {  //CopyResource called by us automatically, not by FF, so let it go
-				//HDC dxDC = GetDC(DX11->WTarget /*GetForegroundWindow()*/);
-				//WriteBMP(extractBitmap(static_cast<ID3D11Texture2D*>(SrcResource)), dxDC, L"..\\hkCopyResource_CallByUs.bmp");
-				//ReleaseDC(DX11->WTarget, dxDC);
-				//Log->AddLog("Screenshot CopyResource call by us %i x %i\n", desc.Width, desc.Height);
+																   //HDC dxDC = GetDC(DX11->WTarget /*GetForegroundWindow()*/);
+																   //WriteBMP(extractBitmap(static_cast<ID3D11Texture2D*>(SrcResource)), dxDC, L"..\\hkCopyResource_CallByUs.bmp");
+																   //ReleaseDC(DX11->WTarget, dxDC);
+																   //Log->AddLog("Screenshot CopyResource call by us %i x %i\n", desc.Width, desc.Height);
 				return SSCleaner->oCopyResource(DeviceContext, DestResource, SrcResource);
 			}
 			else if (Features::giveAutoCleanSS && !SSCleaner->NeedSS) {  //CopyResource not called by us => called by FF, so spoof the source DX texture
@@ -102,11 +102,11 @@ void hkCopyResource(ID3D11DeviceContext* DeviceContext, ID3D11Resource* DestReso
 			}
 		}
 		//Log->AddLog("CopyResource: %i x %i\n", desc.Width, desc.Height);
-	}	
+	}
 	return SSCleaner->oCopyResource(DeviceContext, DestResource, SrcResource);
 }
 
-   //CopySubresourceRegion() is used by (PunkBuster/FairFight) to make screenshots
+//CopySubresourceRegion() is used by (PunkBuster/FairFight) to make screenshots
 void hkCopySubresourceRegion(ID3D11DeviceContext* device_context, ID3D11Resource* destination_resource, unsigned int destination_subresource, unsigned int destination_x, unsigned int destination_y, unsigned int destination_z, ID3D11Resource* source_resource, unsigned int source_subresource, const D3D11_BOX* source_box)
 {
 	auto PO = SSCleaner->CopySubresourceHook->GetProtectionObject();
@@ -123,7 +123,7 @@ void hkCopySubresourceRegion(ID3D11DeviceContext* device_context, ID3D11Resource
 			/*HDC dxDC = GetDC(DX11->WTarget);
 			wchar_t fname[60] = { 0 };
 			swprintf(fname, L"..\\hkCopySubresourceRegion_%d.bmp", rand() % 100);
-			WriteBMP(extractBitmap(static_cast<ID3D11Texture2D*>(source_resource)), dxDC, fname);  
+			WriteBMP(extractBitmap(static_cast<ID3D11Texture2D*>(source_resource)), dxDC, fname);
 			ReleaseDC(DX11->WTarget, dxDC);
 			Log->AddLog("CopySubresourceRegion called: desc.Width=%d desc.Height=%d\n", desc.Width, desc.Height);
 			return SSCleaner->oCopySubresource(device_context, destination_resource, destination_subresource, destination_x, destination_y, destination_z, SSCleaner->GetCleanSSTexture(), source_subresource, source_box);  //spoof the screenshot*/
@@ -140,10 +140,10 @@ void hkCopySubresourceRegion(ID3D11DeviceContext* device_context, ID3D11Resource
 			}
 
 			if (Features::giveAutoCleanSS && SSCleaner->NeedSS) {  //CopySubresourceRegion called by us automatically, not by FF, so let it go
-				//HDC dxDC = GetDC(DX11->WTarget /*GetForegroundWindow()*/);
-				//WriteBMP(extractBitmap(static_cast<ID3D11Texture2D*>(source_resource)), dxDC, L"..\\hkCopySubresourceRegion_CallByUs.bmp");
-				//ReleaseDC(DX11->WTarget, dxDC);
-				//Log->AddLog("Screenshot CopySubresourceRegion call by us %i x %i\n", desc.Width, desc.Height);
+																   //HDC dxDC = GetDC(DX11->WTarget /*GetForegroundWindow()*/);
+																   //WriteBMP(extractBitmap(static_cast<ID3D11Texture2D*>(source_resource)), dxDC, L"..\\hkCopySubresourceRegion_CallByUs.bmp");
+																   //ReleaseDC(DX11->WTarget, dxDC);
+																   //Log->AddLog("Screenshot CopySubresourceRegion call by us %i x %i\n", desc.Width, desc.Height);
 				return SSCleaner->oCopySubresource(device_context, destination_resource, destination_subresource, destination_x, destination_y, destination_z, source_resource, source_subresource, source_box);
 			}
 			else if (Features::giveAutoCleanSS && !SSCleaner->NeedSS) {  //CopySubresourceRegion not called by us => called by FF, so spoof the source DX texture
@@ -171,7 +171,7 @@ void hkCopySubresourceRegion(ID3D11DeviceContext* device_context, ID3D11Resource
 			}
 		}
 		//Log->AddLog("CopySubresourceRegion: %i x %i\n", desc.Width, desc.Height);
-	}	
+	}
 	return SSCleaner->oCopySubresource(device_context, destination_resource, destination_subresource, destination_x, destination_y, destination_z, source_resource, source_subresource, source_box);
 }
 
@@ -184,7 +184,7 @@ bool CSSCleaner::HookBitBlt()
 	BitBltState = BitBltHook->Hook();
 	oBitBlt = BitBltHook->GetOriginal<BitBlt_t>();
 	/*if (BitBltState)
-		Log->AddLog("BB Hooked at %I64X\n", (QWORD)oBitBlt);*/
+	Log->AddLog("BB Hooked at %I64X\n", (QWORD)oBitBlt);*/
 	return BitBltState;
 }
 
@@ -196,7 +196,7 @@ bool CSSCleaner::HookCopyResource()
 	CopyResourceState = CopyResourceHook->Hook();
 	oCopyResource = CopyResourceHook->GetOriginal<CopyResource_t>();
 	/*if (CopyResourceState)
-		Log->AddLog("CR Hooked at %I64X\n", (QWORD)oCopyResource);*/
+	Log->AddLog("CR Hooked at %I64X\n", (QWORD)oCopyResource);*/
 	return CopyResourceState;
 }
 
@@ -208,13 +208,13 @@ bool CSSCleaner::HookCopySubresourceRegion()
 	CopySubresourceRegionState = CopySubresourceHook->Hook();
 	oCopySubresource = CopySubresourceHook->GetOriginal<CopySubresourceRegion_t>();
 	/*if (CopySubresourceRegionState)
-		Log->AddLog("CSR Hooked at %I64X\n", (QWORD)oCopySubresource);*/
+	Log->AddLog("CSR Hooked at %I64X\n", (QWORD)oCopySubresource);*/
 	return CopySubresourceRegionState;
 }
 
 //takes screenshot from Window DC into BMP
 void CSSCleaner::TakeSSBitBlt()
-{	
+{
 	wchar_t wnd_title[256];
 	HWND hwnd = GetForegroundWindow(); // get handle of currently active window
 	GetWindowText(hwnd, wnd_title, sizeof(wnd_title) / sizeof(wchar_t));
@@ -242,7 +242,7 @@ void CSSCleaner::TakeSSTexture()
 		CleanSStexture = nullptr;
 	}
 	DX11->DX11Device->CreateTexture2D(&ScreenShot, NULL, &CleanSStexture);
-	DX11->DX11DeviceContext->CopyResource(CleanSStexture, ScreenShotBuffer);	
+	DX11->DX11DeviceContext->CopyResource(CleanSStexture, ScreenShotBuffer);
 
 	ScreenShotBuffer->Release();
 	ScreenShotBuffer = nullptr;
@@ -262,7 +262,7 @@ void CSSCleaner::TakeSS()  //takes clean screenshot on every 30sec and store it 
 	}
 
 	if (NeedSS)
-	{	
+	{
 		if (!ShowLogAlert) { //if not log shown on screen, make screeshot	
 			TakeSSTexture();
 			TakeSSBitBlt();  //take screenshot for BitBlt memDC
@@ -354,6 +354,7 @@ HBITMAP extractBitmap(void* texture) {
 	// COPY from texture to bitmap buffer
 	uint8_t* sptr = reinterpret_cast<uint8_t*>(resource.pData);
 	uint8_t* dptr = new uint8_t[desc.Width*desc.Height * 4];
+	uint8_t* dptr_gb = dptr; //for garbage collect
 
 	for (size_t h = 0; h < desc.Height; ++h)
 	{
@@ -380,6 +381,8 @@ HBITMAP extractBitmap(void* texture) {
 	SetBitmapBits(hBitmapTexture, desc.Width*desc.Height * 4, dptr);
 
 	//hBitmap = CopyImage(hBitmapTexture, IMAGE_BITMAP, desc.Width, desc.Height, LR_CREATEDIBSECTION);
+	pNewTexture->Release();
+	delete[]dptr_gb; //delete memory leak
 	return hBitmapTexture;
 }
 
