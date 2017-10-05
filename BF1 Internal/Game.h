@@ -1,4 +1,3 @@
-
 #pragma once
 #include "stdafx.h"
 #include "DX11.h"
@@ -343,6 +342,14 @@ public:
 	static bool giveCleanSS;
 	static bool giveCleanSSwithRMB;
 	static bool MedicBugfix;
+	static Color ColorEnemyHidden;
+	static Color ColorEnemyVisible;
+	static Color ColorFriend;
+	static Color ColorName;
+	static Color ColorEnemyVehicle;
+	static Color ColorFriendVehicle;
+	static Color ColorCrosshair;
+	static Color ColorFOV;
 };
 
 enum eBones

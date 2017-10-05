@@ -50,10 +50,18 @@ bool Features::ShowDistance = false;
 bool Features::ShowESPBoxes = false;
 float Features::ESPDistance = 300.f; //999.f
 bool Features::giveAutoCleanSS = true;
-float Features::AutoCleanSSTimer = 15.0;
+float Features::AutoCleanSSTimer = 6.0;
 bool Features::giveCleanSS = false;
 bool Features::giveCleanSSwithRMB = true;
 bool Features::MedicBugfix = false;
+Color Features::ColorEnemyHidden(255, 0, 0, 255);
+Color Features::ColorEnemyVisible(0, 255, 0, 255);
+Color Features::ColorFriend(0, 255, 255, 255);
+Color Features::ColorName(10, 255, 255, 255);
+Color Features::ColorEnemyVehicle(255, 220, 0, 255);
+Color Features::ColorFriendVehicle(0, 0, 200, 255);
+Color Features::ColorCrosshair(255, 0, 0, 200);
+Color Features::ColorFOV(200, 10, 200, 255);
 
 std::map<QWORD, SwayDataSaved> SwayData;
 std::map<QWORD, BulletDataSaved> BulletData;

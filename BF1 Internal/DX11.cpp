@@ -59,7 +59,7 @@ void DX11Renderer::DX11RenderScene()
 						{
 							static bool MainMenu = true;
 							static bool LogOpened = true;
-							ImGui::SetNextWindowPos(ImVec2(0, 0));
+							//ImGui::SetNextWindowPos(ImVec2(0, 0)); //this make window not movable
 							if (ImGui::Begin("Del menu;N Names;+ Aimbot;- Recoil;InsHome Radar;F12 Save;F8 Quit"/*("BF! Hack - " + std::string(LocalPlayer->Name)).c_str()*/, &MainMenu, ImVec2(505, ScreenSY * 0.94), 0.9f, ImGuiWindowFlags_NoSavedSettings))
 							{
 								if (ImGui::CollapsingHeader("ESP"))
@@ -79,6 +79,53 @@ void DX11Renderer::DX11RenderScene()
 									ImGui::Checkbox("Show HP", &Features::ShowHealth);
 									ImGui::Checkbox("Show ESP Boxes", &Features::ShowESPBoxes);
 
+									ImGui::NextColumn();
+								}
+								ImGui::Columns(1, "##Columns_Color_1", false);
+								if (ImGui::CollapsingHeader("Colours")) {
+									ImGui::Columns(2, "##Columns_Color_2", false);
+									ImGui::TextColored(ImColor((int)Features::ColorEnemyHidden.R(), (int)Features::ColorEnemyHidden.G(), (int)Features::ColorEnemyHidden.B()), "Enemies Hidden");
+									ImGui::SliderFloat("Red", &Features::ColorEnemyHidden.x, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Green", &Features::ColorEnemyHidden.y, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Blue", &Features::ColorEnemyHidden.z, 0.f, 255.f, "%.0f");
+									ImGui::NextColumn();
+									ImGui::TextColored(ImColor((int)Features::ColorEnemyVisible.R(), (int)Features::ColorEnemyVisible.G(), (int)Features::ColorEnemyVisible.B()), "Enemies Visible");
+									ImGui::SliderFloat("Red ", &Features::ColorEnemyVisible.x, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Green ", &Features::ColorEnemyVisible.y, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Blue ", &Features::ColorEnemyVisible.z, 0.f, 255.f, "%.0f");
+									ImGui::NextColumn();
+
+									ImGui::TextColored(ImColor((int)Features::ColorFriend.R(), (int)Features::ColorFriend.G(), (int)Features::ColorFriend.B()), "Friends");
+									ImGui::SliderFloat("Red  ", &Features::ColorFriend.x, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Green  ", &Features::ColorFriend.y, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Blue  ", &Features::ColorFriend.z, 0.f, 255.f, "%.0f");
+									ImGui::NextColumn();
+									ImGui::TextColored(ImColor((int)Features::ColorName.R(), (int)Features::ColorName.G(), (int)Features::ColorName.B()), "Names");
+									ImGui::SliderFloat("Red   ", &Features::ColorName.x, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Green   ", &Features::ColorName.y, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Blue   ", &Features::ColorName.z, 0.f, 255.f, "%.0f");
+									ImGui::NextColumn();
+
+									ImGui::TextColored(ImColor((int)Features::ColorEnemyVehicle.R(), (int)Features::ColorEnemyVehicle.G(), (int)Features::ColorEnemyVehicle.B()), "Enemy Vehicles");
+									ImGui::SliderFloat("Red    ", &Features::ColorEnemyVehicle.x, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Green    ", &Features::ColorEnemyVehicle.y, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Blue    ", &Features::ColorEnemyVehicle.z, 0.f, 255.f, "%.0f");
+									ImGui::NextColumn();
+									ImGui::TextColored(ImColor((int)Features::ColorFriendVehicle.R(), (int)Features::ColorFriendVehicle.G(), (int)Features::ColorFriendVehicle.B()), "Friend Vehicles");
+									ImGui::SliderFloat("Red     ", &Features::ColorFriendVehicle.x, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Green     ", &Features::ColorFriendVehicle.y, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Blue     ", &Features::ColorFriendVehicle.z, 0.f, 255.f, "%.0f");
+									ImGui::NextColumn();
+
+									ImGui::TextColored(ImColor((int)Features::ColorCrosshair.R(), (int)Features::ColorCrosshair.G(), (int)Features::ColorCrosshair.B()), "Crosshair");
+									ImGui::SliderFloat("Red      ", &Features::ColorCrosshair.x, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Green      ", &Features::ColorCrosshair.y, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Blue      ", &Features::ColorCrosshair.z, 0.f, 255.f, "%.0f");
+									ImGui::NextColumn();
+									ImGui::TextColored(ImColor((int)Features::ColorFOV.R(), (int)Features::ColorFOV.G(), (int)Features::ColorFOV.B()), "FOV");
+									ImGui::SliderFloat("Red       ", &Features::ColorFOV.x, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Green       ", &Features::ColorFOV.y, 0.f, 255.f, "%.0f");
+									ImGui::SliderFloat("Blue       ", &Features::ColorFOV.z, 0.f, 255.f, "%.0f");
 									ImGui::NextColumn();
 								}
 								ImGui::Columns(1, "##Columns_2", false);
@@ -186,8 +233,8 @@ void DX11Renderer::DX11RenderScene()
 					}
 				}
 				if (Features::Crosshair) {
-					DrawLine(ScreenSX / 2.f - ScreenSX*0.005, ScreenSY / 2.f, ScreenSX / 2.f + ScreenSX*0.005, ScreenSY / 2.f, Color(255, 0, 0, 200));
-					DrawLine(ScreenSX / 2.f, ScreenSY / 2.f - ScreenSX*0.005, ScreenSX / 2.f, ScreenSY / 2.f + ScreenSX*0.005, Color(255, 0, 0, 200));
+					DrawLine(ScreenSX / 2.f - ScreenSX*0.006, ScreenSY / 2.f, ScreenSX / 2.f + ScreenSX*0.006, ScreenSY / 2.f, Features::ColorCrosshair);
+					DrawLine(ScreenSX / 2.f, ScreenSY / 2.f - ScreenSX*0.006, ScreenSX / 2.f, ScreenSY / 2.f + ScreenSX*0.006, Features::ColorCrosshair);
 				}
 				if (!Mem::IsValid(Game::GetLocalPlayer()->GetCurrentVehicle())) { //sorry no radar when in a vehicle. Radar cant get coordinates of local soldier LPSoldier; GetPosition() or GetBonePosition() return incorect value
 																				  /////////////////////////////////////////////////RADAR https://www.unknowncheats.me/forum/battlefield-1-a/210381-bf1-internal-hack-source-2.html
@@ -220,7 +267,7 @@ void DX11Renderer::DX11RenderScene()
 						if ((Mem::IsValid(LPSoldier) && Mem::IsValid(LPSoldier->prediction)) || (Mem::IsValid(LocalPlayer->GetCurrentVehicle())))
 						{
 							if (Features::ShowFOV)
-								DrawCircle(ScreenSX / 2.f, ScreenSY / 2.f, Color(0, 255, 255, 255), Aimbot::FOV, 25);
+								DrawCircle(ScreenSX / 2.f, ScreenSY / 2.f, Features::ColorFOV, Aimbot::FOV, 25);
 
 							//PLAYERS
 							CEntityList* EntityList = Game::GetEntityList();
@@ -445,7 +492,7 @@ void DX11Renderer::DX11RenderScene()
 												if (Ent->GetTeam() == LocalPlayer->GetTeam() && !Features::ESPShowFriends)
 													continue;
 
-												Color BoxColor = Color(0, 235, 235, 255);
+												Color BoxColor = Features::ColorFriend; //Color(255, 255, 255, 255);
 
 												bool Enemy = false, Visible = false;
 												if (Ent->GetTeam() != LocalPlayer->GetTeam())
@@ -455,10 +502,10 @@ void DX11Renderer::DX11RenderScene()
 													if (!EntSoldier->m_Occluded) // czy go widac?
 													{
 														Visible = true;
-														BoxColor = Color(0, 255, 0, 255);
+														BoxColor = Features::ColorEnemyVisible; //Color(0, 255, 0, 255);
 													}
 													else
-														BoxColor = Color(255, 0, 0, 255);
+														BoxColor = Features::ColorEnemyHidden; //Color(255, 0, 0, 255);
 												}
 
 												float BoxSY = FeetSP.y - HeadSP.y;
@@ -477,10 +524,10 @@ void DX11Renderer::DX11RenderScene()
 													std::string Distance;
 													if (Features::ShowName) Distance = "\n[" + std::to_string(static_cast<int>(dist)) + " m]";
 													else  Distance = "[" + std::to_string(static_cast<int>(dist)) + " m]";
-													DrawDXText(BoxX - 10.f, Features::ShowHealth ? BoxY + BoxSY + 4.f : BoxY + BoxSY, 0.6f, false, 0.f, Color(255, 255, 255, 255), true, "%s%s", Features::ShowName ? Ent->Name : "", Features::ShowDistance ? Distance.c_str() : "");
+													DrawDXText(BoxX - 10.f, Features::ShowHealth ? BoxY + BoxSY + 4.f : BoxY + BoxSY, 0.6f, false, 0.f, Features::ColorName, true, "%s%s", Features::ShowName ? Ent->Name : "", Features::ShowDistance ? Distance.c_str() : "");
 												}
 												else
-													DrawDXText(BoxX - 10.f, Features::ShowHealth ? BoxY + BoxSY + 4.f : BoxY + BoxSY, 0.6f, false, 0.f, Color(255, 255, 255, 255), true, "%s", Features::ShowName ? Ent->Name : "");
+													DrawDXText(BoxX - 10.f, Features::ShowHealth ? BoxY + BoxSY + 4.f : BoxY + BoxSY, 0.6f, false, 0.f, Features::ColorName, true, "%s", Features::ShowName ? Ent->Name : "");
 
 												if (Features::ShowHealth)
 												{
@@ -561,13 +608,13 @@ void DX11Renderer::DX11RenderScene()
 														Game::W2S(RMalleolusPos, RMalleolusSP) &&
 														Game::W2S(RTipToePos, RTipToeSP))
 													{
-														Color BonesColor = Color(0, 255, 255, 255);
+														Color BonesColor = Features::ColorFriend; //Color(255, 255, 255, 255);
 														if (Enemy)
 														{
 															if (Visible)
-																BonesColor = Color(0, 255, 0, 255);
+																BonesColor = Features::ColorEnemyVisible; //Color(0, 255, 0, 255);
 															else
-																BonesColor = Color(255, 0, 0, 255);
+																BonesColor = Features::ColorEnemyHidden;  //Color(255, 0, 0, 255);
 														}
 
 														float HeadSize = sqrt(pow(HeadSP.x - NeckSP.x, 2) + pow(HeadSP.y - NeckSP.y, 2));
@@ -613,13 +660,13 @@ void DX11Renderer::DX11RenderScene()
 										Vector3 Position = Vector3(_Transform.m[3][0], _Transform.m[3][1], _Transform.m[3][2]);
 										glm::vec3 glmPos = glm::vec3(Position.x, Position.y, Position.z);
 
-										Color BoxColor = Color(0, 0, 150, 255);
+										Color BoxColor = Features::ColorFriendVehicle; //Color(0, 0, 150, 255); 
 
-										//to fix the vehicle friend/enemy color issue (all of them having the same color), change the following line
-										//https://www.unknowncheats.me/forum/battlefield-1-a/210381-bf1-internal-hack-source-3.html
-										//if (Vehicle->GetTeam() != LocalPlayer->GetTeam())
+																					   //to fix the vehicle friend/enemy color issue (all of them having the same color), change the following line
+																					   //https://www.unknowncheats.me/forum/battlefield-1-a/210381-bf1-internal-hack-source-3.html
+																					   //if (Vehicle->GetTeam() != LocalPlayer->GetTeam())
 										if (Ent->GetTeam() != LocalPlayer->GetTeam())
-											BoxColor = Color(255, 220, 0, 255);
+											BoxColor = Features::ColorEnemyVehicle; //Color(255, 220, 0, 255);
 										else
 											if (!Features::ESPShowFriends)
 												continue;
@@ -670,7 +717,7 @@ void DX11Renderer::DX11RenderScene()
 											Game::W2S(Vector3(crnr7.x, crnr7.y, crnr7.z), cor7SP) &&
 											Game::W2S(Vector3(glmPos.x, glmPos.y /*+ (max.y - min.y)*/, glmPos.z), NameSP))
 										{
-											DrawDXText(NameSP.x, NameSP.y, 0.8f, true, 0.f, Color(0, 255, 255, 255), true, "%s", Vehicle->GetName().c_str());
+											DrawDXText(NameSP.x, NameSP.y, 0.8f, true, 0.f, Features::ColorName/*Color(0, 255, 255, 255)*/, true, "%s", Vehicle->GetName().c_str());
 
 											DrawLine(minSP.x, minSP.y, cor4SP.x, cor4SP.y, BoxColor);
 											DrawLine(minSP.x, minSP.y, cor2SP.x, cor2SP.y, BoxColor);

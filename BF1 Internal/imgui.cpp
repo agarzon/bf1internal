@@ -2383,6 +2383,7 @@ static ImGuiIniData* AddWindowSettings(const char* name)
 			float x, y;
 			float i = 0;
 			int j;
+			int col_r, col_g, col_b, col_a;
 			if (sscanf(line_start, "Pos=%f,%f", &x, &y) == 2)
 				settings->Pos = ImVec2(x, y);
 			else if (sscanf(line_start, "Size=%f,%f", &x, &y) == 2)
@@ -2477,6 +2478,32 @@ static ImGuiIniData* AddWindowSettings(const char* name)
 				Aimbot::AimSlots6 = j;
 			else if (sscanf(line_start, "AimSlots7=%d\n", &j) == 1)
 				Aimbot::AimSlots7 = j;
+
+			///////Colours			
+			else if (sscanf(line_start, "ColorEnemyHidden=%d,%d,%d,%d\n", &col_r, &col_g, &col_b, &col_a) == 4) {
+				Features::ColorEnemyHidden.x = col_r; Features::ColorEnemyHidden.y = col_g; Features::ColorEnemyHidden.z = col_b; Features::ColorEnemyHidden.w = col_a;
+			}
+			else if (sscanf(line_start, "ColorEnemyVisible=%d,%d,%d,%d\n", &col_r, &col_g, &col_b, &col_a) == 4) {
+				Features::ColorEnemyVisible.x = col_r; Features::ColorEnemyVisible.y = col_g; Features::ColorEnemyVisible.z = col_b; Features::ColorEnemyVisible.w = col_a;
+			}
+			else if (sscanf(line_start, "ColorFriend=%d,%d,%d,%d\n", &col_r, &col_g, &col_b, &col_a) == 4) {
+				Features::ColorFriend.x = col_r; Features::ColorFriend.y = col_g; Features::ColorFriend.z = col_b; Features::ColorFriend.w = col_a;
+			}
+			else if (sscanf(line_start, "ColorName=%d,%d,%d,%d\n", &col_r, &col_g, &col_b, &col_a) == 4) {
+				Features::ColorName.x = col_r; Features::ColorName.y = col_g; Features::ColorName.z = col_b; Features::ColorName.w = col_a;
+			}
+			else if (sscanf(line_start, "ColorEnemyVehicle=%d,%d,%d,%d\n", &col_r, &col_g, &col_b, &col_a) == 4) {
+				Features::ColorEnemyVehicle.x = col_r; Features::ColorEnemyVehicle.y = col_g; Features::ColorEnemyVehicle.z = col_b; Features::ColorEnemyVehicle.w = col_a;
+			}
+			else if (sscanf(line_start, "ColorFriendVehicle=%d,%d,%d,%d\n", &col_r, &col_g, &col_b, &col_a) == 4) {
+				Features::ColorFriendVehicle.x = col_r; Features::ColorFriendVehicle.y = col_g; Features::ColorFriendVehicle.z = col_b; Features::ColorFriendVehicle.w = col_a;
+			}
+			else if (sscanf(line_start, "ColorCrosshair=%d,%d,%d,%d\n", &col_r, &col_g, &col_b, &col_a) == 4) {
+				Features::ColorCrosshair.x = col_r; Features::ColorCrosshair.y = col_g; Features::ColorCrosshair.z = col_b; Features::ColorCrosshair.w = col_a;
+			}
+			else if (sscanf(line_start, "ColorFOV=%d,%d,%d,%d\n", &col_r, &col_g, &col_b, &col_a) == 4) {
+				Features::ColorFOV.x = col_r; Features::ColorFOV.y = col_g; Features::ColorFOV.z = col_b; Features::ColorFOV.w = col_a;
+			}
 
 			//////KEYS BINDINGS
 			else if (sscanf(line_start, "key_StartHack=%d\n", &j) == 1) key_StartHack = j;
@@ -2588,6 +2615,18 @@ static void SaveSettings()
 	fprintf(f, "AimSlots5=%d\n", Aimbot::AimSlots5);
 	fprintf(f, "AimSlots6=%d\n", Aimbot::AimSlots6);
 	fprintf(f, "AimSlots7=%d\n", Aimbot::AimSlots7);
+
+	///////Colours
+	fprintf(f, "\n");
+	fprintf(f, "---COLOURS---\n");
+	fprintf(f, "ColorEnemyHidden=%.0f,%.0f,%.0f,%.0f\n", Features::ColorEnemyHidden.x, Features::ColorEnemyHidden.y, Features::ColorEnemyHidden.z, Features::ColorEnemyHidden.w);
+	fprintf(f, "ColorEnemyVisible=%.0f,%.0f,%.0f,%.0f\n", Features::ColorEnemyVisible.x, Features::ColorEnemyVisible.y, Features::ColorEnemyVisible.z, Features::ColorEnemyVisible.w);
+	fprintf(f, "ColorFriend=%.0f,%.0f,%.0f,%.0f\n", Features::ColorFriend.x, Features::ColorFriend.y, Features::ColorFriend.z, Features::ColorFriend.w);
+	fprintf(f, "ColorName=%.0f,%.0f,%.0f,%.0f\n", Features::ColorName.x, Features::ColorName.y, Features::ColorName.z, Features::ColorName.w);
+	fprintf(f, "ColorEnemyVehicle=%.0f,%.0f,%.0f,%.0f\n", Features::ColorEnemyVehicle.x, Features::ColorEnemyVehicle.y, Features::ColorEnemyVehicle.z, Features::ColorEnemyVehicle.w);
+	fprintf(f, "ColorFriendVehicle=%.0f,%.0f,%.0f,%.0f\n", Features::ColorFriendVehicle.x, Features::ColorFriendVehicle.y, Features::ColorFriendVehicle.z, Features::ColorFriendVehicle.w);
+	fprintf(f, "ColorCrosshair=%.0f,%.0f,%.0f,%.0f\n", Features::ColorCrosshair.x, Features::ColorCrosshair.y, Features::ColorCrosshair.z, Features::ColorCrosshair.w);
+	fprintf(f, "ColorFOV=%.0f,%.0f,%.0f,%.0f\n", Features::ColorFOV.x, Features::ColorFOV.y, Features::ColorFOV.z, Features::ColorFOV.w);
 
 	//////KEYS BINDINGS
 	fprintf(f, "\n");

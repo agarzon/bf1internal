@@ -36,7 +36,8 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 		CreateThread(0, 0, (LPTHREAD_START_ROUTINE)Init, 0, 0, 0);
 		Sleep(1000);  //wait for Init thread to start before; ugly little fix
 		CreateThread(0, 0, (LPTHREAD_START_ROUTINE)MainThread, 0, 0, 0);
-		CreateThread(0, 0, (LPTHREAD_START_ROUTINE)AimbotThread, 0, 0, 0);		
+		CreateThread(0, 0, (LPTHREAD_START_ROUTINE)AimbotThread, 0, 0, 0);
+		ImGui::SetNextWindowPos(ImVec2(0, 0));
 		break;
 	}
 	case DLL_THREAD_ATTACH:
